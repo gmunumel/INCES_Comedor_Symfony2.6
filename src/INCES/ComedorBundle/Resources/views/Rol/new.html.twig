@@ -1,0 +1,67 @@
+<div id="col-browser">{#<a href="#"><img src="{{ asset('img/browser.gif') }}" width="255" height="177" alt="" /></a>#}
+</div>
+
+<div id="col-text">
+
+  <h1>{{ 'Add' }} Rol</h1>
+  <form class="rol_form generic" action="{{ app.request.uriForPath('/rol/create') }}" method="post" {{ form_enctype(form) }}>
+    {#
+    {{ form_widget(form) }}
+    <p>
+    <button type="submit">Agregar</button>
+    </p>
+    #}
+    {{ form_row(form._token) }}
+
+    <div id="rol-nombre-block" class="field">
+      <label for="nombre">{{ 'Name' }}</label>
+      {{ form_widget(form.nombre,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="rol-monto-block" class="field">
+      <label for="monto">{{ 'Amount' }}</label>
+      {{ form_widget(form.monto,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="rol-horaComerStart-block" class="field">
+      <label for="horaComerStart">{{ 'Start Service' }}</label>
+      {{ form_widget(form.horaComerStart,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="rol-horaComerStartAMPM-block" class="field">
+      <label for="horaComerStartAMPM">{{ 'Start Service' }} AM/PM</label>
+      {{ form_widget(form.horaComerStartAMPM,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="rol-horaComerEnd-block" class="field">
+      <label for="horaComerEnd">{{ 'End Service' }}</label>
+      {{ form_widget(form.horaComerEnd,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="rol-horaComerEndAMPM-block" class="field">
+      <label for="horaComerEndAMPM">{{ 'End Service' }} AM/PM</label>
+      {{ form_widget(form.horaComerEndAMPM,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div class="action">
+      <input id="login-submit" class="submit-button" type="submit" value="{{ 'Add' }}" />
+    </div>
+  </form>
+</div> <!-- /col-text -->
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<center>
+  <a href="{{ app.request.uriForPath('/#!/rol') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" />
+  </a>
+</center>
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

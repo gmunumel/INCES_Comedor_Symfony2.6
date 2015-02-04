@@ -1,0 +1,49 @@
+
+<div id="my-col-text">
+
+  <h1>{{ 'Edit User' }} Menu</h1>
+
+  <form class="usuariomenu_form generic" action="{{ path('usuariomenu_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    {#
+    {{ form_widget(edit_form) }}
+    <p>
+    <button type="submit">{{ 'Edit' }}</button>
+    </p>
+    #}
+    <div id="usuario-menu-dia-block" class="field">
+      <label for="dia">{{ 'Day' }}</label>
+      {{ form_widget(edit_form.dia,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="usuario-menu-usuario-block" class="field">
+      <label for="usuario">{{ 'User' }}</label>
+      {{ form_widget(edit_form.usuario,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="usuario-menu-menu-block" class="field">
+      <label for="menu">Menu</label>
+      {{ form_widget(edit_form.menu,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div class="action">
+      <input id="login-submit" class="submit-button" type="submit" value="{{ 'Edit' }}" />
+    </div>
+  </form>
+
+  <ul class="record_actions">
+    <li>
+    <a href="{{ app.request.uriForPath('/#!/usuariomenu/') }}">
+      {{ 'Back to the list' }}
+    </a>
+    </li>
+    <li>
+    <form class="generic" action="{{ app.request.uriForPath('/usuariomenu/') }}{{ entity.id }}/delete" method="post">
+      {{ form_widget(delete_form) }}
+      {#
+      <button class="delete_form_btn" type="submit">{{ 'Delete' }}</button>
+      #}
+      <div class="action">
+        <input id="login-submit" class="delete_form_btn submit-button" type="submit" value="{{ 'Delete' }}" />
+      </div>
+    </form>
+    </li>
+  </ul>
+</div> <!-- /col-text -->
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

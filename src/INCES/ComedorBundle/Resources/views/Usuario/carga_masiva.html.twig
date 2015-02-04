@@ -1,0 +1,27 @@
+
+<div id="col-browser"></div>
+<div id="col-text">
+
+  <h1>{{ 'Users Bulk Load' }}</h1>
+
+  <div id="messages"></div>
+  <form class="carga_masiva_form generic" action="{{ app.request.uriForPath('/usuario/cargamasiva') }}" method="post" {{ form_enctype(cm_form) }}>
+    {#
+    {{ form_widget(cm_form.file) }}
+    #}
+    {{ form_row(cm_form._token) }}
+    <div id="carga-masiva-file-block" class="field">
+      <label for="file">{{ 'File' }}</label>
+      {{ form_widget(cm_form.file,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    {#
+    <br />
+    <button class="carga_masiva_form_btn" type="submit">Modificar</button>
+    #}
+    <div class="action">
+      <input id="login-submit" class="submit-button carga_masiva_form_btn" type="submit" value="{{ 'Update' }}" />
+    </div>
+  </form>
+
+</div> <!-- /col-text -->
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

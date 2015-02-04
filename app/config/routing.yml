@@ -1,0 +1,8 @@
+inces_comedor:
+    resource: "@INCESComedorBundle/Resources/config/routing.yml"
+    prefix:   /
+
+INCESComedorBundle:
+    resource: "@INCESComedorBundle/Resources/config/routing.yml"
+    prefix:   /
+

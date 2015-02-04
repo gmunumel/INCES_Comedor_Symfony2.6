@@ -1,0 +1,132 @@
+
+<div id="my-col-text">
+  <table>
+    <tr class="tsearch">
+      <td>
+        <h1>{{ 'List Menus' }}</h1>
+      </td>
+      <td>
+        <div id="filter">
+          <form class="generic" action="{{ app.request.uriForPath('/menu/search') }}" method="get">
+            <img src="{{ asset('img/search.png') }}" class="searchbox_submit" value="" />
+            <input autocomplete="off" type="text" class="text" name="query" value="{{query}}" id="search_keywords" />
+            <input type="submit" value="search" style="display:none;"/>
+          </form>
+        </div>
+        <td>
+        </tr>
+      </table>
+      <table class="bordered">
+        <thead>
+          <tr>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'First Plate', 'm.seco')|replace({'menu': '#!/menu'})|raw }}
+              <div>
+                {% if pagination.isSorted('m.seco') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Soup', 'm.sopa')|replace({'menu': '#!/menu'})|raw }}
+              <div>
+                {% if pagination.isSorted('m.sopa') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Second Plate', 'm.salado')|replace({'menu': '#!/menu'})|raw }}
+              <div>
+                {% if pagination.isSorted('m.salado') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Juice', 'm.jugo')|replace({'menu': '#!/menu'})|raw }}
+              <div>
+                {% if pagination.isSorted('m.jugo') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Salad', 'm.ensalada')|replace({'menu': '#!/menu'})|raw }}
+              <div>
+                {% if pagination.isSorted('m.ensalada') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Dessert', 'm.postre')|replace({'menu': '#!/menu'})|raw }}
+              <div>
+                {% if pagination.isSorted('m.postre') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Day', 'm.dia')|replace({'menu': '#!/menu'})|raw }}
+              <div>
+                {% if pagination.isSorted('m.dia') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>{{ 'Actions' }}</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if pagination|length == 0 %}
+        <p>{{ 'There are not results' }}</p>
+        {% endif %}
+        {% for entity in pagination %}
+        <tr>
+          <td>{{ entity.seco }}</td>
+          <td>{{ entity.sopa }}</td>
+          <td>{{ entity.salado }}</td>
+          <td>{{ entity.jugo }}</td>
+          <td>{{ entity.ensalada }}</td>
+          <td>{{ entity.postre }}</td>
+          <td>{% if entity.dia %}{{ entity.dia|date('d/m/Y') }}{% endif%}</td>
+          {#
+          <td>{% if entity.dia %}{{ entity.dia|slice(0,2) }}/{{ entity.dia|slice(2,2) }}/{{ entity.dia|slice(4,4) }}{% endif%}</td>
+          #}
+          <td>
+            <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/show"><img src="{{ asset('img/show.png') }}" height="30" width="30" /></a>
+            {% if is_granted("ROLE_USER") %}
+            <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edit"><img src="{{ asset('img/edit.ico') }}" height="30" width="30" /></a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% if pagination|length != 0 %}
+      <div class="navigation">
+        {{knp_pagination_render(pagination)|replace({'menu': '#!/menu'})|raw}}
+      </div>
+      {% endif %}
+
+      {#
+      <script type="text/javascript" src="{{ asset('js/jquery-1.7.2.min.js') }}"></script>
+      #}
+      <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
+
+    </div> <!-- /col-text -->

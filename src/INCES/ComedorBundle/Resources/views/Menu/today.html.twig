@@ -1,0 +1,54 @@
+
+<div id="my-col-text">
+
+  <h1>{{ 'Today\'s Menus' }}</h1>
+  <table class="bordered">
+    <thead>
+      <tr>
+        <th>{{ 'First Plate' }}</th>
+        <th>{{ 'Soup' }}</th>
+        <th>{{ 'Second Plate' }}</th>
+        <th>{{ 'Juice' }}</th>
+        <th>{{ 'Salad' }}</th>
+        <th>{{ 'Dessert' }}</th>
+        <th>{{ 'Day' }}</th>
+        <th>{{ 'Actions' }}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% if menusToday|length == 0 %}
+    <p>{{ 'There are not results' }}</p>
+    {% endif %}
+    {% for entity in menusToday %}
+    <tr>
+      <td>{{ entity.seco }}</td>
+      <td>{{ entity.sopa }}</td>
+      <td>{{ entity.salado }}</td>
+      <td>{{ entity.jugo }}</td>
+      <td>{{ entity.ensalada }}</td>
+      <td>{{ entity.postre }}</td>
+      <td>{% if entity.dia %}{{ entity.dia|date('d/m/Y') }}{% endif %}</td>
+      <td>
+        {% if is_granted("ROLE_ADMIN") %}
+        <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edittoday"><img src="{{ asset('img/edit.ico') }}" height="30" width="30" /></a>
+        {% elseif is_granted("ROLE_GERENTE") %}
+        <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edittoday"><img src="{{ asset('img/edit.ico') }}" height="30" width="30" /></a>
+        {% elseif is_granted("ROLE_OPERADOR") %}
+        <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edittoday"><img src="{{ asset('img/edit.ico') }}" height="30" width="30" /></a>
+        {% else %}
+        <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/showtoday"><img src="{{ asset('img/show.png') }}" height="30" width="30" /></a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <br />
+  {% if (is_granted("ROLE_ADMIN") or is_granted("ROLE_GERENTE") or is_granted("ROLE_OPERADOR")) %}
+  <a class="mya" href="{{ app.request.uriForPath('/#!/menu/newtoday') }}">
+    <button class="mybutton" type="button" >{{ 'New' }}</button>
+  </a>
+  {% endif %}
+
+</div> <!-- /col-text -->
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

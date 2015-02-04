@@ -1,0 +1,64 @@
+<h3>
+  {% if from == "" or to == "" %}
+  {{ 'The number of users are' }} <b>{{cantidadTotal}}</b>
+  {% else %}
+  {{ 'Number of users for the day' }} <b>{{"now"|date('d/m/Y')}}</b> {{ 'is' }} <b>{{cantidadTotal}}</b>
+  {% endif %}
+  <br />
+  {{ 'Amount earned:' }} <b>{{montoTotal}}</b>
+</h3>
+{# Totales #}
+
+<table class="bordered">
+  <thead>
+    <tr>
+      <th>Rol</th>
+      <th>{{ 'Amount' }}</th>
+      <th>{{ 'Amount($)' }}</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for key, len in totals %}
+  {% if len.0 > 0 %}
+  <tr>
+    <td>{{ key }}</td>
+    <td>{{ len.0 }}</td>
+    <td>{{ len.1 }}</td>
+  </tr>
+  {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+
+{# Get users by role #}
+{% for key, len in totals %}
+{% if len.0 > 0 %}
+<ul><li><h3>{{ key }}</h3></li></ul>
+<table class="bordered">
+  <thead>
+    <tr>
+      <th>{{ 'Date' }}</th>
+      <th>{{ 'User' }}</th>
+      <th>Menu</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% if pagination|length == 0 %}
+  <p>{{ 'There are not results' }}</p>
+  {% endif %}
+  {% for entity in pagination if entity.usuario.rol.nombre == key %}
+  <tr>
+    <td>{% if entity.dia %}{{ entity.dia|date('d/m/Y') }}{% endif%}</td>
+    <td>{{ entity.usuario.nombre }}</td>
+    {% if entity.menu == "" %}
+    <td>{{ 'There is not information available' }}</td>
+    {% else %}
+    <td>{{entity.menu}}</td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endfor %}
+

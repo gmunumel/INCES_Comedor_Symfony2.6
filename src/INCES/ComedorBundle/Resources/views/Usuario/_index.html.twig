@@ -1,0 +1,142 @@
+
+<div id="my-col-text">
+
+  <table>
+    <tr class="tsearch">
+      <td>
+        <h1>{{ 'List of Users' }}</h1>
+      </td>
+      <td>
+        <div id="filter">
+          <form class="generic" action="{{ app.request.uriForPath('/usuario/searcha') }}" method="get">
+            <img src="{{ asset('img/search.png') }}" class="searchbox_submit" value="" />
+            <input autocomplete="off" type="text" class="text" name="query" value="{{query}}" id="search_keywords" />
+            <input type="submit" value="search" style="display:none;"/>
+          </form>
+        </div>
+        <td>
+        </tr>
+      </table>
+      <table class="bordered">
+        <thead>
+          <tr>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Cedula', 'u.cedula')|replace({'usuario': '#!/usuario'})|raw }}
+              <div>
+                {% if pagination.isSorted('u.cedula') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Name', 'u.nombre')|replace({'usuario': '#!/usuario'})|raw }}
+              <div>
+                {% if pagination.isSorted('u.nombre') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Last Name', 'u.apellido')|replace({'usuario': '#!/usuario'})|raw }}
+              <div>
+                {% if pagination.isSorted('u.apellido') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Card', 'u.ncarnet')|replace({'usuario': '#!/usuario'})|raw }}
+              <div>
+                {% if pagination.isSorted('u.ncarnet') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Rol', 'r.nombre')|replace({'usuario': '#!/usuario'})|raw }}
+              <div>
+                {% if pagination.isSorted('r.nombre') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>{{ 'Email' }}</th>
+            <th>{{ 'Image' }}</th>
+            <th>{{ 'Actions' }}</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if pagination|length == 0 %}
+        <p>{{ 'There are not results' }}</p>
+        {% endif %}
+        {#
+        <div id="usuarios">
+          #}
+          {% for entity in pagination %}
+          <tr>
+            <td>{{ entity.cedula }}</td>
+            <td>{{ entity.nombre }}</td>
+            <td>{{ entity.apellido }}</td>
+            <td>{{ entity.ncarnet }}</td>
+            <td>{{ entity.rol.nombre }}</td>
+            <td>{{ entity.correo }}</td>
+            <td><img src="{{ asset('img/uploaded/') }}{{entity.image|replace({'/tmp/':''})}}" width="40" height="40" alt="" /></td>
+            <td>
+              {% if is_granted("ROLE_ADMIN")  %}
+              <a href="{{ app.request.uriForPath('/#!/usuario/') }}{{ entity.id }}/edit"><img src="{{ asset('img/edit.ico') }}" height="30" width="30" /></a>
+              {% else %}
+              <p>{{ 'No tiene permiso para hacer esta operación' }}</p>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+          {#
+        </div>
+        #}
+        </tbody>
+      </table>
+      {#
+      <ul>
+        <li>
+        <a href="{{ path('menu_new') }}">
+          Create a new entry
+        </a>
+        -->
+        <br />
+        <div class="navigation">
+          {{ pagination.render()|raw }}
+        </div>
+        <br />
+        {% if is_granted("ROLE_USER") %}
+        <a href="{{ app.request.uriForPath('/#!/menu/new') }}">
+          Create a new entry
+        </a>
+        {% endif %}
+        </li>
+      </ul>
+      #}
+      {% if pagination|length != 0 %}
+      <div class="navigation">
+        {{knp_pagination_render(pagination)|replace({'usuario': '#!/usuario'})|raw}}
+      </div>
+      {% endif %}
+
+      {% if is_granted("ROLE_USER") %}
+      <br />
+      <a class="mybutton" href="{{ app.request.uriForPath('/#!/usuario/new') }}">
+        {{ 'New' }}
+      </a>
+      {% endif %}
+      <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
+
+    </div> <!-- /col-text -->

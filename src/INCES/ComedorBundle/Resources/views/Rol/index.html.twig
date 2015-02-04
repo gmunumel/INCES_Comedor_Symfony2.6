@@ -1,0 +1,36 @@
+
+<div id="my-col-text">
+
+  <h1>Roles</h1>
+
+  <table class="bordered">
+    <thead>
+      <tr>
+        <th>{{ 'Name' }}</th>
+        <th>{{ 'Amount' }}</th>
+        <th>{{ 'Start Hour' }}</th>
+        <th>{{ 'Finish Hour' }}</th>
+        <th>{{ 'Actions' }}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+    <tr>
+      <td>{{ entity.nombre }}</td>
+      <td>{{ entity.monto }}</td>
+      <td>{{ entity.horaComerStart }} {{ entity.horaComerStartAMPM }}</td>
+      <td>{{ entity.horaComerEnd }} {{ entity.horaComerEndAMPM }}</td>
+      <td>
+        {#<a href="{{ app.request.uriForPath('/#!/rol/') }}{{ entity.id }}/show"><img src="{{ asset('img/show.png') }}" height="30" width="30" /></a>#}
+        <a href="{{ app.request.uriForPath('/#!/rol/') }}{{ entity.id }}/edit"><img src="{{ asset('img/edit.ico') }}" height="30" width="30" /></a>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <br />
+  <a class="mybutton" href="{{ app.request.uriForPath('/#!/rol/new') }}">
+    {{ 'New' }}
+  </a>
+</div> <!-- /col-text -->

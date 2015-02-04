@@ -1,0 +1,67 @@
+
+<div id="col-browser">
+  <a href="#">
+    {% if entity.image != null %}
+    <img src="{{ asset('img/uploaded/') }}{{entity.image|replace({'/tmp/':''})}}" width="255" height="350" alt="" />
+    {% else %}
+    <img src="{{ asset('img/guest_user.png') }}" width="255" height="350" alt="" />
+    {% endif %}
+  </a>
+</div>
+<div id="col-text">
+
+  <h1>{{ 'Show User' }}</h1>
+
+  <table class="bordered">
+    <tbody>
+    <tr class="fix-tsearch">
+      <th>{{ 'Name' }}</th>
+      <td>{{ entity.nombre }}</td>
+    </tr>
+    <tr class="fix-tsearch">
+      <th>{{ 'Last Name' }}</th>
+      <td>{{ entity.apellido }}</td>
+    </tr>
+    <tr class="fix-tsearch">
+      <th>{{ 'Id' }}</th>
+      <td>{{ entity.cedula }}</td>
+    </tr>
+    <tr class="fix-tsearch">
+      <th>{{ 'Card Number' }}</th>
+      <td>{{ entity.ncarnet }}</td>
+    </tr>
+    {#
+    <tr>
+      <th>A_i</th>
+      <td>{{ entity.ai }}</td>
+    </tr>
+    #}
+    <tr class="fix-tsearch">
+      <th>{{ 'Email' }}</th>
+      <td>{{ entity.correo }}</td>
+    </tr>
+    {#
+    <tr>
+      <th>{{ 'Image' }}</th>
+      <td>{{ entity.image }}</td>
+    </tr>
+    #}
+    </tbody>
+  </table>
+
+  <a class="mybutton" href="{{ app.request.uriForPath('/#!/usuario/') }}{{ entity.id }}/edit">{{ 'Edit' }}</a>
+  <ul class="record_actions">
+    {#
+    <a class="mybutton" href="{{ app.request.uriForPath('/#!/usuario/') }}{{ entity.id }}/edit">{{ 'Edit' }}</a>
+    #}
+    <form class="generic" action="{{ app.request.uriForPath('/usuario/') }}{{ entity.id }}/delete" method="post">
+      {{ form_widget(delete_form) }}
+      <div class="action">
+        <input id="login-submit" class="submit-button" type="submit" value="{{ 'Delete' }}" />
+      </div>
+    </form>
+    <a href="{{ app.request.uriForPath('/#!/usuario/') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" />
+    </a>
+  </ul>
+</div> <!-- /col-text -->
+

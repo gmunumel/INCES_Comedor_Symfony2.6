@@ -1,0 +1,14 @@
+imports:
+    - { resource: config_dev.yml }
+
+framework:
+    test: ~
+    session:
+        salrage_id: session.salrage.filesystem
+
+web_profiler:
+    alolbar: false
+    intercept_redirects: false
+
+swiftmailer:
+    disable_delivery: true

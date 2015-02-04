@@ -1,0 +1,61 @@
+
+<div id="my-col-text">
+
+  <h1>{{ 'Show Menu' }}</h1>
+
+  <table class="bordered">
+    <tbody >
+    {#
+    <tr>
+      <th>Id</th>
+      <td>{{ entity.id }}</td>
+    </tr>
+    #}
+    <tr class="tsearch">
+      <th>{{ 'First Plate' }}</th>
+      <td>{{ entity.seco }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Soup' }}</th>
+      <td>{{ entity.sopa }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Second Plate' }}</th>
+      <td>{{ entity.salado }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Juice' }}</th>
+      <td>{{ entity.jugo }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Salad' }}</th>
+      <td>{{ entity.ensalada }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Dessert' }}</th>
+      <td>{{ entity.postre }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Day' }}</th>
+      <td>{{ entity.dia|date('d/m/Y') }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <br />
+  <a class="mybutton" href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edit">
+    {{ 'Edit' }}
+  </a>
+  <br />
+  <a href="{{ app.request.uriForPath('/#!/menu') }}"><img src="{{ asset('img/back.ico') }}" height="40" width="40" /></a>
+  {#
+  <li>
+  <form action="{{ app.request.uriForPath('/menu/') }}{{ entity.id }}/delete" method="post">
+    {{ form_widget(delete_form) }}
+    <button type="submit">{{ 'Delete' }}</button>
+  </form>
+  </li>
+  #}
+
+</div> <!-- /col-text -->
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

@@ -1,0 +1,28 @@
+<table class="bordered">
+  <thead>
+    <tr>
+      <th>{{ 'Id' }}</th>
+      <th>{{ 'Name' }}</th>
+      <th>Rol</th>
+      <th>{{ 'Amount' }}</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% if pagination|length == 0 %}
+  <p>{{ 'There are not results' }}</p>
+  {% endif %}
+  {% for entity in pagination %}
+  <tr class="tsearch">
+    <td>{{ entity.usuario.cedula }}</td>
+    <td>{{ entity.usuario.nombre }}</td>
+    <td>{{ entity.usuario.rol.nombre }}</td>
+    <td>{{ entity.usuario.rol.monto }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<div class="center">
+  <a href="{{ app.request.uriForPath('/#!/usuario/searchalnc') }}">
+    <button type="button">{{ 'All' }}</button>
+  </a>
+</div>

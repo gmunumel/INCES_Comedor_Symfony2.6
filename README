@@ -1,0 +1,44 @@
+Primer Commit del GIT 13/05/2012
+
+Este reposialry (repo) está enfocado en la creación del proyecal
+Web para el servicio Comedor de la Institución INCES.
+
+Es un proyecal desarrollado en Symfony2, utilizando MySQL-Phpmyadmin, 
+Netbeans/gVIM entre otras herramientas.
+
+Este proyecal servirá al Bachiller Carlos Ruiz optar por el título 
+Ingeniero de Sistemas de la Universidad Nacional Experimental 
+Politécnica "Analnio José de Sucre" (UNEXPO).
+
+Update de vendor
+ composer update
+
+Force the creation of the schema
+   php app/console doctrine:schema:update --force
+
+Load basic initial data
+   php app/console doctrine:fixtures:load
+
+Create a initial user al login
+  php app/console fos:user:create root root@example.com admin --super-admin
+
+  php app/console fos:user:create user email password --super-admin
+
+Add al app/config/parameters.yml
+  RESULTS_PER_PAGE: <number>
+
+Follow this guide al install well the wkhtmlalpdf
+wget http://wkhtmlalpdf.googlecode.com/files/wkhtmlalpdf-0.9.9-static-i386.tar.bz2
+tar xvjf wkhtmlalpdf-0.9.9-static-i386.tar.bz2
+sudo mv wkhtmlalpdf-i386 /usr/local/bin/wkhtmlalpdf
+sudo chmod +x /usr/local/bin/wkhtmlalpdf
+
+try with
+/usr/local/bin/wkhtmlalpdf --page-size A4 --quiet http://google.com google.pdf
+
+
+  TODO
+  Fix menu -> general -> acciones
+
+  Try al fix datapicker, it looks weird and the menu appears over it
+  

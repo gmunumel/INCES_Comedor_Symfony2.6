@@ -1,0 +1,51 @@
+
+<div id="my-col-text">
+
+  <h1>{{ 'User' }} Menu</h1>
+
+  <table class="bordered">
+    <tbody>
+    <tr class="fix-tsearch">
+      <th>{{ 'Day' }}</th>
+      <td>{{ entity.dia|date('d-m-Y H:i:s') }}</td>
+    </tr>
+    <tr class="fix-tsearch">
+      <th>{{ 'User' }}</th>
+      <td>{{ entity.usuario }}</td>
+    </tr>
+    <tr class="fix-tsearch">
+      <th>Menu</th>
+      {% if entity.menu != ""  %}
+      <td>{{ entity.menu }}</td>
+      {% else %}
+      <td>{{ 'There is not information available' }}</td>
+      {% endif %}
+    </tr>
+    </tbody>
+  </table>
+
+  <ul class="record_actions">
+    <li>
+    <a href="{{ app.request.uriForPath('/#!/usuariomenu') }}">
+      {{ 'Back to the list' }}
+    </a>
+    </li>
+    {#
+    <li>
+    <a href="{{ app.request.uriForPath('/#!/usuariomenu/') }}{{ entity.id }}/edit">
+      {{ 'Edit' }}
+    </a>
+    </li>
+    #}
+    <form class="generic" action="{{ app.request.uriForPath('/usuariomenu/') }}{{ entity.id }}/delete" method="post">
+      {{ form_widget(delete_form) }}
+      {#
+      <button class="delete_form_btn" type="submit">{{ 'Delete' }}</button>
+      #}
+      <div class="action">
+        <input id="login-submit" class="delete_form_btn submit-button" type="submit" value="{{ 'Delete' }}" />
+      </div>
+    </form>
+  </ul>
+</div> <!-- /col-text -->
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

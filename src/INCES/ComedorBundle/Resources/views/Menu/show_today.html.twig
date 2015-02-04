@@ -1,0 +1,57 @@
+
+<div id="my-col-text">
+
+  <h1>{{ 'Today\'s Menu' }}</h1>
+
+  <table class="bordered">
+    <tbody>
+    <tr class="tsearch">
+      <th>{{ 'First Plate' }}</th>
+      <td>{{ entity.seco }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Soup' }}</th>
+      <td>{{ entity.sopa }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Second Plate' }}</th>
+      <td>{{ entity.salado }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Jugo' }}</th>
+      <td>{{ entity.jugo }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Salad' }}</th>
+      <td>{{ entity.ensalada }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Dessert' }}</th>
+      <td>{{ entity.postre }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Day' }}</th>
+      <td>{{ entity.dia|date('d/m/Y') }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <br />
+  {% if is_granted("ROLE_ADMIN") %}
+  <a class="mybutton" href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edittoday">
+    {{ 'Edit' }}
+  </a>
+  {% elseif is_granted("ROLE_GERENTE") %}
+  <a class="mybutton" href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edittoday">
+    {{ 'Edit' }}
+  </a>
+  {% elseif is_granted("ROLE_OPERADOR") %}
+  <a class="mybutton" href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edittoday">
+    {{ 'Edit' }}
+  </a>
+  {% endif %}
+  <br />
+  <a href="{{ app.request.uriForPath('/#!/menu/today') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" /></a>
+</div> <!-- /col-text -->
+
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

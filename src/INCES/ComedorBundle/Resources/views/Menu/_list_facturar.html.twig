@@ -1,0 +1,206 @@
+<div id="col-browser">
+  <div class="side-dock">
+    <div class="social-block">
+      {% render 'INCESComedorBundle:Usuario:lunchToday' %}
+      <br />
+      <div class="center">
+        <a href="{{ app.request.uriForPath('/#!/usuario/newexterno') }}" ><button type="button" >{{ 'Create External User' }}</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="col-text">
+
+  <table>
+    <tr class="tsearch">
+      <td>
+        <h1>{{ 'Menu Bill' }}</h1>
+      </td>
+      <td>
+        <div id="filter">
+          <form class="generic" action="{{ app.request.uriForPath('/menu/searchafact') }}" method="get">
+            <img src="{{ asset('img/search.png') }}" class="searchbox_submit" value="" />
+            <input autocomplete="off" type="text" class="text" name="query" value="{{query}}" id="search_keywords" />
+            <input type="submit" value="search" style="display:none;"/>
+          </form>
+        </div>
+        <td>
+        </tr>
+      </table>
+      <table class="bordered">
+        <thead>
+          <tr>
+            <th>{{ 'Access' }}</th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Cedula', 'u.cedula')|replace({'menu': '#!/menu', 'searchafact': 'facturar'})|raw }}
+              <div>
+                {% if pagination.isSorted('u.cedula') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Name', 'u.nombre')|replace({'menu': '#!/menu', 'searchafact': 'facturar'})|raw }}
+              <div>
+                {% if pagination.isSorted('u.nombre') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Last Name', 'u.apellido')|replace({'menu': '#!/menu', 'searchafact': 'facturar'})|raw }}
+              <div>
+                {% if pagination.isSorted('u.apellido') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Card', 'u.ncarnet')|replace({'menu': '#!/menu', 'searchafact': 'facturar'})|raw }}
+              <div>
+                {% if pagination.isSorted('u.ncarnet') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>
+              {{ knp_pagination_sortable(pagination, 'Rol', 'r.nombre')|replace({'menu': '#!/menu', 'searchafact': 'facturar'})|raw }}
+              <div>
+                {% if pagination.isSorted('r.nombre') %}
+                <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
+                {% else %}
+                <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
+                {% endif %}
+              </div>
+            </th>
+            <th>Imagen</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        {% if pagination|length == 0 %}
+        <p>{{ 'There are not results' }}</p>
+        {% endif %}
+        {#
+        <div id="usuarios">
+          {{pagination}}
+          #}
+          <div id="dialog" title="Cannot proceed">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">
+            </div>
+            {% for entity in pagination %}
+            {% set hour = "now"|date("H") %}
+            {% if entity.rol.horaComerStartAMPM == "pm" and entity.rol.horaComerEndAMPM == "pm" %}
+            {% set hourStart = entity.rol.horaComerStart + 12 %}
+            {% set hourEnd = entity.rol.horaComerEnd + 12 %}
+            {% elseif entity.rol.horaComerStartAMPM == "pm" and entity.rol.horaComerEndAMPM == "am" %}
+            {% set hourStart = entity.rol.horaComerStart + 12 %}
+            {% set hourEnd = entity.rol.horaComerEnd %}
+            {% elseif entity.rol.horaComerStartAMPM == "am" and entity.rol.horaComerEndAMPM == "pm" %}
+            {% set hourStart = entity.rol.horaComerStart %}
+            {% set hourEnd = entity.rol.horaComerEnd + 12 %}
+            {% else %}
+            {% set hourStart = entity.rol.horaComerStart %}
+            {% set hourEnd = entity.rol.horaComerEnd %}
+            {% endif %}
+            {% if entity.rol.horaComerEndAMPM == "am" and entity.rol.horaComerEnd == 12 %}
+            {% set hourEnd = 24 %}
+            {% endif %}
+            {% set _lncTd = false %}
+            {% for lncTd in userLncTd %}
+            {% if lncTd.usuario.id == entity.id %}
+            {% set _lncTd = true %}
+            {% endif %}
+            {% endfor %}
+
+            <tr>
+              {% if hour >= hourStart and hour <= hourEnd and not _lncTd %}
+              <td><a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/showfacturar"><img src="{{ asset('img/check.gif') }}" alt="img" height="30" width="30" /></a></td>
+              <td>{{ entity.cedula }}</td>
+              <td>{{ entity.nombre }}</td>
+              <td>{{ entity.apellido }}</td>
+              <td>{{ entity.ncarnet }}</td>
+              <td>{{ entity.rol }}</td>
+              {% if entity.image == '' %}
+              <td><img src="{{ asset('img/guest_user.png') }}" width="75" height="75" alt="" /></td>
+              {% else %}
+              <td><img src="{{ asset('img/uploaded/') }}{{entity.image|replace({'/tmp/':''})}}" width="75" height="75" alt="" /></td>
+              {% endif %}
+              {% else %}
+              <td><a class="opener" href="" value="{{ app.request.uriForPath('/menu/') }}{{ entity.id }}/showfacturar"><img src="{{ asset('img/uncheck.jpg') }}" alt="img" height="30" width="30" /></a></td>
+              <td>{{ entity.cedula }}</td>
+              <td>{{ entity.nombre }}</td>
+              <td>{{ entity.apellido }}</td>
+              <td>{{ entity.ncarnet }}</td>
+              <td>{{ entity.rol }}</td>
+              {% if entity.image == '' %}
+              <td><img src="{{ asset('img/guest_user.png') }}" width="75" height="75" alt="" /></td>
+              {% else %}
+              <td><img src="{{ asset('img/uploaded/') }}{{entity.image|replace({'/tmp/':''})}}" width="75" height="75" alt="" /></td>
+              {% endif %}
+              {% endif %}
+            </tr>
+            {% endfor %}
+            {#
+            <td>
+              <ul>
+                <li>
+                <a href="{{ path('menu_show', { 'id': entity.id }) }}">show</a>
+
+                <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/show">show2</a>
+                </li>
+                {% if is_granted("ROLE_USER") %}
+                <li>
+                <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edit">edit2</a>
+                </li>
+                {% endif %}
+              </ul>
+            </td>
+            #}
+            </tbody>
+          </table>
+          {#
+          <ul>
+
+            <li>
+
+            <a href="{{ path('menu_new') }}">
+              Create a new entry
+            </a>
+            -->
+            <br />
+
+            <div class="navigation">
+              {{ pagination.render()|raw }}
+            </div>
+
+
+            <br />
+            {% if is_granted("ROLE_USER") %}
+            <a href="{{ app.request.uriForPath('/#!/menu/new') }}">
+              Create a new entry
+            </a>
+            {% endif %}
+
+            </li>
+
+          </ul>
+          #}
+          {% if pagination|length != 0 %}
+          <div class="navigation">
+            {{knp_pagination_render(pagination)|replace({'menu': '#!/menu', 'searchafact': 'facturar'})|raw}}
+          </div>
+          {% endif %}
+
+          <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
+
+        </div> <!-- /col-text -->

@@ -1,0 +1,84 @@
+
+<div id="my-col-text">
+
+  <table>
+    <tr class="tsearch">
+      <td>
+        <h1>{{ 'User' }}</h1>
+      </td>
+      <td>
+        <div id="filter">
+          <form class="generic" action="{{ app.request.uriForPath('/usuario/search') }}" method="get">
+            <img src="{{ asset('img/search.png') }}" class="searchbox_submit" value="" />
+            <input autocomplete="off" type="text" class="text" name="query" value="{{query}}" id="search_keywords" />
+            <input type="submit" value="search" style="display:none;"/>
+          </form>
+        </div>
+        <td>
+        </tr>
+      </table>
+      {# Datos del usuario #}
+      <table class="bordered">
+        <thead>
+          <tr>
+            <th>{{ 'Name' }}</th>
+            <th>{{ 'Last Name' }}</th>
+            <th>{{ 'Id' }}</th>
+            <th>{{ 'Card Number' }}</th>
+            {#
+            <th>A_i</th>
+            #}
+            <th>{{ 'Email' }}</th>
+            <th>{{ 'Image' }}</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr  class="tsearch">
+          {% if usuariomenu|length != 0 %}
+          <td>{{ usuariomenu.0.usuario.nombre }}</td>
+          <td>{{ usuariomenu.0.usuario.apellido }}</td>
+          <td>{{ usuariomenu.0.usuario.cedula }}</td>
+          <td>{{ usuariomenu.0.usuario.ncarnet }}</td>
+          {#
+          <td>{{ entity.ai }}</td>
+          #}
+          <td>{{ usuariomenu.0.usuario.correo }}</td>
+          <td>{{ usuariomenu.0.usuario.image }}</td>
+          {% endif %}
+        </tr>
+        </tbody>
+      </table>
+
+      {# Datos de menus #}
+      <table class="bordered">
+        <thead>
+          <tr>
+            <th>{{ 'Date' }}</th>
+            <th>Menu</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% if usuariomenu|length == 0 %}
+        <td>{{ 'There is not information available' }}</td>
+        {% else %}
+        {% for entity in usuariomenu %}
+        <tr class="tsearch">
+          {% set hora = entity.dia|date("H") %}
+          {% set ampm = "am" %}
+          {% if hora > 12 %}
+          {% set hora = hora - 12 %}
+          {% set ampm = "pm" %}
+          {% endif %}
+          <td>{{ entity.dia|date("d/m/Y") }} {{ hora }}{{ entity.dia|date(":i:s") }} {{ ampm }}</td>
+          {% if entity.menu == "" %}
+          <td>{{ 'There is not information available' }}</td>
+          {% else %}
+          <td>{{entity.menu}}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        {% endif %}
+        </tbody>
+      </table>
+    </div> <!-- /col-text -->
+    <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

@@ -1,0 +1,98 @@
+menu:
+    pattern:  /
+    defaults: { _controller: "INCESComedorBundle:Menu:search" }
+    requirements: 
+        _method: get|post 
+    #defaults: { _controller: "INCESComedorBundle:Menu:index" }
+
+menu_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "INCESComedorBundle:Menu:show" }
+
+menu_new:
+    pattern:  /new
+    defaults: { _controller: "INCESComedorBundle:Menu:new" }
+
+menu_create:
+    pattern:  /create
+    defaults: { _controller: "INCESComedorBundle:Menu:create" }
+    requirements: 
+        _method: post
+
+menu_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "INCESComedorBundle:Menu:edit" }
+
+menu_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "INCESComedorBundle:Menu:update" }
+    requirements: 
+        _method: post 
+
+menu_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "INCESComedorBundle:Menu:delete" }
+    requirements: 
+        _method: post
+
+menu_search:
+    pattern:  /search
+    defaults: { _controller: "INCESComedorBundle:Menu:search" }
+    requirements: 
+        _method: get|post 
+
+menu_facturar:
+    pattern:  /facturar
+    #defaults: { _controller: "INCESComedorBundle:Usuario:indexFacturar" }
+    defaults: { _controller: "INCESComedorBundle:Menu:searchAjaxFacturar" }
+    requirements: 
+        _method: get|post 
+
+menu_search_ajax_facturar:
+    pattern:  /searchafact
+    #defaults: { _controller: "INCESComedorBundle:Usuario:indexFacturar" }
+    defaults: { _controller: "INCESComedorBundle:Menu:searchAjaxFacturar" }
+    requirements: 
+        _method: get|post
+
+menu_facturar_procesar:
+    pattern:  /facturar/procesar
+    defaults: { _controller: "INCESComedorBundle:Menu:facturarProcesar" }
+
+menu_show_facturar:
+    pattern:  /{id}/showfacturar
+    defaults: { _controller: "INCESComedorBundle:Menu:showFacturar" }
+
+menu_today:
+    pattern:  /today
+    defaults: { _controller: "INCESComedorBundle:Menu:today" }
+
+menu_today_show:
+    pattern:  /{id}/showtoday
+    defaults: { _controller: "INCESComedorBundle:Menu:showToday" }
+
+menu_today_new:
+    pattern:  /newtoday
+    defaults: { _controller: "INCESComedorBundle:Menu:newToday" }
+
+menu_today_create:
+    pattern:  /createtoday
+    defaults: { _controller: "INCESComedorBundle:Menu:createToday" }
+    requirements: 
+        _method: post 
+
+menu_today_edit:
+    pattern:  /{id}/edittoday
+    defaults: { _controller: "INCESComedorBundle:Menu:editToday" }
+
+menu_today_update:
+    pattern:  /{id}/updatetoday
+    defaults: { _controller: "INCESComedorBundle:Menu:updateToday" }
+    requirements: 
+        _method: post 
+
+menu_today_delete:
+    pattern:  /{id}/deletetoday
+    defaults: { _controller: "INCESComedorBundle:Menu:deleteToday" }
+    requirements: 
+        _method: post 

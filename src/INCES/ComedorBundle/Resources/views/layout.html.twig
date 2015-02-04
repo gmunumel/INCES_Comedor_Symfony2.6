@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<div>
+  {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+  {{ 'layout.logged_in_as'({'%username%': app.user.username}, 'FOSUserBundle') }} |
+  <a href="{{ path('fos_user_security_logout') }}">
+    {{ 'layout.logout'({}, 'FOSUserBundle') }}
+  </a>
+  {% else %}
+  <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'({}, 'FOSUserBundle') }}</a>
+  {% endif %}
+</div>
+
+{% for key, message in app.session.getFlashes() %}
+<div class="{{ key }}">
+  {{ message({}, 'FOSUserBundle') }}
+</div>
+{% endfor %}
+
+<div>
+  {% block fos_user_content %}
+  {% endblock fos_user_content %}
+</div>
+</body>
+</html>
+

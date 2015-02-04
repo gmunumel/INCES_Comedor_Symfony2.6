@@ -1,0 +1,36 @@
+INCESComedorBundle_homepage:
+  pattern:  /
+  defaults: { _controller: INCESComedorBundle:Default:index }
+
+INCESComedorBundle_error:
+  pattern:  /error
+  defaults: { _controller: INCESComedorBundle:Default:error }
+
+
+INCESComedorBundle_menu:
+  resource: "@INCESComedorBundle/Resources/config/routing/menu.yml"
+  prefix:   /menu
+
+INCESComedorBundle_rol:
+  resource: "@INCESComedorBundle/Resources/config/routing/rol.yml"
+  prefix:   /rol
+
+INCESComedorBundle_usuario:
+  resource: "@INCESComedorBundle/Resources/config/routing/usuario.yml"
+  prefix:   /usuario
+
+INCESComedorBundle_ticket:
+  resource: "@INCESComedorBundle/Resources/config/routing/ticket.yml"
+  prefix:   /ticket
+
+INCESComedorBundle_usuariomenu:
+  resource: "@INCESComedorBundle/Resources/config/routing/usuariomenu.yml"
+  prefix:   /usuariomenu
+
+INCESComedorBundle_contabilidad:
+  resource: "@INCESComedorBundle/Resources/config/routing/contabilidad.yml"
+  prefix:   /contabilidad
+
+INCESComedorBundle_admin_user:
+  resource: "@INCESComedorBundle/Resources/config/routing/useradmin.yml"
+  prefix:   /admin

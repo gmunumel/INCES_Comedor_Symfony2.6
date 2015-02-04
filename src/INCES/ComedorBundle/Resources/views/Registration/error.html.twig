@@ -1,0 +1,13 @@
+
+<div id="col-text">
+
+  <h1>{{ 'List Admin Users' }}</h1>
+  {# form_theme form theme #}
+
+  <div id="results"></div>
+  {% if error %}
+  <p id="login-msg" class="message red" style="display:;">{{ error({}, 'FOSUserBundle') }}</p>
+  {% endif %}
+</div> <!-- /col-text -->
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
+

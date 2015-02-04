@@ -1,0 +1,79 @@
+usuario:
+    pattern:  /
+    defaults: { _controller: "INCESComedorBundle:Usuario:searchAjax" }
+    requirements: 
+        _method: get|post 
+
+usuario_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "INCESComedorBundle:Usuario:show" }
+
+usuario_new:
+    pattern:  /new
+    defaults: { _controller: "INCESComedorBundle:Usuario:new" }
+
+usuario_create:
+    pattern:  /create
+    defaults: { _controller: "INCESComedorBundle:Usuario:create" }
+    requirements: 
+        _method: post 
+
+usuario_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "INCESComedorBundle:Usuario:edit" }
+
+usuario_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "INCESComedorBundle:Usuario:update" }
+    requirements: 
+        _method: post 
+
+usuario_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "INCESComedorBundle:Usuario:delete" }
+    requirements: 
+        _method: post 
+
+usuario_search:
+    pattern:  /search
+    defaults: { _controller: "INCESComedorBundle:Usuario:search" }
+    requirements: 
+        _method: get|post 
+
+usuario_search_ajax:
+    pattern:  /searcha
+    defaults: { _controller: "INCESComedorBundle:Usuario:searchAjax" }
+    requirements: 
+        _method: get|post 
+
+usuario_search_ajax_lunch:
+    pattern:  /searchalnc
+    defaults: { _controller: "INCESComedorBundle:Usuario:searchAjaxLunch" }
+    requirements: 
+        _method: get|post 
+
+usuario_carga_masiva:
+    pattern:  /cargamasiva
+    defaults: { _controller: "INCESComedorBundle:Usuario:cargaMasiva" }
+    requirements: 
+        _method: get|post
+
+usuario_edit_carga_masiva:
+    pattern:  /editmasivo
+    defaults: { _controller: "INCESComedorBundle:Usuario:editMasivo" }
+    requirements: 
+        _method: get|post 
+
+usuario_lunch_today:
+    pattern:  /lunchtoday
+    defaults: { _controller: "INCESComedorBundle:Usuario:lunchToday" }
+
+usuario_new_externo:
+    pattern:  /newexterno
+    defaults: { _controller: "INCESComedorBundle:Usuario:newExterno" }
+
+usuario_create_externo:
+    pattern:  /createexterno
+    defaults: { _controller: "INCESComedorBundle:Usuario:createExterno" }
+    requirements: 
+        _method: post 

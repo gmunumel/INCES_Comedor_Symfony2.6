@@ -1,0 +1,70 @@
+<div id="col-browser"></div>
+<div id="col-text">
+
+  <h1>{{ 'Edit Admin User' }}</h1>
+  {#
+  {% form_theme form theme %}
+  #}
+
+  <div id="results"></div>
+  <form class="user_admin_profile_form generic" action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+    {#
+    {{ form_widget(form) }}
+    <div>
+      <input type="submit" value="{{ 'profile.edit.submit'({}, 'FOSUserBundle') }}" />
+    </div>
+    {{ form_widget(form) }}
+    <div>
+      <input type="submit" value="{{ 'registration.submit'({}, 'FOSUserBundle') }}" />
+    </div>
+    #}
+    <input class="route" type="hidden" value="{{route}}"/>
+    {{ form_row(form._token) }}
+
+    <div id="login-admin-username-block" class="field">
+      <label for="username">{{ 'Username' }}</label>
+      {{ form_widget(form.username,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="login-admin-email-block" class="field">
+      <label for="email">{{ 'Email' }}</label>
+      {{ form_widget(form.email,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    {#
+    <div id="login-admin-nombre-block" class="field">
+      <label for="nombre">{{ 'Name' }}</label>
+      {{ form_widget(form.nombre,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="login-admin-apellido-block" class="field">
+      <label for="apellido">{{ 'Last Name' }}</label>
+      {{ form_widget(form.user.apellido,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    #}
+    <div id="login-admin-current-block" class="field">
+      <label for="current">{{ 'Current Password' }}</label>
+      {{ form_widget(form.current_password,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div class="action">
+      <input id="login-submit" class="login_form_btn submit-button" type="submit" value="{{ 'Update' }}" />
+    </div>
+  </form>
+</div> <!-- /col-text -->
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<center>
+  <a href="{{ app.request.uriForPath('/#!/admin/list') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" />
+  </a>
+</center>
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

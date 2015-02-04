@@ -1,0 +1,95 @@
+<div id="col-browser">{#<a href="#"><img src="{{ asset('img/browser.gif') }}" width="255" height="177" alt="" /></a>#}
+</div>
+
+<div id="col-text">
+
+  <h1>{{ 'Edit User' }}</h1>
+
+  <form class="usuario_form generic" action="{{ app.request.uriForPath('/usuario/') }}{{ entity.id }}/update" method="post" {{ form_enctype(edit_form) }}>
+    {#
+    {{ form_widget(edit_form) }}
+    <p>
+    <button type="submit">{{ 'Update' }}</button>
+    </p>
+    #}
+    {{ form_row(edit_form._token) }}
+
+    <div id="usuario-nombre-block" class="field">
+      <label for="nombre">{{ 'Name' }}</label>
+      {{ form_widget(edit_form.nombre,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="usuario-apellido-block" class="field">
+      <label for="apellido">{{ 'Last Name' }}</label>
+      {{ form_widget(edit_form.apellido,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="usuario-cedula-block" class="field">
+      <label for="cedula">{{ 'Id' }}</label>
+      {{ form_widget(edit_form.cedula,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="usuario-ncarnet-block" class="field">
+      <label for="ncarnet">{{ 'Card Number' }}</label>
+      {{ form_widget(edit_form.ncarnet,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="usuario-correo-block" class="field">
+      <label for="correo">{{ 'Email' }}</label>
+      {{ form_widget(edit_form.correo,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="usuario-roles-block" class="field">
+      <label for="roles">Rol</label>
+      {{ form_widget(edit_form.rol,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div id="usuario-image-block" class="field">
+      <label for="image">{{ 'Image' }}</label>
+      {{ form_widget(edit_form.image,  { 'attr': {'class': 'text'}}) }}
+    </div>
+    <div class="action">
+      <input id="login-submit" class="submit-button" type="submit" value="{{ 'Update' }}" />
+    </div>
+  </form>
+
+  <ul class="record_actions">
+
+
+    {#
+    <form class="generic" action="{{ app.request.uriForPath('/usuario/') }}{{ entity.id }}/delete" method="post">
+      {{ form_widget(delete_form) }}
+      <div class="action">
+        <input id="login-submit" class="delete_form_btn submit-button" type="submit" value="Borrar" />
+      </div>
+    </form>
+  </ul>
+  #}
+</div> <!-- /col-text -->
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<center>
+  <a href="{{ app.request.uriForPath('/#!/usuario/') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" />
+  </a>
+</center>
+
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

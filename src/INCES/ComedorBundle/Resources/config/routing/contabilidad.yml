@@ -1,0 +1,36 @@
+contabilidad:
+    pattern:  /
+    defaults: { _controller: "INCESComedorBundle:Contabilidad:index" }
+    requirements:
+    #requirements: _method: get|post }
+    #defaults: { _controller: "INCESComedorBundle:Menu:index" }
+
+contabilidad_reporte_ingresos:
+    pattern:  /reporteingresos
+    defaults: { _controller: "INCESComedorBundle:Contabilidad:reporteIngresos" }
+    requirements: 
+        _method: get|post 
+
+contabilidad_reporte_ingresos_today:
+    pattern:  /reporteingresostoday
+    defaults: { _controller: "INCESComedorBundle:Contabilidad:reporteIngresosToday" }
+    requirements: 
+        _method: get|post 
+
+contabilidad_reporte_usuarios:
+    pattern:  /reporteusuarios
+    defaults: { _controller: "INCESComedorBundle:Contabilidad:reporteUsuarios" }
+    requirements: 
+        _method: get|post 
+
+contabilidad_print_reporte_usuarios:
+    pattern:  /preporteusuarios/{ced}/{from}/{to}
+    defaults: { _controller: "INCESComedorBundle:Contabilidad:printReporteUsuarios", ced: "", from: "", to: ""}
+
+contabilidad_print_reporte_ingresos:
+    pattern:  /preporteingresos/{from}/{to}/{rol}
+    defaults: { _controller: "INCESComedorBundle:Contabilidad:printReportIncome", rol: "", from: "", to: ""}
+
+contabilidad_print_reporte_ingresos_today:
+    pattern:  /preporteingresostoday
+    defaults: { _controller: "INCESComedorBundle:Contabilidad:printReportIncomeToday", rol: "", from: "", to: ""}

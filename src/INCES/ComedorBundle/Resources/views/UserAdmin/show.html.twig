@@ -1,0 +1,60 @@
+
+<div id="my-col-text">
+
+  <h1>{{ 'Admin Users' }}</h1>
+
+  <table class="bordered">
+    <tbody>
+    <tr class="tsearch">
+      <th>{{ 'Username' }}</th>
+      <td>{{ entity.username }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Name' }}</th>
+      <td>{{ entity.nombre }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Last Name' }}</th>
+      <td>{{ entity.apellido }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Id' }}</th>
+      <td>{{ entity.cedula }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Card Number' }}</th>
+      <td>{{ entity.ncarnet }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Email' }}</th>
+      <td>{{ entity.email }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>Roles</th>
+      {% for val in entity.roles %}
+      {% if loop.first %}
+      <td>{{ val }}</td>
+      {% endif %}
+      {% endfor %}
+    </tr>
+    </tbody>
+  </table>
+
+  <ul class="record_actions">
+
+
+
+
+    <form class="generic" action="{{ app.request.uriForPath('/admin/') }}{{ entity.id }}/delete" method="post">
+      {{ form_widget(delete_form) }}
+      {#}
+      <button class="delete_form_btn" type="submit">Delete</button>
+      #}
+      <input id="login-submit" class="submit-button delete_form-btn" type="submit" value="{{ 'Delete' }}" />
+    </form>
+    </br>
+    <a href="{{ app.request.uriForPath('/#!/admin/list') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" />
+    </a>
+  </ul>
+</div> <!-- /col-text -->
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

@@ -1,0 +1,99 @@
+<div id="col-browser"><a href="#"><img src="{{ asset('img/uploaded/') }}{{entity.image|replace({'/tmp/':''})}}" width="255" height="350" alt="" /></a></div>
+<div id="col-text">
+
+  <h1>{{ 'Show User Bill' }}</h1>
+
+  <table class="bordered">
+    <tbody>
+    {#
+    <tr>
+      <th>Id</th>
+      <td>{{ entity.id }}</td>
+    </tr>
+    #}
+    <tr class="tsearch">
+      <th>{{ 'Name' }}</th>
+      <td>{{ entity.nombre }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Last Name' }}</th>
+      <td>{{ entity.apellido }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Id' }}</th>
+      <td>{{ entity.cedula }}</td>
+    </tr>
+    <tr class="tsearch">
+      <th>{{ 'Card Number' }}</th>
+      <td>{{ entity.ncarnet }}</td>
+    </tr>
+    {#
+    <tr>
+      <th>A_i</th>
+      <td>{{ entity.ai }}</td>
+    </tr>
+    #}
+    <tr class="tsearch">
+      <th>{{ 'Email' }}</th>
+      <td>{{ entity.correo }}</td>
+    </tr>
+    {#<tr class="tsearch">
+      <th>Imagen</th>
+      <td>{{ entity.image }}</td>
+    </tr>#}
+    </tbody>
+  </table>
+
+  <br />
+  <h3>{{ 'Menus del Día' }}</h3>
+  <form class="generic" action="{{ app.request.uriForPath('/menu/facturar/procesar') }}" method="post">
+    <input type="hidden" id="usuario" name="usuario" value="{{entity.id}}" />
+    <table class="bordered">
+      <thead>
+        <tr>
+          <th></th>
+          <th>{{ 'First Plate' }}</th>
+          <th>{{ 'Soup' }}</th>
+          <th>{{ 'Second Plate' }}</th>
+          <th>{{ 'Juice' }}</th>
+          <th>{{ 'Salad' }}</th>
+          <th>{{ 'Dessert' }}</th>
+          <th>{{ 'Day' }}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for entity in menus %}
+      <tr class="tsearch">
+        <td><input type="radio" name="menus" value="{{entity.id}}" /></td>
+        <td>{{ entity.seco }}</td>
+        <td>{{ entity.sopa }}</td>
+        <td>{{ entity.salado }}</td>
+        <td>{{ entity.jugo }}</td>
+        <td>{{ entity.ensalada }}</td>
+        <td>{{ entity.postre }}</td>
+        <td>{% if entity.dia %}{{ entity.dia|date('d/m/Y') }}{% endif%}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+    <br />
+    <br />
+    <div class="action right">
+      <input id="login-submit" class="submit-button" type="submit" value="{{ 'Facturar' }}" />
+    </div>
+    {#
+    <button type="submit">Facturar</button>
+    #}
+  </form>
+  {#
+  <a href="{{ app.request.uriForPath('/#!/menu/facturar/procesar') }}">
+    Facturar
+  </a>
+  #}
+  <a href="{{ app.request.uriForPath('/#!/menu/facturar') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" />
+  </a>
+</ul>
+</div> <!-- /col-text -->
+
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

@@ -1,0 +1,31 @@
+<div id="my-col-text">
+
+  <h1>{{ 'Income Report' }}</h1>
+
+  <form class="reporte_ingresos_form generic" action="{{ app.request.uriForPath('/contabilidad/reporteingresos') }}" method="post">
+    {#
+    {{ form_widget(filter_form) }}
+    #}
+    <div class="right">
+      <a class="reporte_ingresos_link" href="{{ app.request.uriForPath('/contabilidad/preporteingresos') }}" alt="imprimir reporte"><img src="{{ asset('img/impresora1.ico') }}" alt="img" height="100" width="60" /></a>
+    </div>
+
+    <div id="reporte-rol-block" class="field">
+      <label for="Rol">Rol</label>
+      {{ form_widget(filter_form.rol, { 'attr': {'autocomplete': 'off', 'class': 'text'}}) }}
+    </div>
+    <div id="reporte-from-block" class="field">
+      <label for="from">{{ 'From' }}</label>
+      {{ form_widget(filter_form.from, { 'attr': {'autocomplete': 'off', 'class': 'text'}}) }}
+    </div>
+    <div id="reporte-from-block" class="field">
+      <label for="from">{{ 'To' }}</label>
+      {{ form_widget(filter_form.to, { 'attr': {'autocomplete': 'off', 'class': 'text'}}) }}
+    </div>
+    <div class="action">
+      <input id="login-submit" class="reporte_form_btn submit-button" type="submit" value="{{ 'Filter' }}" />
+    </div>
+    <div id="results"></div>
+  </form>
+</div> <!-- /col-text -->
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

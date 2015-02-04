@@ -1,0 +1,93 @@
+<div id="col-browser">{#<a href="#"><img src="{{ asset('img/browser.gif') }}" width="255" height="177" alt="" /></a>#}
+</div>
+
+<div id="col-text">
+  {#
+  <div id="my2-col-text">
+    #}
+
+    <h1>{{ 'Update Menu' }}</h1>
+
+    <form class="menu_form generic" action="{{ app.request.uriForPath('/menu/') }}{{ entity.id }}/update" method="post" {{ form_enctype(edit_form) }}>
+      {#
+      {{ form_widget(edit_form) }}
+      #}
+      {{ form_row(edit_form._token) }}
+
+      <div id="menu-seco-block" class="field">
+        <label for="seco">{{ 'First Plate' }}</label>
+        {{ form_widget(edit_form.seco,  { 'attr': {'class': 'text'}}) }}
+      </div>
+      <div id="menu-sopa-block" class="field">
+        <label for="sopa">{{ 'Soup' }}</label>
+        {{ form_widget(edit_form.sopa,  { 'attr': {'class': 'text'}}) }}
+      </div>
+      <div id="menu-salado-block" class="field">
+        <label for="salado">{{ 'Second Plate' }}</label>
+        {{ form_widget(edit_form.salado,  { 'attr': {'class': 'text'}}) }}
+      </div>
+      <div id="menu-jugo-block" class="field">
+        <label for="jugo">{{ 'Juice' }}</label>
+        {{ form_widget(edit_form.jugo,  { 'attr': {'class': 'text'}}) }}
+      </div>
+      <div id="menu-ensalada-block" class="field">
+        <label for="ensalada">{{ 'Salad' }}</label>
+        {{ form_widget(edit_form.ensalada,  { 'attr': {'class': 'text'}}) }}
+      </div>
+      <div id="menu-postre-block" class="field">
+        <label for="postre">{{ 'Dessert' }}</label>
+        {{ form_widget(edit_form.postre,  { 'attr': {'class': 'text'}}) }}
+      </div>
+      <div id="menu-dia-block" class="field">
+        <label for="">{{ 'Day' }}</label>
+        {{ form_widget(edit_form.dia,  { 'attr': {'class': 'text'}}) }}
+      </div>
+      <div class="action">
+        <input id="login-submit" class="submit-button" type="submit" value="Update" />
+      </div>
+    </form>
+
+    {#
+    <form action="{{ app.request.uriForPath('/menu/') }}{{ entity.id }}/delete" method="post">
+      {{ form_widget(delete_form) }}
+      <button class="delete_form_btn" type="submit">{{ 'Delete' }}</button>
+    </form>
+    #}
+  </div> <!-- /col-text -->
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+
+  <center>
+    <a href="{{ app.request.uriForPath('/#!/menu') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" />
+    </a>
+  </center>
+  <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
+

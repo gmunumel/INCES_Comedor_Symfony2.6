@@ -1,0 +1,65 @@
+security:
+    
+    role_hierarchy:
+        ROLE_USUARIO:     ROLE_USUARIO
+        ROLE_OPERADOR:    ROLE_OPERADOR
+        ROLE_GERENTE:     ROLE_GERENTE
+        ROLE_ADMIN:       ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [ROLE_USUARIO, ROLE_OPERADOR, ROLE_GERENTE, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_manager
+        #in_memory:
+        #    users:
+        #        user:  { password: userpass, roles: [ 'role_user' ] }
+        #        admin: { password: adminpass, roles: [ 'role_admin' ] }
+        
+    encoders:
+        "FOS\UserBundle\Model\UserInterface": sha512
+
+    firewalls:
+        main:
+            pattern:    ^/
+            form_login:
+                check_path: /admin/login_check
+                login_path: /admin/login
+                provider: fos_userbundle
+            logout:
+                path:   /admin/logout
+                target: /
+            anonymous: true
+            #http_basic:
+            #    realm: "Secured Demo Area"
+
+    access_control:
+        - { path: ^/secured/admin, roles: ROLE_ADMIN }
+        - { path: ^/menu/newtoday, roles: [ROLE_OPERADOR, ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/menu/new, roles: [ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/menu/facturar, roles: [ROLE_OPERADOR, ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/menu, roles: [ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/usuario/searchtolnc, roles: [ROLE_OPERADOR, ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/contabilidad/reporteingresostoday, roles: [ROLE_OPERADOR, ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/usuario/newexterno, roles: [ROLE_OPERADOR, ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/usuario/new, roles: [ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/usuario/cargamasiva, roles: [ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/usuario/editmasivo, roles: [ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/usuario/.*/edit, roles: [ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/usuario, roles: [ROLE_GERENTE, ROLE_ADMIN] }
+        - { path: ^/admin/list, roles: [ROLE_ADMIN] }
+        - { path: ^/admin/register, roles: [ROLE_ADMIN] }
+        - { path: ^/admin/profile/edit, roles: [ROLE_ADMIN] }
+        - { path: ^/contabilidad/reporteingresos, roles: [ROLE_ADMIN] }
+        - { path: ^/contabilidad/reporteusuarios, roles: [ROLE_ADMIN] }
+        - { path: ^/contabilidad, roles: [ROLE_ADMIN] }
+        - { path: ^/rol/new, roles: [ROLE_ADMIN] }
+        - { path: ^/rol/.*/edit, roles: [ROLE_ADMIN] }
+        - { path: ^/rol, roles: [ROLE_ADMIN] }
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/menu/facturar, roles: [ROLE_OPERADOR, ROLE_GERENTE, ROLE_ADMIN] }
+        #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 
+
+jms_security_extra:
+    
+    secure_all_services: false
+    #secure_controllers:  true

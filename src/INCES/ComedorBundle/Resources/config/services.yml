@@ -1,0 +1,21 @@
+#parameters:
+#    inces_comedor.example.class: INCES\ComedorBundle\Example
+
+services:
+    inces_comedor.registration.form.type:
+      class: INCES\ComedorBundle\Form\Type\RegistrationFormType
+      arguments: [%fos_user.model.user.class%]
+      tags:
+        - { name: form.type, alias: inces_comedor_registration }
+
+    inces_comedor.form.handler.registration:
+      class: INCES\ComedorBundle\Form\Handler\RegistrationFormHandler
+      arguments: ["@fos_user.registration.form", "@request", "@fos_user.user_manager", "@fos_user.mailer"]
+      scope: request
+      public: false
+
+    inces_comedor.profile.form.type:
+      class: INCES\ComedorBundle\Form\Type\ProfileFormType
+      arguments: [%fos_user.model.user.class%]
+      tags:
+        - { name: form.type, alias: inces_comedor_profile }

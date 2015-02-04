@@ -1,0 +1,414 @@
+<?xml version="1.0"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="robots" content="all,follow" />
+
+    <meta name="author" lang="es" content="All: Gabriel Muñumel [www.url.com]; e-mail: gabrielmunumel@gmail.com" />
+
+    <meta name="description" content="Servicio de Comedor - INCES" />
+    <meta name="keywords" content="Servicio, Comedor, CSS, HTML" />
+
+{% block stylesheets %}
+    <link href="{{ asset('css/reset.css') }}" media="screen,projection" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/main.css') }}" media="screen,projection" type="text/css" rel="stylesheet" />
+    <!--[if lte IE 6]><link href="{{ asset('css/main-msie.css') }}" type="text/css" rel="stylesheet" /><![endif]-->
+    <link href="{{ asset('css/style.css') }}" media="screen,projection" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/print.css') }}" media="print" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/menu.css') }}" media="screen,projection" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/jquery-ui-1.8.21.custom.css') }}" media="screen,projection" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('css/mycss.css') }}" media="screen,projection" type="text/css" rel="stylesheet" />
+{% endblock %}
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"  />
+
+    <title>{% block title %}INCES - {{ 'DINNING' }}{% endblock %}</title>
+</head>
+
+<body>
+
+<div id="main">
+
+    <!-- Header -->
+    <div id="header">
+
+        <h1 id="logo"><img src="{{ asset('img/Inces3.gif') }}" width="150" height="100" alt="" /></h1>
+        <hr class="noscreen" />
+
+        <!-- LightBox -->
+        {#
+        <a id="show-panel" href="#">Show Panel</a>
+        #}
+        <div id="lightbox-loader"></div><!-- /lightbox-panel -->
+
+        <!-- Div lightbox
+        <div id="lightbox"> </div>
+        < /lightbox -->
+
+        <!-- Navigation -->
+        <div id="nav">
+        {% block session %}{% endblock %}
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <a href="{{ app.request.uriForPath('/#!/admin/profile/edit') }}">{{app.user.username}}</a>
+            |
+            <a href="{{ path('fos_user_security_logout') }}">
+              {{ 'Logout' }}
+            </a>
+        {% else %}
+        <a href="{{ app.request.uriForPath('/#!/admin/login') }}">{{ 'Login' }}</a>
+        {% endif %}
+        <!--
+            <a href="#">About us</a> <span>|</span>
+            <a href="#">Support</a> <span>|</span>
+            <a href="#">Contact</a>
+        -->
+        </div>
+        <!-- /nav -->
+
+    </div> <!-- /header -->
+    {#
+        <!-- Search -->
+        <div id="search" class="box">
+            <form action="#" method="get">
+                <div class="box">
+                    <div id="search-input"><span class="noscreen">Search:</span><input type="text" size="30" name="" value="Search" /></div>
+                    <div id="search-submit"><input type="image" src="{{ asset('design/search-submit.gif') }}" value="OK" /></div>
+                </div>
+            </form>
+        </div> <!-- /search -->
+    #}
+
+    <!-- Menu -->
+    <br />
+
+    <div id="fix-menu">
+    {% if is_granted("ROLE_ADMIN") %}
+        <div id="menu">
+            <ul class="menu">
+                <li><a href="{{ app.request.uriForPath('/#!/menu/today') }}"><span>Menu</span></a>
+                    <div>
+                        <ul>
+                            <li><a href="{{ app.request.uriForPath('/#!/menu/today') }}" class="parent"><span>{{ 'Today' }}</span></a>
+                            <div>
+                                <ul>
+                                    <li><a href="{{ app.request.uriForPath('/#!/menu/today') }}"><span>{{ 'List' }}</span></a></li>
+                                    <li><a href="{{ app.request.uriForPath('/#!/menu/newtoday') }}"><span>{{ 'Add' }}</span></a></li>
+                                </ul>
+                            </div>
+                            </li>
+                            <li><a href="{{ app.request.uriForPath('/#!/menu') }}" class="parent"><span>{{ 'In General' }}</span></a>
+                                <div>
+                                    <ul>
+                                        <li><a href="{{ app.request.uriForPath('/#!/menu') }}"><span>{{ 'List' }}</span></a></li>
+                                        <li><a href="{{ app.request.uriForPath('/#!/menu/new') }}"><span>{{ 'Add' }}</span></a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="{{ app.request.uriForPath('/#!/menu/facturar') }}"><span>{{ 'Bill' }}</span></a></li>
+                <li><a href="{{ app.request.uriForPath('/#!/usuario') }}"><span>{{ 'Users' }}</span></a>
+                    <div>
+                        <ul>
+                            <li><a href="{{ app.request.uriForPath('/#!/usuario/') }}" ><span>{{ 'List' }}</span></a></li>
+                            <li><a href="{{ app.request.uriForPath('/#!/usuario/new') }}" ><span>{{ 'Add' }}</span></a></li>
+                            <li><a href="#" class="parent"><span>{{ 'Bulk Operation' }}</span></a>
+                                <div>
+                                    <ul>
+                                        <li><a href="{{ app.request.uriForPath('/#!/usuario/cargamasiva') }}"><span>{{ 'Load' }}</span></a></li>
+                                        <li><a href="{{ app.request.uriForPath('/#!/usuario/editmasivo') }}"><span>{{ 'Update' }}</span></a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><a href="{{ app.request.uriForPath('/#!/usuario/search') }}"><span>{{ 'See Users by Id' }}</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="{{ app.request.uriForPath('/#!/admin/list') }}"><span>{{ 'Administrative Personal' }}</span></a>
+                    <div>
+                        <ul>
+                            <li><a href="{{ app.request.uriForPath('/#!/admin/list') }}"><span>{{ 'List' }}</span></a></li>
+                            <li><a href="{{ app.request.uriForPath('/#!/admin/register') }}"><span>{{ 'Add' }}</span></a></li>
+                            <li><a href="{{ app.request.uriForPath('/#!/admin/profile/edit') }}"><span>{{ 'Edit my infomation' }}</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="{{ app.request.uriForPath('/#!/contabilidad') }}"><span>{{ 'Accounting' }}</span></a>
+                    <div>
+                        <ul>
+                            <li><a href="{{ app.request.uriForPath('/#!/contabilidad/reporteingresos') }}"><span>{{ 'Income' }}</span></a></li>
+                            <li><a href="{{ app.request.uriForPath('/#!/contabilidad/reporteusuarios') }}"><span>{{ 'Users' }}</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="{{ app.request.uriForPath('/#!/rol') }}"><span>Rol</span></a>
+                    <div>
+                        <ul>
+                            <li><a href="{{ app.request.uriForPath('/#!/rol') }}"><span>{{ 'List' }}</span></a></li>
+                            <li><a href="{{ app.request.uriForPath('/#!/rol/new') }}"><span>{{ 'Add' }}</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    {% elseif is_granted("ROLE_GERENTE") %}
+        <div id="menu">
+            <ul class="menu">
+                <li><a href="{{ app.request.uriForPath('/#!/menu/today') }}"><span>Menu</span></a>
+                    <div>
+                        <ul>
+                            <li><a href="{{ app.request.uriForPath('/#!/menu/today') }}" class="parent"><span>{{ 'Today' }}</span></a>
+                            <div>
+                                <ul>
+                                    <li><a href="{{ app.request.uriForPath('/#!/menu/today') }}"><span>{{ 'List' }}</span></a></li>
+                                    <li><a href="{{ app.request.uriForPath('/#!/menu/newtoday') }}"><span>{{ 'Add' }}</span></a></li>
+                                </ul>
+                            </div>
+                            </li>
+                            <li><a href="{{ app.request.uriForPath('/#!/menu') }}" class="parent"><span>{{ 'In General' }}</span></a>
+                                <div>
+                                    <ul>
+                                        <li><a href="{{ app.request.uriForPath('/#!/menu') }}"><span>{{ 'List' }}</span></a></li>
+                                        <li><a href="{{ app.request.uriForPath('/#!/menu/new') }}"><span>{{ 'Add' }}</span></a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="{{ app.request.uriForPath('/#!/menu/facturar') }}"><span>{{ 'Bill' }}</span></a></li>
+                <li><a href="{{ app.request.uriForPath('/#!/usuario') }}"><span>{{ 'Users' }}</span></a>
+                    <div>
+                        <ul>
+			    <li><a href="{{ app.request.uriForPath('/#!/usuario/') }}" ><span>{{ 'List' }}</span></a></li>
+                            <li><a href="{{ app.request.uriForPath('/#!/usuario/new') }}" ><span>{{ 'Add' }}</span></a></li>
+                            <li><a href="#" class="parent"><span>{{ 'Bulk Operation' }}</span></a>
+                                <div>
+                                    <ul>
+                                        <li><a href="{{ app.request.uriForPath('/#!/usuario/cargamasiva') }}"><span>{{ 'Load' }}</span></a></li>
+                                        <li><a href="{{ app.request.uriForPath('/#!/usuario/editmasivo') }}"><span>{{ 'Update' }}</span></a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><a href="{{ app.request.uriForPath('/#!/usuario/search') }}"><span>{{ 'User by Id' }}</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    {% elseif is_granted("ROLE_OPERADOR") %}
+        <div id="menu">
+            <ul class="menu">
+                <li><a href="{{ app.request.uriForPath('/#!/menu/today') }}" class="parent"><span>{{ 'Today\'s Menu' }}</span></a>
+                    <div>
+                        <ul>
+                            <li><a href="{{ app.request.uriForPath('/#!/menu/today') }}"><span>{{ 'List' }}</span></a></li>
+                            <li><a href="{{ app.request.uriForPath('/#!/menu/newtoday') }}"><span>{{ 'Add' }}</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="{{ app.request.uriForPath('/#!/usuario/search') }}"><span>{{ 'See Users by Id' }}</span></a></li>
+                <li><a href="{{ app.request.uriForPath('/#!/menu/facturar') }}"><span>{{ 'Bill' }}</span></a></li>
+            </ul>
+        </div>
+    {% else %}
+        <div id="menu">
+            <ul class="menu">
+                <li><a href="{{ app.request.uriForPath('/#!/menu/today') }}"><span>{{ 'Today\'s Menu' }}</span></a></li>
+                <li><a href="{{ app.request.uriForPath('/#!/usuario/search') }}"><span>{{ 'See Users by Id' }}</span></a></li>
+            </ul>
+        </div>
+    {% endif %}
+    </div>
+
+    <!-- End Menu -->
+
+    <!-- Promo -->
+
+    <div id="col-top"></div>
+    <div id="col" class="box">
+
+        {#
+        <div id="ribbon"></div> <!-- /ribbon (design/ribbon.gif) -->
+        #}
+
+        <!-- Screenshot in browser (replace img/browser.gif) -->
+        {% block body %}{% endblock %}
+        <div id="content"></div>
+
+    </div> <!-- /col -->
+    <div id="col-bottom"></div>
+
+    <hr class="noscreen" />
+
+    {#
+    <!-- 3 columns -->
+    <div id="cols3-top"></div>
+    <div id="cols3" class="box">
+
+        <!-- Column I. -->
+        <div class="col">
+
+            <h3><a href="#">Product I.</a></h3>
+
+            <p class="nom t-center"><a href="#"><img src="{{ asset('img/200x140.gif') }}" alt="" /></a></p>
+
+            <div class="col-text">
+
+                <p></p>
+
+                <ul class="ul-01">
+                    <li>Lorem ipsum dolor sit amet</li>
+                    <li>Lorem ipsum dolor sit amet</li>
+                    <li>Lorem ipsum dolor sit amet</li>
+                </ul>
+
+            </div> <!-- /col-text -->
+
+            <div class="col-more"><a href="#"><img src="{{ asset('design/cols3-more.gif') }}" alt="" /></a></div>
+
+        </div> <!-- /col -->
+
+        <hr class="noscreen" />
+
+        <!-- Column II. -->
+        <div class="col">
+
+            <h3><a href="#">Product II.</a></h3>
+
+            <p class="nom t-center"><a href="#"><img src="{{ asset('img/200x140.gif') }}" alt="" /></a></p>
+
+            <div class="col-text">
+
+                <p></p>
+
+                <ul class="ul-01">
+                    <li>Lorem ipsum dolor sit amet</li>
+                    <li>Lorem ipsum dolor sit amet</li>
+                    <li>Lorem ipsum dolor sit amet</li>
+                </ul>
+
+            </div> <!-- /col-text -->
+
+            <div class="col-more"><a href="#"><img src="{{ asset('design/cols3-more.gif') }}" alt="" /></a></div>
+
+        </div> <!-- /col -->
+
+        <hr class="noscreen" />
+
+        <!-- Column III. -->
+        <div class="col last">
+
+            <h3><a href="#">Product III.</a></h3>
+
+            <p class="nom t-center"><a href="#"><img src="{{ asset('img/200x140.gif') }}" alt="" /></a></p>
+
+            <div class="col-text">
+
+                <p></p>
+
+                <ul class="ul-01">
+                    <li>Lorem ipsum dolor sit amet</li>
+                    <li>Lorem ipsum dolor sit amet</li>
+                    <li>Lorem ipsum dolor sit amet</li>
+                </ul>
+
+            </div> <!-- /col-text -->
+
+            <div class="col-more"><a href="#"><img src="{{ asset('design/cols3-more.gif') }}" alt="" /></a></div>
+
+        </div> <!-- /col -->
+
+        <hr class="noscreen" />
+
+    </div> <!-- /cols3 -->
+    <div id="cols3-bottom"></div>
+
+    <!-- 2 columns -->
+    <div id="cols2-top"></div>
+    <div id="cols2" class="box">
+
+        <!-- Blog -->
+        <div id="col-left">
+
+            <div class="title">
+                <span class="f-right"><a href="#" class="ico-rss">RSS feed</a></span>
+                <h4>Blog</h4>
+            </div> <!-- /title -->
+
+            <ul class="ul-list nomb">
+                <li><span class="f-right"><a href="#" class="ico-comment">45 comments</a></span> <span class="date">27.09.2008</span> <a href="#" class="article">Lorem ipsum dolor sit amet</a></li>
+                <li><span class="f-right"><a href="#" class="ico-comment">45 comments</a></span> <span class="date">27.09.2008</span> <a href="#" class="article">Lorem ipsum dolor sit amet</a></li>
+                <li><span class="f-right"><a href="#" class="ico-comment">45 comments</a></span> <span class="date">27.09.2008</span> <a href="#" class="article">Lorem ipsum dolor sit amet</a></li>
+                <li><span class="f-right"><a href="#" class="ico-comment">45 comments</a></span> <span class="date">27.09.2008</span> <a href="#" class="article">Lorem ipsum dolor sit amet</a></li>
+                <li><span class="f-right"><a href="#" class="ico-comment">45 comments</a></span> <span class="date">27.09.2008</span> <a href="#" class="article">Lorem ipsum dolor sit amet</a></li>
+            </ul>
+
+        </div> <!-- /col-left -->
+
+        <hr class="noscreen" />
+
+        <!-- Testimonials -->
+        <div id="col-right">
+
+            <h4><span>Testimonials</span></h4>
+
+            <div class="box">
+
+                <div class="col-right-img"><img src="{{ asset('img/65x65.gif') }}" width="65" height="65" alt="" /></div>
+                <div class="col-right-text">
+
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nunc feugiat. <strong>In a massa.</strong> In feugiat pharetra lacus. In non arcu nec libero pharetra rutrum.</p>
+                    <p class="high smaller">&ndash; <cite>John Doe, Some Corporation</cite></p>
+
+                </div> <!-- /col-right-text -->
+
+            </div> <!-- /box -->
+
+        </div> <!-- /col-right -->
+
+    </div> <!-- /cols2 -->
+    <div id="cols2-bottom"></div>
+    #}
+
+    <hr class="noscreen" />
+
+    <!-- Footer -->
+    <div id="footer">
+	<h1 id="logo"><img src="{{ asset('img/down_principal.jpg') }}" width="900" height="90" alt="" /></h1>
+
+        <!-- Do you want remove this backlinks? Look at www.nuviotemplates.com/payment.php -->
+        {#<p class="f-right"><a href="http://www.nuviotemplates.com/">Free
+        web templates</a> presented by <a
+        href="http://www.qartin.cz/">QARTIN</a> &ndash; Our tip: <a
+        href="http://last-minute.invia.pl">Wakacje</a> <a
+        href="http://dovolenka.invia.sk">Dovolenka</a></p>#}
+        <!-- Do you want remove this backlinks? Look at www.nuviotemplates.com/payment.php -->
+
+        <!--<p>Copyright &copy;&nbsp;2008 <strong><a href="#">Your
+        Name</a></strong>, All Rights Reserved &reg;</p>-->
+
+    </div> <!-- /footer -->
+
+    <div id="lightbox"> </div>
+</div> <!-- /main -->
+
+{% block javascripts %}
+{#
+<script type="text/javascript" src="{{ asset('js/jquery-1.7.2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.validate.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.ui.core.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.ui.widget.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.ui.datepicker.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.ui.datepicker-es.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/common.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/menu.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
+#}
+{% endblock %}
+<a href="http://apycom.com/" ></a>
+</body>
+</html>
