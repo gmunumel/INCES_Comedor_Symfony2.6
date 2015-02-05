@@ -87,7 +87,6 @@ class UserAdminController extends Controller
             $em->flush();
         }
 
-        //return $this->redirect($this->generateUrl('useradmin'));
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/admin/list');
     }
