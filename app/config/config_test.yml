@@ -4,10 +4,10 @@ imports:
 framework:
     test: ~
     session:
-        salrage_id: session.salrage.filesystem
+        storage_id: session.storage.filesystem
 
 web_profiler:
-    alolbar: false
+    toolbar: false
     intercept_redirects: false
 
 swiftmailer:
