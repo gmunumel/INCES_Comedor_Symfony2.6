@@ -61,27 +61,11 @@ class RegistrationController extends Controller
 
         //return $response;
         $route = $request->getBaseUrl();
-        //return new Response($route.'#!/admin/list');
         return new Response($route);
       }
-        //$error = "";
-        if ('POST' === $request->getMethod()) {
-          //
-          //  return new Response(
-          //      "<p id='login-msg' class='message red'>ERROR: ha ocurrido un error. Por favor, coloque otro nombre de usuario o correo.</p>"
-          //  );
-          //
-          //
-          //return $this->container->get('templating')->renderResponse('INCESComedorBundle:UserAdmin:list.html.twig', array(
-          //  'error' => $error
-          //));
-          //return new Response($route.'/#!/admin/list');
-          //$error = "<p id='login-msg' class='message red'>ERROR: ha ocurrido un error. Por favor, coloque otro nombre de usuario o correo.</p>";
-        }
 
         return $this->render('INCESComedorBundle:Registration:register.html.twig', array(
-          'form'  => $form->createView(),
-            //'theme' => $this->container->getParameter('fos_user.template.theme'),
+            'form'  => $form->createView(),
             'route' => $route
           ));
 
@@ -94,25 +78,8 @@ class RegistrationController extends Controller
     {
       $user = $this->getUser();
       if (!is_object($user) || !$user instanceof UserInterface) {
-        $translated = 'This user does not have access to this section..';
+        $translated = 'This user does not have access to this section.';
         throw new AccessDeniedException($translated);
       }
-
-      /*
-      $request = $this->getRequest();
-      $route = $request->getBaseUrl();
-      //return new Response($route.'/#!/admin/register/confirmed');
-      return $this->redirect($route.'/#!/admin/register/confirmed');
-       */
-      /*
-      $request = $this->getRequest();
-      $route = $request->getBaseUrl();
-      return new RedirectResponse($route.'/');
-       */
-      /*
-      return $this->render('INCESComedorBundle:Registration:confirmed.html.twig', array(
-        'user' => $user,
-      ));
-       */
     }
 }

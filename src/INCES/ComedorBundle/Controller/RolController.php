@@ -86,7 +86,6 @@ class RolController extends Controller
         $em->persist($entity);
         $em->flush();
 
-        //return $this->redirect($this->generateUrl('rol_show', array('id' => $entity->getId())));
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/rol/'.$entity->getId().'/show');
         }
@@ -148,7 +147,6 @@ class RolController extends Controller
           $em->persist($entity);
           $em->flush();
 
-          //return $this->redirect($this->generateUrl('rol_edit', array('id' => $id)));
           $route = $request->getBaseUrl();
           return new Response($route.'/#!/rol/'.$entity->getId().'/show');
         }
@@ -196,7 +194,6 @@ class RolController extends Controller
 
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/rol/');
-        //return $this->redirect($this->generateUrl('rol'));
     }
 
     private function createDeleteForm($id)
