@@ -109,9 +109,7 @@
             {#
             <a href="{{ path('menu_show', { 'id': entity.id }) }}">show</a>
             #}
-            {#
-            <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/show"><img src="{{ asset('img/Search.ico') }}" class="searchbox_submit" value="" width="10" height="10" /></a>
-            #}
+            <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/show"><img src="{{ asset('img/show.png') }}" height="30" width="30" /></a>
             {% if is_granted("ROLE_USER") %}
             <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edit"><img src="{{ asset('img/edit.ico') }}" value="" height="30" width="30" /></a>
             {% endif %}

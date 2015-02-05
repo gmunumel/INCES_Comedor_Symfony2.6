@@ -20,95 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 class MenuController extends Controller
 {
 
-  public function _indexAction($query, $sort = null, $direction = null){
-
-    $em = $this->get('doctrine.orm.entity_manager');
-    $dql = $em->createQueryBuilder();
-    if (is_null($sort))
-      if(!$query || $query == '*')
-        $dql->add('select', 'm')
-        ->add('from', 'INCESComedorBundle:Menu m');
-      else
-        $dql->add('select', 'm')
-        ->add('from', 'INCESComedorBundle:Menu m')
-        ->where($query);
-    elseif ($direction == 'asc')
-      $dql->add('select', 'm')
-      ->add('from', 'INCESComedorBundle:Menu m')
-      ->add('orderBy', $sort.' ASC');
-    else
-      $dql->add('select', 'a')
-      ->add('from', 'INCESComedorBundle:Menu a')
-      ->add('orderBy', $sort.' DESC');
-
-    $qry = $em->createQuery($dql);
-    $paginator  = $this->get('knp_paginator');
-    $pagination = $paginator->paginate(
-      $qry,
-      $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
-          );
-    return $pagination;
-    }
-
-    /*
-     * Debe ser de la forma *\/*\/* - 20/01/2002
-     */
-    public function setDate($val){
-      $res = "";
-      $params = trim($val);
-      $explote = explode("/", $params);
-
-      if(count($explote) != 3) return $res;
-      if(!is_numeric($explote[0]))
-        if($explote[0] != "*")
-          return $res;
-      if(!is_numeric($explote[1]))
-        if($explote[1] != "*")
-          return $res;
-      if(!is_numeric($explote[2]))
-        if($explote[2] != "*")
-          return $res;
-      if($explote[0] != '*')
-        $res .= " (DAY(a.dia) = " . $explote[0] . ") AND";
-      if($explote[1] != '*')
-        $res .= " (MONTH(a.dia) = " . $explote[1] . ") AND";
-      if($explote[2] != '*')
-        $res .= " (YEAR(a.dia) = " . $explote[2] . ") AND";
-      return $res;
-    }
-
-    public function params($params){
-      $params = trim($params);
-      $explote = explode(" ", $params);
-      $res = "";
-      $ret = "";
-
-      foreach($explote as $value){
-        $ret = $this->setDate($value);
-        $res .= $ret;
-        if($ret == ""){
-          $res .= " (m.seco LIKE '%" . $value . "%'";
-          $res .= " OR m.sopa LIKE '%" . $value . "%'";
-          $res .= " OR m.salado LIKE '%" . $value . "%'";
-          $res .= " OR m.jugo LIKE '%" . $value . "%'";
-          $res .= " OR m.ensalada LIKE '%" . $value . "%'";
-          $res .= " OR m.postre LIKE '%" . $value . "%' ) AND";
-            }
-            /*
-            $res .= " (a.seco LIKE '%" . $value . "%'";
-            $res .= " OR a.sopa LIKE '%" . $value . "%'";
-            $res .= " OR a.salado LIKE '%" . $value . "%'";
-            $res .= " OR a.jugo LIKE '%" . $value . "%'";
-            $res .= " OR a.ensalada LIKE '%" . $value . "%'";
-            $res .= " OR a.postre LIKE '%" . $value . "%' ) AND";
-     */
-        }
-        if(strlen($res) > 3)
-          $res = substr_replace($res ,"",-4);
-        return $res;
-    }
-
     /*
      * Search Action dos
      */
@@ -122,7 +33,7 @@ class MenuController extends Controller
         $query   = $query.'*';
 
       if (!$query) {
-        $pagination = $this->_indexAction($query, $sort, $direction);
+        $pagination = $this->_indexPagination($query, $sort, $direction);
         return $this->render('INCESComedorBundle:Menu:_index.html.twig', array(
           'pagination' => $pagination
           ,'query' => $query
@@ -132,7 +43,7 @@ class MenuController extends Controller
         }else{
             if ('*' == $query){
               $query = '';
-              $pagination = $this->_indexAction($query, $sort, $direction);
+              $pagination = $this->_indexPagination($query, $sort, $direction);
               return $this->render('INCESComedorBundle:Menu:_index.html.twig', array(
                 'pagination' => $pagination
                 ,'query' => $query
@@ -143,62 +54,15 @@ class MenuController extends Controller
                 $query = htmlspecialchars(urldecode($query));
                 $query = substr_replace($query ,"",-1);
                 $_query = $this->params($query);
-                $pagination = $this->_indexAction($_query);
+                $pagination = $this->_indexPagination($_query);
                 return $this->render('INCESComedorBundle:Menu:_list.html.twig', array(
                   'pagination'  => $pagination
                   ,'query'      => $query
                 ));
         }
-        // never execute this line
+        // never be executed this line
         return new Response('Hello, world');
     }
-    /**
-     * Search for Menus.
-     *
-     */
-/*
-    public function searchAction(){
-        $search = $this->get('ewz_search.lucene');
-
-        $request = $this->get('request');
-        $query      = $request->query->get('query');
-        $sort       = $request->query->get('sort');
-        $direction  = $request->query->get('direction');
-
-        if (!$query) {
-            $pagination = $this->_indexAction($query, $sort, $direction);
-            return $this->render('INCESComedorBundle:Menu:_index.html.twig', array(
-                'pagination' => $pagination
-                ,'query'     => $query
-                ,'sort'      => $sort
-                ,'direction'  => $direction
-            ));
-        }else{
-            if ($request->isXmlHttpRequest()){
-                if ('*' == $query){
-                    $pagination = $this->_indexAction($query, $sort, $direction);
-                    return $this->render('INCESComedorBundle:Menu:_index.html.twig', array(
-                        'pagination' => $pagination
-                        ,'query'     => $query
-                        ,'sort'      => $sort
-                        ,'direction'  => $direction
-                    ));
-
-                }
-
-                //$query = $this->cleanParam($query);
-                //$query = '2012';
-                //$term  = new \Zend\Search\Lucene\Index\Term($query.'*','dia');
-                //$query = new \Zend\Search\Lucene\Search\Query\Wildcard($term);
-                $menus = $search->find($query);
-                return $this->render('INCESComedorBundle:Menu:_list.html.twig', array(
-                    'menus'  => $menus
-                    ,'query' => 'hola'
-                ));
-            }
-        }
-    }
-     */
 
     /**
      * Lists all Menu entities.
@@ -341,9 +205,7 @@ class MenuController extends Controller
           $em->flush();
 
           $route = $request->getBaseUrl();
-          //return new Response($route.'/#!/menu/');
           return new Response($route.'/#!/menu/'.$entity->getId().'/show');
-          //return $this->redirect($this->generateUrl('menu_edit', array('id' => $id)));
         }
 
         return $this->render('INCESComedorBundle:Menu:edit.html.twig', array(
@@ -379,17 +241,7 @@ class MenuController extends Controller
 
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/menu');
-        //return $this->redirect($this->generateUrl('menu'));
     }
-
-    private function createDeleteForm($id)
-    {
-      return $this->createFormBuilder(array('id' => $id))
-        ->add('id', 'hidden')
-        ->getForm()
-        ;
-    }
-
 
     /**
      * Finds and displays a Menu entity.
@@ -508,9 +360,7 @@ class MenuController extends Controller
           $em->flush();
 
           $route = $request->getBaseUrl();
-          //return new Response($route.'/#!/menu/');
           return new Response($route.'/#!/menu/'.$entity->getId().'/showtoday');
-          //return $this->redirect($this->generateUrl('menu_edit', array('id' => $id)));
         }
 
         return $this->render('INCESComedorBundle:Menu:edit_today.html.twig', array(
@@ -546,7 +396,6 @@ class MenuController extends Controller
 
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/menu/today');
-        //return $this->redirect($this->generateUrl('menu'));
     }
 
     /*
@@ -571,15 +420,6 @@ class MenuController extends Controller
       ));
     }
 
-    /*
-     * Clean the parameter to remove / -
-     */
-    public function cleanParam($param){
-      $res = str_replace("/","", $param);
-      $res = str_replace("-","", $param);
-      return $res;
-    }
-
     /**
      * Creates a new Facturar Procesar entity.
      *
@@ -593,13 +433,13 @@ class MenuController extends Controller
       $dia     = new \DateTime('now');
       $dia     = $dia->format('Y-m-d H:i:s');
 
-      if(!isset($_POST["menus"]))
+      if(!isset($_POST["menus"])) {
         $conn->insert('UsuarioMenu',
           array('usuario_id' => $usuario
-          ,'dia'        => $dia
+          ,'dia'             => $dia
         )
       );
-      else{
+      }else{
         $menu    = $_POST["menus"];
         $conn->insert('UsuarioMenu',
           array('usuario_id' => $usuario
@@ -636,8 +476,9 @@ class MenuController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         //Verificar si se encuentra dentro del horario
-        $em = $this->get('doctrine.orm.entity_manager');
-        $dql = $em->createQueryBuilder();
+	/*        
+	$em = $this->get('doctrine.orm.entity_manager');        
+	$dql = $em->createQueryBuilder();
         $dql->select('u, r')
           ->from('INCESComedorBundle:Usuario', 'u')
           ->join('u.rol', 'r')
@@ -648,19 +489,19 @@ class MenuController extends Controller
 
         $now = new \DateTime('now');
         $hour = $now->format('H');
-        if ($entity->getRol()->getHoraComerStartAMPM() == "pm"){
-          $hourStart = $entity->getRol()->getHoraComerStart() + 12;
-          $hourEnd = $entity->getRol()->getHoraComerEnd() + 12;
-        }elseif ($entity->getRol()->getHoraComerStartAMPM() == "pm" and $entity->getRol()->getHoraComerEndAMPM() == "am"){
-          $hourStart = $entity->getRol()->getHoraComerStart() + 12;
-          $hourEnd = $entity->getRol()->getHoraComerEnd();
-        }elseif ($entity->getRol()->getHoraComerStartAMPM() == "am" and $entity->getRol()->getHoraComerEndAMPM() == "pm"){
-          $hourStart = $entity->getRol()->getHoraComerStart();
-          $hourEnd = $entity->getRol()->getHoraComerEnd() + 12;
-        }else{
-          $hourStart = $entity->getRol()->getHoraComerStart();
-          $hourEnd = $entity->getRol()->getHoraComerEnd();
-        }
+        $hours = $this->comparisonHours($entity->getRol()->getHoraComerStartAMPM(), 
+			$entity->getRol()->getHoraComerEndAMPM(), 
+			$entity->getRol()->getHoraComerStart(),
+			$entity->getRol()->getHoraComerEnd());
+
+	*/
+	$hours = $this->validHours($id);
+	$hourStart = $hours[0];	
+        $hourEnd = $hours[1];
+	$entity = $hours[2];
+	$now = new \DateTime('now');
+	$hour = $now->format('H');
+        
         if ($hour < $hourStart || $hour > $hourEnd){
           $content = $this->renderView(
             'INCESComedorBundle:Menu:error_already_eat.html.twig', array(
@@ -677,45 +518,49 @@ class MenuController extends Controller
         //
         //Verificar si ya ha comido esa persona ese mismo dia
         $now = new \DateTime('now');
+        /*
         $dql = $em->createQuery('SELECT COUNT(um.id) FROM INCES\ComedorBundle\Entity\UsuarioMenu um WHERE um.usuario = :id and YEAR(um.dia) = :year and MONTH(um.dia) = :month and DAY(um.dia) = :day');
         $dql->setParameter('id', $id);
         $dql->setParameter('year', $now->format("Y"));
         $dql->setParameter('month', $now->format("m"));
         $dql->setParameter('day', $now->format("d"));
         $count = $dql->getSingleScalarResult();
+	*/
 
         /* TODO Optimizar estos 2 querys
          *  Arreglar URL
      */
-        if($count > 0){
+        //if($count > 0){
+	  $em = $this->get('doctrine.orm.entity_manager'); 
           $dql = $em->createQuery('SELECT um FROM INCES\ComedorBundle\Entity\UsuarioMenu um WHERE um.usuario = :id and YEAR(um.dia) = :year and MONTH(um.dia) = :month and DAY(um.dia) = :day');
           $dql->setParameter('id', $id);
           $dql->setParameter('year', $now->format("Y"));
           $dql->setParameter('month', $now->format("m"));
           $dql->setParameter('day', $now->format("d"));
-          $_entity   = $dql->getResult();
-          $_entity   = $_entity[0];
-          $lncHora   = $_entity->getDia()->format("H");
-          $lncMinuto = $_entity->getDia()->format("i");
-          $ampm      = "am";
-          if($lncHora > 12){
-            $lncHora = $lncHora - 12;
-            $ampm = "pm";
-            }
-            if($lncHora == 12) $ampm = "pm";
-            if($lncHora == 24) $ampm = "am";
-            $path = $request->getBaseUrl().'/#!/usuario/searchalnc';
-            $content = $this->renderView(
-              'INCESComedorBundle:Menu:last_eat.html.twig', array(
-                'nombre' => $entity->getNombre(),
-                'apellido' => $entity->getApellido(),
-                'hora' => $lncHora,
-                'minuto' => $lncMinuto,
-                'ampm' => $ampm,
-                'path' => $path
-              ));
-            return new Response($content);
-        }
+          $_entity   = $dql->getOneOrNullResult();
+	  if($_entity != null){	
+		  //$_entity   = $_entity[0];
+		  $lncHora   = $_entity->getDia()->format("H");
+		  $lncMinuto = $_entity->getDia()->format("i");
+		  $ampm      = "am";
+		  if($lncHora > 12){
+		    $lncHora = $lncHora - 12;
+		    $ampm = "pm";
+		  }
+		  if($lncHora == 12) $ampm = "pm";
+		  if($lncHora == 24) $ampm = "am";
+		  $path = $request->getBaseUrl().'/#!/usuario/searchalnc';
+		  $content = $this->renderView(
+		    'INCESComedorBundle:Menu:last_eat.html.twig', array(
+		      'nombre' => $entity->getNombre(),
+		      'apellido' => $entity->getApellido(),
+		      'hora' => $lncHora,
+		      'minuto' => $lncMinuto,
+		      'ampm' => $ampm,
+		      'path' => $path
+		  ));
+		  return new Response($content);
+           }
 
 
         // Buscando menus del dia
@@ -735,7 +580,227 @@ class MenuController extends Controller
         ));
     }
 
-    public function lncToday(){
+    /*
+     *  Search Ajax Facturar
+     */
+    public function searchAjaxFacturarAction(){
+      $request = $this->get('request');
+      $query      = $request->query->get('query');
+      $sort       = $request->query->get('sort');
+      $direction  = $request->query->get('direction');
+
+      if (!$query) {
+        $pagination = $this->_indexFacturarPagination($query, $sort, $direction);
+
+        // Buscando las personas que ya comieron hoy
+        $userLncTd = $this->lncToday();
+        return $this->render('INCESComedorBundle:Menu:_index_facturar.html.twig', array(
+          'pagination'  => $pagination
+          ,'query'      => $query
+          ,'sort'       => $sort
+          ,'direction'  => $direction
+          ,'userLncTd'  => $userLncTd
+        ));
+
+        }else{
+            if ('*' == $query){
+              $query = '';
+              $pagination = $this->_indexFacturarPagination($query, $sort, $direction);
+
+              // Buscando las personas que ya comieron hoy
+              $userLncTd = $this->lncToday();
+              return $this->render('INCESComedorBundle:Menu:_index_facturar.html.twig', array(
+                'pagination'  => $pagination
+                ,'query'      => $query
+                ,'sort'       => $sort
+                ,'direction'  => $direction
+                ,'userLncTd'  => $userLncTd
+              ));
+                }
+                $query = htmlspecialchars(urldecode($query));
+                $query = substr_replace($query ,"",-1);
+                $_query = $this->paramsFacturar($query);
+                $pagination = $this->_indexFacturarPagination($_query);
+
+                // Buscando las personas que ya comieron hoy
+                $userLncTd = $this->lncToday();
+                return $this->render('INCESComedorBundle:Menu:_list_facturar.html.twig', array(
+                  'pagination'  => $pagination
+                  ,'query'      => $query
+                  ,'userLncTd'  => $userLncTd
+                ));
+        }
+    }
+
+    /*
+     * Ask for a value in each field
+     */
+    private function paramsFacturar($params){
+      $params = trim($params);
+      $explote = explode(" ", $params);
+      $res = "";
+
+      foreach($explote as $value){
+        $res .= " (u.cedula like '%" . $value . "%'";
+        $res .= " or u.nombre like '%" . $value . "%'";
+        $res .= " or u.apellido like '%" . $value . "%'";
+        $res .= " or u.ncarnet like '%" . $value . "%'";
+        $res .= " or u.correo like '%" . $value . "%'";
+        $res .= " or r.nombre like '%" . $value . "%') AND";
+        }
+        $res = substr_replace($res ,"",-4);
+        return $res;
+    }
+
+    /*
+     * Debe ser de la forma *\/*\/* - 20/01/2002
+     */
+    private function setDate($val){
+      $res = "";
+      $params = trim($val);
+      $explote = explode("/", $params);
+
+      if(count($explote) != 3) return $res;
+      if(!is_numeric($explote[0]))
+        if($explote[0] != "*")
+          return $res;
+      if(!is_numeric($explote[1]))
+        if($explote[1] != "*")
+          return $res;
+      if(!is_numeric($explote[2]))
+        if($explote[2] != "*")
+          return $res;
+      if($explote[0] != '*')
+        $res .= " (DAY(a.dia) = " . $explote[0] . ") AND";
+      if($explote[1] != '*')
+        $res .= " (MONTH(a.dia) = " . $explote[1] . ") AND";
+      if($explote[2] != '*')
+        $res .= " (YEAR(a.dia) = " . $explote[2] . ") AND";
+      return $res;
+    }
+
+    /*
+     * Ask for a value in each field
+     */
+    private function params($params){
+      $params = trim($params);
+      $explote = explode(" ", $params);
+      $res = "";
+      $ret = "";
+
+      foreach($explote as $value){
+        $ret = $this->setDate($value);
+        $res .= $ret;
+        if($ret == ""){
+          $res .= " (m.seco LIKE '%" . $value . "%'";
+          $res .= " OR m.sopa LIKE '%" . $value . "%'";
+          $res .= " OR m.salado LIKE '%" . $value . "%'";
+          $res .= " OR m.jugo LIKE '%" . $value . "%'";
+          $res .= " OR m.ensalada LIKE '%" . $value . "%'";
+          $res .= " OR m.postre LIKE '%" . $value . "%' ) AND";
+         }
+      }
+      if(strlen($res) > 3)
+        $res = substr_replace($res ,"",-4);
+      return $res;
+    }
+
+    /*
+     * Create a delete Form
+     */
+    private function createDeleteForm($id)
+    {
+      return $this->createFormBuilder(array('id' => $id))
+        ->add('id', 'hidden')
+        ->getForm()
+        ;
+    }
+
+    /*
+     * Do a general select for Menu
+     */
+    private function doSelectMenu($sort, $query, $direction){
+	$em = $this->get('doctrine.orm.entity_manager');
+    	$dql = $em->createQueryBuilder();
+	$dql->select('m')
+      	    ->from('INCESComedorBundle:Menu', 'm');
+	if($query != "")
+	  $dql->where($query);
+        if($sort != "")
+          $dql->orderBy($sort, $direction);
+
+	return $dql;
+    }
+
+    /*
+     * Do a general select for Usuario
+     */
+    private function doSelectUser($sort, $query, $direction){
+	$em = $this->get('doctrine.orm.entity_manager');
+    	$dql = $em->createQueryBuilder();
+	$dql->select('u', 'r')
+      	    ->from('INCESComedorBundle:Usuario', 'u')
+            ->join('u.rol', 'r')
+	    ->where('r.id = u.rol');
+	if($query != "")
+	  $dql->andWhere($query);
+        if($sort != "")
+          $dql->orderBy($sort, $direction);
+
+	return $dql;
+    }
+
+    /*
+     * Comparison of hours
+     */
+    private function comparisonHours($hourStartAMPM, $hourEndAMPM, $hourStart, $hourEnd){
+	$hours = array(0, 0);
+	if ($hourStartAMPM == "pm"){
+          $hours[0] = $hourStart + 12;
+          $hours[1] = $hourEnd + 12;
+        }elseif ($hourStartAMPM == "pm" and $hourEndAMPM == "am"){
+          $hours[0] = $hourStart + 12;
+          $hours[1] = $hourEnd;
+        }elseif ($hourStartAMPM == "am" and $hourEndAMPM == "pm"){
+          $hours[0] = $hourStart;
+          $hours[1] = $hourEnd + 12;
+        }else{
+          $hours[0] = $hourStart;
+          $hours[1] = $hourEnd;
+        }
+	return $hours;
+    }
+
+    /*
+     * Check if the hours are valid
+     */
+    private function validHours($id){
+	$hours = array(0, 0);
+        $em = $this->get('doctrine.orm.entity_manager');
+        $dql = $em->createQueryBuilder();
+        $dql->select('u, r')
+          ->from('INCESComedorBundle:Usuario', 'u')
+          ->join('u.rol', 'r')
+          ->where('u.id = '. $id);
+        $qry    = $em->createQuery($dql);
+        $entity = $qry->getResult();
+        $entity = $entity[0];
+
+        $now = new \DateTime('now');
+        $hour = $now->format('H');
+        $hours = $this->comparisonHours($entity->getRol()->getHoraComerStartAMPM(), 
+			$entity->getRol()->getHoraComerEndAMPM(), 
+			$entity->getRol()->getHoraComerStart(),
+			$entity->getRol()->getHoraComerEnd());
+
+	$array = array($hours[0], $hours[1], $entity);
+	return $array;
+   }
+
+    /*
+     * Search users already eat
+     */
+    private function lncToday(){
 
       $em = $this->get('doctrine.orm.entity_manager');
       $emConfig = $em->getConfiguration();
@@ -760,64 +825,65 @@ class MenuController extends Controller
     /**
      * Lists all Usuario entities.
      */
-    public function _indexFacturarAction($query, $sort = null, $direction = null){
+    private function _indexFacturarPagination($query, $sort = null, $direction = null){
 
       $em = $this->get('doctrine.orm.entity_manager');
-      $dql = $em->createQueryBuilder();
+      //$dql = $em->createQueryBuilder();
       if (is_null($sort))
         if(!$query || $query == '*')
+          /*
           $dql->select('u')
           ->from('INCESComedorBundle:Usuario', 'u')
-          //->from('INCESComedorBundle:Rol', 'r')
-          //->from('INCESComedorBundle:UsuarioMenu', 'um');
           ->join('u.rol', 'r');
-      //->where('r.id = u.rol')
-                /*
-                $dql->select('u')
-                    ->from('INCESComedorBundle:Usuario', 'u')
-                    ->join('u.rol', 'r')
-                    ->where('r.id = u.rol');
-     */
-            else
+ 	  */
+	  $dql = $this->doSelectUser("", "", "");
+        else
+              /*
               $dql->add('select', 'u')
               ->add('from', 'INCESComedorBundle:Usuario u')
               ->join('u.rol', 'r')
               ->where($query);
+              */
+              $dql = $this->doSelectUser("", $query, "");
 
         elseif ($direction == 'asc')
           if($sort != 'rol')
-            $dql->select('u')
+            /*
+	    $dql->select('u')
             ->from('INCESComedorBundle:Usuario', 'u')
-            //->from('INCESComedorBundle:Rol', 'r')
-            //->from('INCESComedorBundle:UsuarioMenu', 'um')
             ->join('u.rol', 'r')
             ->where('r.id = u.rol')
             ->orderBy($sort, 'ASC');
+            */
+            $dql = $this->doSelectUser($sort, "", 'ASC');
           else
+            /*
             $dql->select('u')
             ->from('INCESComedorBundle:Usuario', 'u')
-            //->from('INCESComedorBundle:Rol', 'r')
-            //->from('INCESComedorBundle:UsuarioMenu', 'um')
             ->join('u.rol', 'r')
             ->where('r.id = u.rol')
             ->orderBy('r.nombre', 'ASC');
+            */
+            $dql = $this->doSelectUser('r.nombre', "", 'ASC');
         else
           if($sort != 'rol')
+            /*
             $dql->select('u')
             ->from('INCESComedorBundle:Usuario', 'u')
-            //->from('INCESComedorBundle:Rol', 'r')
-            //->from('INCESComedorBundle:UsuarioMenu', 'um')
             ->join('u.rol', 'r')
             ->where('r.id = u.rol')
             ->orderBy($sort, 'DESC');
+            */
+	    $dql = $this->doSelectUser($sort, "", 'DESC');
           else
+	    /*
             $dql->select('u')
             ->from('INCESComedorBundle:Usuario', 'u')
-            //->from('INCESComedorBundle:Rol', 'r')
-            //->from('INCESComedorBundle:UsuarioMenu', 'um')
             ->join('u.rol', 'r')
             ->where('r.id = u.rol')
             ->orderBy('r.nombre', 'DESC');
+            */
+	    $dql = $this->doSelectUser('r.nombre', "", 'DESC');
 
         $qry = $em->createQuery($dql);
         $paginator  = $this->get('knp_paginator');
@@ -829,74 +895,50 @@ class MenuController extends Controller
         return $pagination;
     }
 
-    public function paramsFacturar($params){
-      $params = trim($params);
-      $explote = explode(" ", $params);
-      $res = "";
+   /*
+   * Adding pagination
+   */
+  public function _indexPagination($query, $sort = null, $direction = null){
 
-      foreach($explote as $value){
-        $res .= " (u.cedula like '%" . $value . "%'";
-        $res .= " or u.nombre like '%" . $value . "%'";
-        $res .= " or u.apellido like '%" . $value . "%'";
-        $res .= " or u.ncarnet like '%" . $value . "%'";
-        $res .= " or u.correo like '%" . $value . "%'";
-        $res .= " or r.nombre like '%" . $value . "%') AND";
-        }
-        $res = substr_replace($res ,"",-4);
-        return $res;
+    $em = $this->get('doctrine.orm.entity_manager');
+    //$dql = $em->createQueryBuilder();
+    if (is_null($sort))
+      if(!$query || $query == '*')
+        /*
+        $dql->add('select', 'm')
+        ->add('from', 'INCESComedorBundle:Menu m');
+        */
+        $dql = $this->doSelectMenu("", "", "");
+      else
+        /*
+        $dql->add('select', 'm')
+        ->add('from', 'INCESComedorBundle:Menu m')
+        ->where($query);
+        */
+        $dql = $this->doSelectMenu("", $query, "");
+    elseif ($direction == 'asc')
+      /*
+      $dql->add('select', 'm')
+      ->add('from', 'INCESComedorBundle:Menu m')
+      ->add('orderBy', $sort.' ASC');
+      */
+      $dql = $this->doSelectMenu($sort, "", 'ASC');
+    else
+      /*
+      $dql->add('select', 'a')
+      ->add('from', 'INCESComedorBundle:Menu a')
+      ->add('orderBy', $sort.' DESC');
+      */
+      $dql = $this->doSelectMenu($sort, "", 'DESC');
+
+    $qry = $em->createQuery($dql);
+    $paginator  = $this->get('knp_paginator');
+    $pagination = $paginator->paginate(
+      $qry,
+      $this->get('request')->query->get('page', 1),//page number
+            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
+          );
+    return $pagination;
     }
 
-    /*
-     *  Search Ajax Facturar
-     */
-    public function searchAjaxFacturarAction(){
-      $request = $this->get('request');
-      $query      = $request->query->get('query');
-      $sort       = $request->query->get('sort');
-      $direction  = $request->query->get('direction');
-
-      if (!$query) {
-        $pagination = $this->_indexFacturarAction($query, $sort, $direction);
-
-        // Buscando las personas que ya comieron hoy
-        $userLncTd = $this->lncToday();
-        return $this->render('INCESComedorBundle:Menu:_index_facturar.html.twig', array(
-          'pagination'  => $pagination
-          ,'query'      => $query
-          ,'sort'       => $sort
-          ,'direction'  => $direction
-          ,'userLncTd'  => $userLncTd
-        ));
-
-        }else{
-          //if ($request->isXmlHttpRequest()){
-            if ('*' == $query){
-              $query = '';
-              $pagination = $this->_indexFacturarAction($query, $sort, $direction);
-
-              // Buscando las personas que ya comieron hoy
-              $userLncTd = $this->lncToday();
-              return $this->render('INCESComedorBundle:Menu:_index_facturar.html.twig', array(
-                'pagination'  => $pagination
-                ,'query'      => $query
-                ,'sort'       => $sort
-                ,'direction'  => $direction
-                ,'userLncTd'  => $userLncTd
-              ));
-                }
-                $query = htmlspecialchars(urldecode($query));
-                $query = substr_replace($query ,"",-1);
-                $_query = $this->paramsFacturar($query);
-                $pagination = $this->_indexFacturarAction($_query);
-
-                // Buscando las personas que ya comieron hoy
-                $userLncTd = $this->lncToday();
-                return $this->render('INCESComedorBundle:Menu:_list_facturar.html.twig', array(
-                  'pagination'  => $pagination
-                  ,'query'      => $query
-                  ,'userLncTd'  => $userLncTd
-                ));
-            //}
-        }
-    }
 }

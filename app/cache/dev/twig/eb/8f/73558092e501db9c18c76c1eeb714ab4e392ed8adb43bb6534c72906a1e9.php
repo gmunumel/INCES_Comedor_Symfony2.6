@@ -10,8 +10,8 @@ class __TwigTemplate_eb8f73558092e501db9c18c76c1eeb714ab4e392ed8adb43bb6534c7290
         $this->parent = false;
 
         $this->blocks = array(
-            '__internal_2c7758c73a0b747f778bc17d4d357593e63a84c22c680710cd9041a65b4e4672' => array($this, 'block___internal_2c7758c73a0b747f778bc17d4d357593e63a84c22c680710cd9041a65b4e4672'),
-            '__internal_acb12d3bd1ef0208b5ca68d4b5675d85a11d5970ab6e88d086109a419f3075b6' => array($this, 'block___internal_acb12d3bd1ef0208b5ca68d4b5675d85a11d5970ab6e88d086109a419f3075b6'),
+            '__internal_d25164964b99c4ccbf4c8d474e4090e9ab22a4aeebaf7ca85a47ce88ceafff6e' => array($this, 'block___internal_d25164964b99c4ccbf4c8d474e4090e9ab22a4aeebaf7ca85a47ce88ceafff6e'),
+            '__internal_bf431626f4596d4b4406b6c70c7be92401dd42f09ee2800cf7f27e0bffb455d5' => array($this, 'block___internal_bf431626f4596d4b4406b6c70c7be92401dd42f09ee2800cf7f27e0bffb455d5'),
         );
     }
 
@@ -30,13 +30,13 @@ class __TwigTemplate_eb8f73558092e501db9c18c76c1eeb714ab4e392ed8adb43bb6534c7290
         echo "</b> ";
         echo "has the rol";
         echo " <b>";
-        echo twig_escape_filter($this->env, twig_upper_filter($this->env, (string) $this->renderBlock("__internal_2c7758c73a0b747f778bc17d4d357593e63a84c22c680710cd9041a65b4e4672", $context, $blocks)), "html", null, true);
+        echo twig_escape_filter($this->env, twig_upper_filter($this->env, (string) $this->renderBlock("__internal_d25164964b99c4ccbf4c8d474e4090e9ab22a4aeebaf7ca85a47ce88ceafff6e", $context, $blocks)), "html", null, true);
         echo "</b>. <br /><br />
 ";
         // line 4
         echo "The";
         echo " <b>";
-        echo twig_escape_filter($this->env, twig_upper_filter($this->env, (string) $this->renderBlock("__internal_acb12d3bd1ef0208b5ca68d4b5675d85a11d5970ab6e88d086109a419f3075b6", $context, $blocks)), "html", null, true);
+        echo twig_escape_filter($this->env, twig_upper_filter($this->env, (string) $this->renderBlock("__internal_bf431626f4596d4b4406b6c70c7be92401dd42f09ee2800cf7f27e0bffb455d5", $context, $blocks)), "html", null, true);
         echo "</b> ";
         echo "can use the dinning room from";
         echo " <b>";
@@ -53,13 +53,13 @@ class __TwigTemplate_eb8f73558092e501db9c18c76c1eeb714ab4e392ed8adb43bb6534c7290
     }
 
     // line 3
-    public function block___internal_2c7758c73a0b747f778bc17d4d357593e63a84c22c680710cd9041a65b4e4672($context, array $blocks = array())
+    public function block___internal_d25164964b99c4ccbf4c8d474e4090e9ab22a4aeebaf7ca85a47ce88ceafff6e($context, array $blocks = array())
     {
         echo twig_escape_filter($this->env, (isset($context["rol_name"]) ? $context["rol_name"] : $this->getContext($context, "rol_name")), "html", null, true);
     }
 
     // line 4
-    public function block___internal_acb12d3bd1ef0208b5ca68d4b5675d85a11d5970ab6e88d086109a419f3075b6($context, array $blocks = array())
+    public function block___internal_bf431626f4596d4b4406b6c70c7be92401dd42f09ee2800cf7f27e0bffb455d5($context, array $blocks = array())
     {
         echo twig_escape_filter($this->env, (isset($context["rol_name"]) ? $context["rol_name"] : $this->getContext($context, "rol_name")), "html", null, true);
     }

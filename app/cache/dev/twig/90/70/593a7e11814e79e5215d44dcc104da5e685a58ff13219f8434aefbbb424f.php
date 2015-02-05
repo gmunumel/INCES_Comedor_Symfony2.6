@@ -273,11 +273,16 @@ class __TwigTemplate_9070593a7e11814e79e5215d44dcc104da5e685a58ff13219f8434aefbb
           <td>
             ";
             // line 112
-            echo "            ";
-            // line 115
-            echo "            ";
+            echo "            <a href=\"";
+            echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "request", array()), "uriForPath", array(0 => "/#!/menu/"), "method"), "html", null, true);
+            echo twig_escape_filter($this->env, $this->getAttribute($context["entity"], "id", array()), "html", null, true);
+            echo "/show\"><img src=\"";
+            echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("img/show.png"), "html", null, true);
+            echo "\" height=\"30\" width=\"30\" /></a>
+            ";
+            // line 113
             if ($this->env->getExtension('security')->isGranted("ROLE_USER")) {
-                // line 116
+                // line 114
                 echo "            <a href=\"";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "request", array()), "uriForPath", array(0 => "/#!/menu/"), "method"), "html", null, true);
                 echo twig_escape_filter($this->env, $this->getAttribute($context["entity"], "id", array()), "html", null, true);
@@ -286,7 +291,7 @@ class __TwigTemplate_9070593a7e11814e79e5215d44dcc104da5e685a58ff13219f8434aefbb
                 echo "\" value=\"\" height=\"30\" width=\"30\" /></a>
             ";
             }
-            // line 118
+            // line 116
             echo "          </td>
         </tr>
         ";
@@ -294,28 +299,28 @@ class __TwigTemplate_9070593a7e11814e79e5215d44dcc104da5e685a58ff13219f8434aefbb
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['entity'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 121
+        // line 119
         echo "        </tbody>
       </table>
       ";
-        // line 143
+        // line 141
         echo "      ";
-        // line 147
+        // line 145
         echo "      ";
         if ((twig_length_filter($this->env, (isset($context["pagination"]) ? $context["pagination"] : $this->getContext($context, "pagination"))) != 0)) {
-            // line 148
+            // line 146
             echo "      <div class=\"navigation\">
         ";
-            // line 149
+            // line 147
             echo strtr($this->env->getExtension('knp_pagination')->render((isset($context["pagination"]) ? $context["pagination"] : $this->getContext($context, "pagination"))), array("menu" => "#!/menu"));
             echo "
       </div>
       ";
         }
-        // line 152
+        // line 150
         echo "
       ";
-        // line 156
+        // line 154
         echo "      <script type=\"text/javascript\" src=\"";
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("js/search.js"), "html", null, true);
         echo "\"></script>
@@ -336,6 +341,6 @@ class __TwigTemplate_9070593a7e11814e79e5215d44dcc104da5e685a58ff13219f8434aefbb
 
     public function getDebugInfo()
     {
-        return array (  319 => 156,  316 => 152,  310 => 149,  307 => 148,  304 => 147,  302 => 143,  298 => 121,  290 => 118,  281 => 116,  278 => 115,  276 => 112,  269 => 107,  265 => 106,  261 => 105,  257 => 104,  253 => 103,  249 => 102,  245 => 101,  242 => 100,  237 => 99,  231 => 97,  229 => 96,  222 => 92,  218 => 90,  212 => 88,  206 => 86,  204 => 85,  199 => 83,  194 => 80,  188 => 78,  182 => 76,  180 => 75,  175 => 73,  170 => 70,  164 => 68,  158 => 66,  156 => 65,  151 => 63,  146 => 60,  140 => 58,  134 => 56,  132 => 55,  127 => 53,  122 => 50,  116 => 48,  110 => 46,  108 => 45,  103 => 43,  98 => 40,  92 => 38,  86 => 36,  84 => 35,  79 => 33,  74 => 30,  68 => 28,  62 => 26,  60 => 25,  55 => 23,  41 => 12,  37 => 11,  33 => 10,  26 => 6,  19 => 1,);
+        return array (  324 => 154,  321 => 150,  315 => 147,  312 => 146,  309 => 145,  307 => 141,  303 => 119,  295 => 116,  286 => 114,  284 => 113,  276 => 112,  269 => 107,  265 => 106,  261 => 105,  257 => 104,  253 => 103,  249 => 102,  245 => 101,  242 => 100,  237 => 99,  231 => 97,  229 => 96,  222 => 92,  218 => 90,  212 => 88,  206 => 86,  204 => 85,  199 => 83,  194 => 80,  188 => 78,  182 => 76,  180 => 75,  175 => 73,  170 => 70,  164 => 68,  158 => 66,  156 => 65,  151 => 63,  146 => 60,  140 => 58,  134 => 56,  132 => 55,  127 => 53,  122 => 50,  116 => 48,  110 => 46,  108 => 45,  103 => 43,  98 => 40,  92 => 38,  86 => 36,  84 => 35,  79 => 33,  74 => 30,  68 => 28,  62 => 26,  60 => 25,  55 => 23,  41 => 12,  37 => 11,  33 => 10,  26 => 6,  19 => 1,);
     }
 }
