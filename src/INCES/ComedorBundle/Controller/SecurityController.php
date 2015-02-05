@@ -64,13 +64,13 @@ class SecurityController extends BaseController
 
     public function checkAction()
     {
-      $translated = 'You must configure the path to be handled by the firewall using form_login in your security firewall configuration..';
+      $translated = 'You must configure the path to be handled by the firewall using form_login in your security firewall configuration.';
       throw new \RuntimeException($translated);
     }
 
     public function logoutAction()
     {
-      $translated = 'You must activate the logout in your security firewall configuration..';
+      $translated = 'You must activate the logout in your security firewall configuration.';
       throw new \RuntimeException($translated);
     }
 }
