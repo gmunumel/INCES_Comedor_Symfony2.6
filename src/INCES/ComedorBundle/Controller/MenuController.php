@@ -717,40 +717,6 @@ class MenuController extends Controller
     }
 
     /*
-     * Do a general select for Menu
-     */
-    private function doSelectMenu($sort, $query, $direction){
-	$em = $this->get('doctrine.orm.entity_manager');
-    	$dql = $em->createQueryBuilder();
-	$dql->select('m')
-      	    ->from('INCESComedorBundle:Menu', 'm');
-	if($query != "")
-	  $dql->where($query);
-        if($sort != "")
-          $dql->orderBy($sort, $direction);
-
-	return $dql;
-    }
-
-    /*
-     * Do a general select for Usuario
-     */
-    private function doSelectUser($sort, $query, $direction){
-	$em = $this->get('doctrine.orm.entity_manager');
-    	$dql = $em->createQueryBuilder();
-	$dql->select('u', 'r')
-      	    ->from('INCESComedorBundle:Usuario', 'u')
-            ->join('u.rol', 'r')
-	    ->where('r.id = u.rol');
-	if($query != "")
-	  $dql->andWhere($query);
-        if($sort != "")
-          $dql->orderBy($sort, $direction);
-
-	return $dql;
-    }
-
-    /*
      * Comparison of hours
      */
     private function comparisonHours($hourStartAMPM, $hourEndAMPM, $hourStart, $hourEnd){
@@ -820,6 +786,40 @@ class MenuController extends Controller
       $userLncTd = $qry->getResult();
 
       return $userLncTd;
+    }
+
+    /*
+     * Do a general select for Menu
+     */
+    private function doSelectMenu($sort, $query, $direction){
+	$em = $this->get('doctrine.orm.entity_manager');
+    	$dql = $em->createQueryBuilder();
+	$dql->select('m')
+      	    ->from('INCESComedorBundle:Menu', 'm');
+	if($query != "")
+	  $dql->where($query);
+        if($sort != "")
+          $dql->orderBy($sort, $direction);
+
+	return $dql;
+    }
+
+    /*
+     * Do a general select for Usuario
+     */
+    private function doSelectUser($sort, $query, $direction){
+	$em = $this->get('doctrine.orm.entity_manager');
+    	$dql = $em->createQueryBuilder();
+	$dql->select('u', 'r')
+      	    ->from('INCESComedorBundle:Usuario', 'u')
+            ->join('u.rol', 'r')
+	    ->where('r.id = u.rol');
+	if($query != "")
+	  $dql->andWhere($query);
+        if($sort != "")
+          $dql->orderBy($sort, $direction);
+
+	return $dql;
     }
 
     /**

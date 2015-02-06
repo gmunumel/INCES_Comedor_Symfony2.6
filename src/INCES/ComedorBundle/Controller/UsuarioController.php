@@ -20,62 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UsuarioController extends Controller
 {
-    /*
-    public function menuToday(){
-
-        $em = $this->get('doctrine.orm.entity_manager');
-        $emConfig = $em->getConfiguration();
-        $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
-        $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
-        $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
-
-        // Buscando las personas que ya comieron hoy
-        $now = new \DateTime('now');
-        $dql = $em->createQueryBuilder();
-        $dql->select('m')
-            ->from('INCESComedorBundle:Menu','m')
-            ->where("YEAR(m.dia) = '".$now->format("Y")."'")
-            ->andWhere("MONTH(m.dia) = '".$now->format("m")."'")
-            ->andWhere("DAY(m.dia) = '".$now->format("d")."'");
-        $qry = $em->createQuery($dql);
-        $userMenuTd = $qry->getResult();
-
-        return $userMenuTd;
-
-    }
-     */
-
-  /**
-   * Lists all Usuario entities.
-   *
-   */
-    /*
-    public function indexAction($query = '')
-    {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        //$entities = $em->getRepository('INCESComedorBundle:Usuario')->findAll();
-
-        //return array('entities' => $entities);
-
-        $em = $this->get('doctrine.orm.entity_manager');
-        $dql = $em->createQueryBuilder();
-            $dql->add('select', 'a')
-            ->add('from', 'INCESComedorBundle:Usuario a');
-        $qry = $em->createQuery($dql);
-
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $qry,
-            $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
-        );
-        return $this->render('INCESComedorBundle:Usuario:index.html.twig', array(
-             'pagination' => $pagination
-            ,'query' => $query
-        ));
-    }
-     */
 
   /**
    * Finds and displays a Usuario entity.
@@ -137,7 +81,6 @@ class UsuarioController extends Controller
           // there is an image by user
           $form->getData()->getImage()->move($dir);
 
-        //return $this->redirect($this->generateUrl('usuario_show', array('id' => $entity->getId())));
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/usuario/'.$entity->getId().'/show');
         }
@@ -184,7 +127,6 @@ class UsuarioController extends Controller
         if(!is_null($form->getData()->getImage()))
           $form->getData()->getImage()->move($dir);
 
-        //return $this->redirect($this->generateUrl('usuario_show', array('id' => $entity->getId())));
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/menu/facturar');
         }
@@ -251,9 +193,7 @@ class UsuarioController extends Controller
           if(!is_null($editForm->getData()->getImage()))
             $editForm->getData()->getImage()->move($dir);
 
-          //return $this->redirect($this->generateUrl('usuario_show', array('id' => $id)));
           $route = $request->getBaseUrl();
-          //return new Response($route.'/usuario/');
           return new Response($route.'/#!/usuario/'.$entity->getId().'/show');
         }
 
@@ -290,7 +230,6 @@ class UsuarioController extends Controller
 
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/usuario');
-        //return $this->redirect($this->generateUrl('usuario'));
     }
 
     private function createDeleteForm($id)
@@ -300,107 +239,6 @@ class UsuarioController extends Controller
         ->getForm()
         ;
     }
-
-    public function _indexAction($query, $sort = null, $direction = null){
-
-      $em = $this->get('doctrine.orm.entity_manager');
-      $dql = $em->createQueryBuilder();
-      if (is_null($sort))
-        if(!$query || $query == '*')
-          $dql->add('select', 'u')
-          ->add('from', 'INCESComedorBundle:Usuario u')
-          ->join('u.rol', 'r');
-        else
-          // In case i'm searching a user
-          $dql->add('select', 'u')
-          ->add('from', 'INCESComedorBundle:Usuario u')
-          ->join('u.rol', 'r')
-          ->where($query);
-
-      elseif ($direction == 'asc')
-        if($sort != 'u.rol')
-          $dql->add('select', 'u')
-          ->add('from', 'INCESComedorBundle:Usuario u')
-          ->join('u.rol', 'r')
-          ->add('orderBy', $sort.' ASC');
-        else
-          $dql->add('select', 'u')
-          ->add('from', 'INCESComedorBundle:Usuario u')
-          ->join('u.rol', 'r')
-          ->add('orderBy', 'r.nombre ASC');
-
-      else
-        if($sort != 'u.rol')
-          $dql->add('select', 'u')
-          ->add('from', 'INCESComedorBundle:Usuario u')
-          ->join('u.rol', 'r')
-          ->add('orderBy', $sort.' DESC');
-        else
-          $dql->add('select', 'u')
-          ->add('from', 'INCESComedorBundle:Usuario u')
-          ->join('u.rol', 'r')
-          ->add('orderBy', 'r.nombre DESC');
-
-      $qry = $em->createQuery($dql);
-      $paginator  = $this->get('knp_paginator');
-      $pagination = $paginator->paginate(
-        $qry,
-        $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
-          );
-      return $pagination;
-    }
-
-    public function _indexLunchAction($query, $sort = null, $direction = null){
-
-      $em = $this->get('doctrine.orm.entity_manager');
-      $dql = $em->createQueryBuilder();
-      $isnotquery = false;
-      if (is_null($sort))
-        if(!$query || $query == '*')
-          $dql->select('um')
-          ->from('INCESComedorBundle:UsuarioMenu', 'um')
-          ->join('um.usuario', 'u')
-          ->orderBy('um.dia', 'DESC');
-        else
-          $dql->add('select', 'um')
-          ->add('from', 'INCESComedorBundle:UsuarioMenu um')
-          ->join('um.usuario', 'u')
-          ->where($query);
-
-      elseif ($direction == 'asc')
-        if($sort != 'u.cedula' && $sort != 'u.nombre' && $sort != 'u.apellido')
-          $dql->select('um')
-          ->from('INCESComedorBundle:UsuarioMenu', 'um')
-          ->join('um.usuario', 'u')
-          ->orderBy($sort, 'ASC');
-        else
-          $dql->select('um')
-          ->from('INCESComedorBundle:UsuarioMenu', 'um')
-          ->join('um.usuario', 'u')
-          ->orderBy($sort, 'ASC');
-      else
-        if($sort != 'u.cedula' && $sort != 'u.nombre' && $sort != 'u.apellido')
-          $dql->select('um')
-          ->from('INCESComedorBundle:UsuarioMenu', 'um')
-          ->join('um.usuario', 'u')
-          ->orderBy($sort, 'DESC');
-        else
-          $dql->select('um')
-          ->from('INCESComedorBundle:UsuarioMenu', 'um')
-          ->join('um.usuario', 'u')
-          ->orderBy($sort, 'DESC');
-
-      $qry = $em->createQuery($dql);
-      $paginator  = $this->get('knp_paginator');
-      $pagination = $paginator->paginate(
-        $qry,
-        $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
-          );
-      return $pagination;
-    }
-
 
     /*
      * Debe ser de la forma *\/*\/* - 20/01/2002
@@ -427,43 +265,6 @@ class UsuarioController extends Controller
       if($explote[2] != '*')
         $res .= " (YEAR(um.dia) = " . $explote[2] . ") AND";
       return $res;
-    }
-
-    public function params($params){
-      $params = trim($params);
-      $explote = explode(" ", $params);
-      $res = "";
-
-      foreach($explote as $value){
-        $res .= " (u.cedula like '%" . $value . "%'";
-        $res .= " or u.nombre like '%" . $value . "%'";
-        $res .= " or u.apellido like '%" . $value . "%'";
-        $res .= " or u.ncarnet like '%" . $value . "%'";
-        $res .= " or u.correo like '%" . $value . "%') AND";
-        }
-        $res = substr_replace($res ,"",-4);
-        return $res;
-    }
-
-    public function paramsLunch($params){
-      $params = trim($params);
-      $explote = explode(" ", $params);
-      $res = "";
-
-      foreach($explote as $value){
-        $res .= $this->setDate($value);
-        if($res == ""){
-          $res .= " (u.cedula like '%" . $value . "%'";
-          $res .= " or u.nombre like '%" . $value . "%'";
-          $res .= " or u.apellido like '%" . $value . "%') AND";
-            }
-            //$res .= " or YEAR(um.dia) like '%" . $value . "%'";
-            //$res .= " or MONTH(um.dia) like '%" . $value . "%'";
-            //$res .= " or DAY(um.dia) like '%" . $value . "%') AND";
-        }
-        if(strlen($res) > 3)
-          $res = substr_replace($res ,"",-4);
-        return $res;
     }
 
     /*
@@ -504,7 +305,7 @@ class UsuarioController extends Controller
         $query   = $query.'*';
 
       if (!$query) {
-        $pagination = $this->_indexAction($query, $sort, $direction);
+        $pagination = $this->_indexPagination($query, $sort, $direction);
         return $this->render('INCESComedorBundle:Usuario:_index.html.twig', array(
           'pagination' => $pagination
           ,'query' => $query
@@ -514,7 +315,7 @@ class UsuarioController extends Controller
         }else{
           if ('*' == $query){
             $query = '';
-            $pagination = $this->_indexAction($query, $sort, $direction);
+            $pagination = $this->_indexPagination($query, $sort, $direction);
             return $this->render('INCESComedorBundle:Usuario:_index.html.twig', array(
               'pagination' => $pagination
               ,'query' => $query
@@ -525,7 +326,7 @@ class UsuarioController extends Controller
             $query = htmlspecialchars(urldecode($query));
             $query = substr_replace($query ,"",-1);
             $_query = $this->params($query);
-            $pagination = $this->_indexAction($_query);
+            $pagination = $this->_indexPagination($_query);
             return $this->render('INCESComedorBundle:Usuario:_list.html.twig', array(
               'pagination'  => $pagination
               ,'query'      => $query
@@ -546,22 +347,19 @@ class UsuarioController extends Controller
         $query   = $request->query->get('query')."*";
 
       if (!$query) {
-        $pagination = $this->_indexLunchAction($query, $sort, $direction);
+        $pagination = $this->_indexLunchPagination($query, $sort, $direction);
 
         // Buscando las personas que ya comieron hoy
-        //$userMenuTd = $this->menuToday();
         return $this->render('INCESComedorBundle:Usuario:_index_lunch.html.twig', array(
           'pagination'   => $pagination
           ,'query'       => $query
           ,'sort'       => $sort
           ,'direction'        => $direction
-          //,'userMenuTd'  => $userMenuTd
         ));
         }else{
-          //if ($request->isXmlHttpRequest()){
             if ('*' == $query){
               $query = '';
-              $pagination = $this->_indexLunchAction($query, $sort, $direction);
+              $pagination = $this->_indexLunchPagination($query, $sort, $direction);
 
               // Buscando las personas que ya comieron hoy
               //$userMenuTd = $this->menuToday();
@@ -573,18 +371,17 @@ class UsuarioController extends Controller
                 //,'userMenuTd'  => $userMenuTd
               ));
                 }
+                $query = htmlspecialchars(urldecode($query));
                 $query = substr_replace($query ,"",-1);
                 $_query = $this->paramsLunch($query);
-                $pagination = $this->_indexLunchAction($_query);
+                $pagination = $this->_indexLunchPagination($_query);
 
                 // Buscando las personas que ya comieron hoy
                 //$userMenuTd = $this->menuToday();
                 return $this->render('INCESComedorBundle:Usuario:_list_lunch.html.twig', array(
                   'pagination'   => $pagination
                   ,'query'       => $query
-                  //,'userMenuTd'  => $userMenuTd
                 ));
-            //}
         }
     }
 
@@ -612,8 +409,170 @@ class UsuarioController extends Controller
       return $response;
     }
 
+    /*
+     *  Search Ajax Lunch de los usuarios que han comido
+     */
+    public function lunchTodayAction(){
+      $em = $this->get('doctrine.orm.entity_manager');
+      $dql = $em->createQueryBuilder();
+      $dql->select('um')
+        ->from('INCESComedorBundle:UsuarioMenu', 'um')
+        ->join('um.usuario', 'u')
+        ->join('u.rol', 'r');
+      $qry = $em->createQuery($dql);
+      $paginator  = $this->get('knp_paginator');
+      $pagination = $paginator->paginate(
+        $qry,
+        $this->get('request')->query->get('page', 1),//page number
+            $this->container->getParameter('LUNCH_PER_PAGE')//limit per page
+          );
 
-    public function validaciones($arr, $edit = false){
+      return $this->render('INCESComedorBundle:Usuario:_lunch_today.html.twig', array(
+        'pagination'   => $pagination
+      ));
+    }
+
+    public function cargaMasivaAction(){
+
+      $em      = $this->getDoctrine()->getEntityManager();
+      $request = $this->getRequest();
+      $cm_form = $this->createForm(new CargaMasivaType());
+      //$cm_form->bind($request);
+
+      if ($request->getMethod() == 'POST') {
+        $cm_form->bind($request);
+        $dir = dirname(__FILE__).'/../../../../web/uploads/';
+
+	$errores = $this->loadFile($cm_form, $dir);
+
+        if($errores != ""){
+          return new Response("<p>".$errores."</p>");
+
+          // Eliminar el archivo .csv
+          unlink($dir . $nameFile);
+            }
+
+            // Guardando en Base de Datos
+            $this->saveValues($arr);
+
+            // Eliminar el archivo .csv
+            unlink($dir . $nameFile);
+
+            $translated = 'Users loaded succesfully';
+            $messages = $translated;
+            return new Response("<p>".$messages."</p>");
+        }
+
+        return $this->render('INCESComedorBundle:Usuario:carga_masiva.html.twig', array(
+          'cm_form'    => $cm_form->createView()
+        ));
+    }
+
+    public function editMasivoAction(){
+
+      $em      = $this->getDoctrine()->getEntityManager();
+      $request = $this->getRequest();
+      $cm_form = $this->createForm(new CargaMasivaType());
+      //$cm_form->bind($request);
+
+      if ($request->getMethod() == 'POST') {
+        $cm_form->bind($request);
+        $dir = dirname(__FILE__).'/../../../../web/uploads/';
+
+	/*
+        // Colocando en el archivo en la carpeta web/uploads/
+        $name        = $cm_form['file']->getData()->move($dir);
+        $nameExplode = explode("/", $name);
+        $nameFile    = end($nameExplode);
+
+        // Comprobando que el archivo tenga los parametros adecuados
+        // Llenando estructura temporal con la informacion del archivo
+        $f = fopen ($dir . $nameFile, 'r');
+        while (false !== $data = fgetcsv($f, 0, ';'))
+          $arr[] = $data;
+        fclose($f);
+
+        // Verifico que el archivo este bien formado
+        $errores = $this->validaciones($arr, true);
+        */
+
+        $errores = $this->loadFile($cm_form, $dir, true);
+
+        if($errores != ""){
+          return new Response("<p>".$errores."</p>");
+
+          // Eliminar el archivo .csv
+          unlink($dir . $nameFile);
+            }
+
+            // Guardando en Base de Datos
+            $this->updateValues($arr);
+
+            // Eliminar el archivo .csv
+            unlink($dir . $nameFile);
+
+            $translated = 'Users updated succesfully';
+            $messages = $translated;
+            return new Response("<p>".$messages."</p>");
+        }
+
+        return $this->render('INCESComedorBundle:Usuario:edit_masivo.html.twig', array(
+          'cm_form'    => $cm_form->createView()
+        ));
+    }
+
+    private function loadFile($form, $dir, $flag = false){
+	// Colocando en el archivo en la carpeta web/uploads/
+        $name        = $form['file']->getData()->move($dir);
+        $nameExplode = explode("/", $name);
+        $nameFile    = end($nameExplode);
+
+        // Comprobando que el archivo tenga los parametros adecuados
+        // Llenando estructura temporal con la informacion del archivo
+        $f = fopen ($dir . $nameFile, 'r');
+        while (false !== $data = fgetcsv($f, 0, ';'))
+          $arr[] = $data;
+        fclose($f);
+
+        $errores = $this->validaciones($arr, $flag);
+	return $errores;
+    }
+
+    private function params($params){
+      $params = trim($params);
+      $explote = explode(" ", $params);
+      $res = "";
+
+      foreach($explote as $value){
+        $res .= " (u.cedula like '%" . $value . "%'";
+        $res .= " or u.nombre like '%" . $value . "%'";
+        $res .= " or u.apellido like '%" . $value . "%'";
+        $res .= " or u.ncarnet like '%" . $value . "%'";
+        $res .= " or u.correo like '%" . $value . "%') AND";
+        }
+        $res = substr_replace($res ,"",-4);
+        return $res;
+    }
+
+    private function paramsLunch($params){
+      $params = trim($params);
+      $explote = explode(" ", $params);
+      $res = "";
+
+      foreach($explote as $value){
+        $res .= $this->setDate($value);
+        if($res == ""){
+          $res .= " (u.cedula like '%" . $value . "%'";
+          $res .= " or u.nombre like '%" . $value . "%'";
+          $res .= " or u.apellido like '%" . $value . "%') AND";
+            }
+        }
+        if(strlen($res) > 3)
+          $res = substr_replace($res ,"",-4);
+        return $res;
+    }
+
+    private function validaciones($arr, $edit = false){
       $i     = 0;
       $em    = $this->getDoctrine()->getEntityManager();
       $dql   = $em->createQueryBuilder();
@@ -697,7 +656,7 @@ class UsuarioController extends Controller
         return "";
     }
 
-    public function saveValues($arr){
+    private function saveValues($arr){
       $i      = 0;
       $rol_id = 0;
       $em     = $this->getDoctrine()->getEntityManager();
@@ -730,7 +689,7 @@ class UsuarioController extends Controller
         }
     }
 
-    public function updateValues($arr){
+    private function updateValues($arr){
       $i      = 0;
       $rol_id = 0;
       $em     = $this->getDoctrine()->getEntityManager();
@@ -765,126 +724,174 @@ class UsuarioController extends Controller
         }
     }
 
+     /*
+     * Do a general select for Menu
+     */
+    private function doSelectUsuarioMenu($sort, $query, $direction){
+	$em = $this->get('doctrine.orm.entity_manager');
+    	$dql = $em->createQueryBuilder();
+	$dql->select('um')
+      	    ->from('INCESComedorBundle:UsuarioMenu', 'um')
+            ->join('um.usuario', 'u');
+	if($query != "")
+	  $dql->where($query);
+        if($sort != "")
+          $dql->orderBy($sort, $direction);
 
-    public function cargaMasivaAction(){
-
-      $em      = $this->getDoctrine()->getEntityManager();
-      $request = $this->getRequest();
-      $cm_form = $this->createForm(new CargaMasivaType());
-      //$cm_form->bind($request);
-
-      if ($request->getMethod() == 'POST') {
-        $cm_form->bind($request);
-
-        $dir = dirname(__FILE__).'/../../../../web/uploads/';
-
-        // Colocando en el archivo en la carpeta web/uploads/
-        $name        = $cm_form['file']->getData()->move($dir);
-        $nameExplode = explode("/", $name);
-        $nameFile    = end($nameExplode);
-
-        // Comprobando que el archivo tenga los parametros adecuados
-        // Llenando estructura temporal con la informacion del archivo
-        $f = fopen ($dir . $nameFile, 'r');
-        while (false !== $data = fgetcsv($f, 0, ';'))
-          $arr[] = $data;
-        fclose($f);
-
-        $errores = $this->validaciones($arr);
-
-        if($errores != ""){
-          return new Response("<p>".$errores."</p>");
-
-          // Theiminar el archivo .csv
-          unlink($dir . $nameFile);
-            }
-
-            // Guardando en Base de Datos
-            $this->saveValues($arr);
-
-            // Theiminar el archivo .csv
-            unlink($dir . $nameFile);
-
-            $translated = 'Users loaded succesfully';
-            $messages = $translated;
-            return new Response("<p>".$messages."</p>");
-        }
-
-        return $this->render('INCESComedorBundle:Usuario:carga_masiva.html.twig', array(
-          'cm_form'    => $cm_form->createView()
-        ));
-    }
-
-    public function editMasivoAction(){
-
-      $em      = $this->getDoctrine()->getEntityManager();
-      $request = $this->getRequest();
-      $cm_form = $this->createForm(new CargaMasivaType());
-      //$cm_form->bind($request);
-
-      if ($request->getMethod() == 'POST') {
-        $cm_form->bind($request);
-
-        $dir = dirname(__FILE__).'/../../../../web/uploads/';
-
-        // Colocando en el archivo en la carpeta web/uploads/
-        $name        = $cm_form['file']->getData()->move($dir);
-        $nameExplode = explode("/", $name);
-        $nameFile    = end($nameExplode);
-
-        // Comprobando que el archivo tenga los parametros adecuados
-        // Llenando estructura temporal con la informacion del archivo
-        $f = fopen ($dir . $nameFile, 'r');
-        while (false !== $data = fgetcsv($f, 0, ';'))
-          $arr[] = $data;
-        fclose($f);
-
-        // Verifico que el archivo este bien formado
-        $errores = $this->validaciones($arr, true);
-
-        if($errores != ""){
-          return new Response("<p>".$errores."</p>");
-
-          // Theiminar el archivo .csv
-          unlink($dir . $nameFile);
-            }
-
-            // Guardando en Base de Datos
-            $this->updateValues($arr);
-
-            // Theiminar el archivo .csv
-            unlink($dir . $nameFile);
-
-            $translated = 'Users updated succesfully';
-            $messages = $translated;
-            return new Response("<p>".$messages."</p>");
-        }
-
-        return $this->render('INCESComedorBundle:Usuario:edit_masivo.html.twig', array(
-          'cm_form'    => $cm_form->createView()
-        ));
+	return $dql;
     }
 
     /*
-     *  Search Ajax Lunch de los usuarios que han comido
+     * Do a general select for Usuario
      */
-    public function lunchTodayAction(){
+    private function doSelectUser($sort, $query, $direction){
+	$em = $this->get('doctrine.orm.entity_manager');
+    	$dql = $em->createQueryBuilder();
+	$dql->select('u', 'r')
+      	    ->from('INCESComedorBundle:Usuario', 'u')
+            ->join('u.rol', 'r')
+	    ->where('r.id = u.rol');
+	if($query != "")
+	  $dql->andWhere($query);
+        if($sort != "")
+          $dql->orderBy($sort, $direction);
+
+	return $dql;
+    }
+
+    private function _indexPagination($query, $sort = null, $direction = null){
+
       $em = $this->get('doctrine.orm.entity_manager');
       $dql = $em->createQueryBuilder();
-      $dql->select('um')
-        ->from('INCESComedorBundle:UsuarioMenu', 'um')
-        ->join('um.usuario', 'u')
-        ->join('u.rol', 'r');
+      if (is_null($sort))
+        if(!$query || $query == '*')
+         /*
+	 $dql->add('select', 'u')
+          ->add('from', 'INCESComedorBundle:Usuario u')
+          ->join('u.rol', 'r');
+          */
+          $dql = $this->doSelectUser("", "", "");
+        else
+          // In case i'm searching a user
+          /*
+          $dql->add('select', 'u')
+          ->add('from', 'INCESComedorBundle:Usuario u')
+          ->join('u.rol', 'r')
+          ->where($query);
+          */
+          $dql = $this->doSelectUser("", $query, "");
+
+      elseif ($direction == 'asc')
+        if($sort != 'u.rol')
+          /*
+          $dql->add('select', 'u')
+          ->add('from', 'INCESComedorBundle:Usuario u')
+          ->join('u.rol', 'r')
+          ->add('orderBy', $sort.' ASC');
+          */
+          $dql = $this->doSelectUser($sort, "", 'ASC');
+        else
+          /*
+          $dql->add('select', 'u')
+          ->add('from', 'INCESComedorBundle:Usuario u')
+          ->join('u.rol', 'r')
+          ->add('orderBy', 'r.nombre ASC');
+          */
+          $dql = $this->doSelectUser('r.nombre', "", 'ASC');
+
+      else
+        if($sort != 'u.rol')
+          /*
+          $dql->add('select', 'u')
+          ->add('from', 'INCESComedorBundle:Usuario u')
+          ->join('u.rol', 'r')
+          ->add('orderBy', $sort.' DESC');
+          */
+          $dql = $this->doSelectUser($sort, "", 'DESC');
+        else
+          /*
+          $dql->add('select', 'u')
+          ->add('from', 'INCESComedorBundle:Usuario u')
+          ->join('u.rol', 'r')
+          ->add('orderBy', 'r.nombre DESC');
+          */
+          $dql = $this->doSelectUser('r.nombre', "", 'DESC');
+
       $qry = $em->createQuery($dql);
       $paginator  = $this->get('knp_paginator');
       $pagination = $paginator->paginate(
         $qry,
         $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('LUNCH_PER_PAGE')//limit per page
+            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
           );
-
-      return $this->render('INCESComedorBundle:Usuario:_lunch_today.html.twig', array(
-        'pagination'   => $pagination
-      ));
+      return $pagination;
     }
+
+    private function _indexLunchPagination($query, $sort = null, $direction = null){
+
+      $em = $this->get('doctrine.orm.entity_manager');
+      $dql = $em->createQueryBuilder();
+      $isnotquery = false;
+      if (is_null($sort))
+        if(!$query || $query == '*')
+          /*
+          $dql->select('um')
+          ->from('INCESComedorBundle:UsuarioMenu', 'um')
+          ->join('um.usuario', 'u')
+          ->orderBy('um.dia', 'DESC');
+          */
+          $dql = $this->doSelectUsuarioMenu('um.dia', "", 'DESC');
+        else
+          /*
+          $dql->add('select', 'um')
+          ->add('from', 'INCESComedorBundle:UsuarioMenu um')
+          ->join('um.usuario', 'u')
+          ->where($query);
+          */
+          $dql = $this->doSelectUsuarioMenu("", $query, "");
+
+      elseif ($direction == 'asc')
+        //if($sort != 'u.cedula' && $sort != 'u.nombre' && $sort != 'u.apellido')
+          /*
+          $dql->select('um')
+          ->from('INCESComedorBundle:UsuarioMenu', 'um')
+          ->join('um.usuario', 'u')
+          ->orderBy($sort, 'ASC');
+          */
+          $dql = $this->doSelectUsuarioMenu($sort, "", 'ASC');
+        //else
+          /*
+          $dql->select('um')
+          ->from('INCESComedorBundle:UsuarioMenu', 'um')
+          ->join('um.usuario', 'u')
+          ->orderBy($sort, 'ASC');
+          */
+      else
+        //if($sort != 'u.cedula' && $sort != 'u.nombre' && $sort != 'u.apellido')
+          /*
+          $dql->select('um')
+          ->from('INCESComedorBundle:UsuarioMenu', 'um')
+          ->join('um.usuario', 'u')
+          ->orderBy($sort, 'DESC');
+          */
+          $dql = $this->doSelectUsuarioMenu($sort, "", 'DESC');
+        //else
+          /*
+          $dql->select('um')
+          ->from('INCESComedorBundle:UsuarioMenu', 'um')
+          ->join('um.usuario', 'u')
+          ->orderBy($sort, 'DESC');
+          */
+          //$dql = $this->doSelectUsuarioMenu($sort, "", 'DESC');
+
+      $qry = $em->createQuery($dql);
+      $paginator  = $this->get('knp_paginator');
+      $pagination = $paginator->paginate(
+        $qry,
+        $this->get('request')->query->get('page', 1),//page number
+            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
+          );
+      return $pagination;
+    } 
+    
 }
