@@ -18,24 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UsuarioMenuController extends Controller
 {
-  /**
-   * Lists all UsuarioMenu entities.
-   *
-   */
-    /*
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $entities = $em->getRepository('INCESComedorBundle:UsuarioMenu')->findAll();
-
-        //return array('entities' => $entities);
-        return $this->render('INCESComedorBundle:UsuarioMenu:index.html.twig', array(
-             'entities' => $entities
-        ));
-    }
-     */
-
+  
   /**
    * Finds and displays a UsuarioMenu entity.
    *
@@ -151,7 +134,6 @@ class UsuarioMenuController extends Controller
           $em->persist($entity);
           $em->flush();
 
-          //return $this->redirect($this->generateUrl('usuariomenu_edit', array('id' => $id)));
           $route = $request->getBaseUrl();
           return new Response($route.'/#!/usuariomenu/'.$entity->getId().'/show');
         }
@@ -189,7 +171,6 @@ class UsuarioMenuController extends Controller
 
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/usuariomenu');
-        //return $this->redirect($this->generateUrl('usuariomenu'));
     }
 
     private function createDeleteForm($id)
@@ -200,7 +181,65 @@ class UsuarioMenuController extends Controller
         ;
     }
 
-    public function _indexAction($query, $sort = null, $direction = null){
+    /*
+     *  Search Ajax
+     */
+    public function searchAjaxAction(){
+      $request = $this->get('request');
+      $query     = $request->query->get('query');
+      $sort      = $request->query->get('sort');
+      $direction = $request->query->get('direction');
+
+      if(is_null($query))
+        $query   = $request->query->get('query')."*";
+
+      if (!$query) {
+        $pagination = $this->_indexPagination($query, $sort, $direction);
+        return $this->render('INCESComedorBundle:UsuarioMenu:_index.html.twig', array(
+          'pagination' => $pagination
+          ,'query' => $query
+          ,'sort' => $sort
+          ,'direction'  => $direction
+        ));
+        }else{
+            if ('*' == $query){
+              $query = '';
+              $pagination = $this->_indexPagination($query, $sort, $direction);
+              return $this->render('INCESComedorBundle:UsuarioMenu:_index.html.twig', array(
+                'pagination' => $pagination
+                ,'query' => $query
+                ,'sort' => $sort
+                ,'direction'  => $direction
+              ));
+                }
+                $query = htmlspecialchars(urldecode($query));
+                $query = substr_replace($query ,"",-1);
+                $_query = $this->params($query);
+                $pagination = $this->_indexPagination($_query);
+                return $this->render('INCESComedorBundle:UsuarioMenu:_list.html.twig', array(
+                  'pagination'  => $pagination
+                  ,'query'      => $query
+                ));
+        }
+    }
+
+    /*
+     * Do a general select for UsuarioMenu
+     */
+    private function doSelectUsuarioMenu($sort, $query, $direction){
+	$em = $this->get('doctrine.orm.entity_manager');
+    	$dql = $em->createQueryBuilder();
+	$dql->select('um')
+      	    ->from('INCESComedorBundle:UsuarioMenu', 'um');
+	if($query != "")
+	  $dql->andWhere($query);
+        if($sort != "")
+          $dql->orderBy($sort, $direction);
+
+	return $dql;
+    }
+
+    private function _indexPagination($query, $sort = null, $direction = null){
 
       $em = $this->get('doctrine.orm.entity_manager');
       $emConfig = $em->getConfiguration();
@@ -211,22 +250,34 @@ class UsuarioMenuController extends Controller
       $dql = $em->createQueryBuilder();
       if (is_null($sort))
         if(!$query || $query == '*')
+          /*
           $dql->add('select', 'um')
           ->add('from', 'INCESComedorBundle:UsuarioMenu um');
+          */
+          $dql = $this->doSelectUsuarioMenu("", "", "");
         else
+          /*
           $dql->select('um')
           ->from('INCESComedorBundle:UsuarioMenu', 'um')
           ->where($query);
+          */
+          $dql = $this->doSelectUsuarioMenu("", $query, "");
 
       /* TODO arreglar para filtrar por usuario y menu */
       elseif ($direction == 'asc')
+        /*
         $dql->add('select', 'um')
         ->add('from', 'INCESComedorBundle:UsuarioMenu um')
         ->add('orderBy', $sort.' ASC');
+        */
+        $dql = $this->doSelectUsuarioMenu($sort, "", 'ASC');
       else
+        /*
         $dql->add('select', 'um')
         ->add('from', 'INCESComedorBundle:UsuarioMenu um')
         ->add('orderBy', $sort.' DESC');
+        */
+        $dql = $this->doSelectUsuarioMenu($sort, "", 'DESC');
 
       $qry = $em->createQuery($dql);
       $paginator  = $this->get('knp_paginator');
@@ -237,11 +288,11 @@ class UsuarioMenuController extends Controller
           );
       return $pagination;
     }
-
+    
     /*
      * Debe ser de la forma *\/*\/* - 20/01/2002
      */
-    public function setDate($val){
+    private function setDate($val){
       $res = "";
       $params = trim($val);
       $explote = explode("/", $params);
@@ -265,7 +316,7 @@ class UsuarioMenuController extends Controller
       return $res;
     }
 
-    public function params($params){
+    private function params($params){
       $params = trim($params);
       $explote = explode(" ", $params);
       $res = "";
@@ -276,49 +327,5 @@ class UsuarioMenuController extends Controller
         if(strlen($res) > 3)
           $res = substr_replace($res ,"",-4);
         return $res;
-    }
-
-    /*
-     *  Search Ajax
-     */
-    public function searchAjaxAction(){
-      $request = $this->get('request');
-      $query     = $request->query->get('query');
-      $sort      = $request->query->get('sort');
-      $direction = $request->query->get('direction');
-
-      if(is_null($query))
-        $query   = $request->query->get('query')."*";
-
-      if (!$query) {
-        $pagination = $this->_indexAction($query, $sort, $direction);
-        return $this->render('INCESComedorBundle:UsuarioMenu:_index.html.twig', array(
-          'pagination' => $pagination
-          ,'query' => $query
-          ,'sort' => $sort
-          ,'direction'  => $direction
-        ));
-        }else{
-          //if ($request->isXmlHttpRequest()){
-            if ('*' == $query){
-              $query = '';
-              $pagination = $this->_indexAction($query, $sort, $direction);
-              return $this->render('INCESComedorBundle:UsuarioMenu:_index.html.twig', array(
-                'pagination' => $pagination
-                ,'query' => $query
-                ,'sort' => $sort
-                ,'direction'  => $direction
-              ));
-                }
-                $query = htmlspecialchars(urldecode($query));
-                $query = substr_replace($query ,"",-1);
-                $_query = $this->params($query);
-                $pagination = $this->_indexAction($_query);
-                return $this->render('INCESComedorBundle:UsuarioMenu:_list.html.twig', array(
-                  'pagination'  => $pagination
-                  ,'query'      => $query
-                ));
-            //}
-        }
     }
 }
