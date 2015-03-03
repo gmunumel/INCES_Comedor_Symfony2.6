@@ -18,14 +18,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UsuarioMenuController extends Controller
 {
-  
+
   /**
    * Finds and displays a UsuarioMenu entity.
    *
    */
   public function showAction($id)
   {
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
 
     $entity = $em->getRepository('INCESComedorBundle:UsuarioMenu')->find($id);
 
@@ -69,7 +69,7 @@ class UsuarioMenuController extends Controller
       $form->bind($request);
 
       if ($form->isValid()) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->persist($entity);
         $em->flush();
 
@@ -89,7 +89,7 @@ class UsuarioMenuController extends Controller
      */
     public function editAction($id)
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:UsuarioMenu')->find($id);
 
@@ -114,7 +114,7 @@ class UsuarioMenuController extends Controller
      */
     public function updateAction($id)
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:UsuarioMenu')->find($id);
 
@@ -157,7 +157,7 @@ class UsuarioMenuController extends Controller
       $form->bind($request);
 
       if ($form->isValid()) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('INCESComedorBundle:UsuarioMenu')->find($id);
 
         if (!$entity) {
@@ -288,7 +288,7 @@ class UsuarioMenuController extends Controller
           );
       return $pagination;
     }
-    
+
     /*
      * Debe ser de la forma *\/*\/* - 20/01/2002
      */

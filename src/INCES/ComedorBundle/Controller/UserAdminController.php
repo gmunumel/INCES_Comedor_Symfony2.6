@@ -31,7 +31,7 @@ class UserAdminController extends Controller
      */
     public function listAction()
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entities = $em->getRepository('INCESComedorBundle:UserAdmin')->findAll();
 
@@ -46,7 +46,7 @@ class UserAdminController extends Controller
      */
     public function showAction($id)
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:UserAdmin')->find($id);
 
@@ -75,7 +75,7 @@ class UserAdminController extends Controller
       $form->bind($request);
 
       if ($form->isValid()) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('INCESComedorBundle:UserAdmin')->find($id);
 
         if (!$entity) {

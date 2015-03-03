@@ -26,7 +26,7 @@ class TicketController extends Controller
     public function showAction($id)
     {
 
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:Usuario')->find($id);
 

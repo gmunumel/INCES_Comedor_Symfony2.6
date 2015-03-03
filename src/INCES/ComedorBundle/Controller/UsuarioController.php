@@ -27,7 +27,7 @@ class UsuarioController extends Controller
    */
   public function showAction($id)
   {
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
 
     $entity = $em->getRepository('INCESComedorBundle:Usuario')->find($id);
 
@@ -71,7 +71,7 @@ class UsuarioController extends Controller
       $form->bind($request);
 
       if ($form->isValid()) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->persist($entity);
         $em->flush();
 
@@ -118,7 +118,7 @@ class UsuarioController extends Controller
       $form->bind($request);
 
       if ($form->isValid()) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->persist($entity);
         $em->flush();
 
@@ -143,7 +143,7 @@ class UsuarioController extends Controller
      */
     public function editAction($id)
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:Usuario')->find($id);
 
@@ -168,7 +168,7 @@ class UsuarioController extends Controller
      */
     public function updateAction($id)
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:Usuario')->find($id);
 
@@ -216,7 +216,7 @@ class UsuarioController extends Controller
       $form->bind($request);
 
       if ($form->isValid()) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('INCESComedorBundle:Usuario')->find($id);
 
         if (!$entity) {
@@ -272,7 +272,7 @@ class UsuarioController extends Controller
      */
     public function searchAction(){
 
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
       $request = $this->get('request');
       $query = $request->query->get('query');
       $query = substr_replace($query ,"",-1);
@@ -390,7 +390,7 @@ class UsuarioController extends Controller
      */
     public function searchUsuarioAjaxAction(){
 
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
       $request = $this->get('request');
       $query = $request->query->get('query');
 
@@ -434,7 +434,7 @@ class UsuarioController extends Controller
 
     public function cargaMasivaAction(){
 
-      $em      = $this->getDoctrine()->getEntityManager();
+      $em      = $this->getDoctrine()->getManager();
       $request = $this->getRequest();
       $cm_form = $this->createForm(new CargaMasivaType());
       //$cm_form->bind($request);
@@ -470,7 +470,7 @@ class UsuarioController extends Controller
 
     public function editMasivoAction(){
 
-      $em      = $this->getDoctrine()->getEntityManager();
+      $em      = $this->getDoctrine()->getManager();
       $request = $this->getRequest();
       $cm_form = $this->createForm(new CargaMasivaType());
       //$cm_form->bind($request);
@@ -574,7 +574,7 @@ class UsuarioController extends Controller
 
     private function validaciones($arr, $edit = false){
       $i     = 0;
-      $em    = $this->getDoctrine()->getEntityManager();
+      $em    = $this->getDoctrine()->getManager();
       $dql   = $em->createQueryBuilder();
       $dql->select('r.nombre')
         ->from('INCESComedorBundle:Rol', 'r');
@@ -659,7 +659,7 @@ class UsuarioController extends Controller
     private function saveValues($arr){
       $i      = 0;
       $rol_id = 0;
-      $em     = $this->getDoctrine()->getEntityManager();
+      $em     = $this->getDoctrine()->getManager();
       $roles  = $em->getRepository('INCESComedorBundle:Rol')->findAll();
       $conn   = $this->get('database_connection');
 
@@ -692,7 +692,7 @@ class UsuarioController extends Controller
     private function updateValues($arr){
       $i      = 0;
       $rol_id = 0;
-      $em     = $this->getDoctrine()->getEntityManager();
+      $em     = $this->getDoctrine()->getManager();
       $roles  = $em->getRepository('INCESComedorBundle:Rol')->findAll();
       $qb     = $em->createQueryBuilder();
 
@@ -892,6 +892,6 @@ class UsuarioController extends Controller
             $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
           );
       return $pagination;
-    } 
-    
+    }
+
 }

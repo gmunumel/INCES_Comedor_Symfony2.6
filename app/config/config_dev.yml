@@ -89,9 +89,9 @@ knp_paginator:
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
 #    templating: ~ # enables view helper and twig
 
-#
 knp_snappy:
     pdf:
         enabled:    true
         binary:     /usr/local/bin/wkhtmltopdf
         options:    []
+

@@ -6,11 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
+  public function setUp()
+  {
+    $this->client = static::createClient();
+  }
+
   public function testIndex()
   {
-    $client = static::createClient();
-
-    $crawler = $client->request('GET', '/');
+    $crawler = $this->client->request('GET', '/');
 
     $this->assertGreaterThan(
       0,
@@ -20,9 +23,7 @@ class DefaultControllerTest extends WebTestCase
 
   public function testError()
   {
-    $client = static::createClient();
-
-    $crawler = $client->request('GET', '/error');
+    $crawler = $this->client->request('GET', '/error');
 
     $this->assertGreaterThan(
       0,

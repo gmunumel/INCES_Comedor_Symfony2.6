@@ -1,17 +1,17 @@
 Primer Commit del GIT 13/05/2012
 
-Este reposialry (repo) está enfocado en la creación del proyecal
-Web para el servicio Comedor de la Institución INCES.
+Project developed using Symfony2.6, MySQL and Vim, etc
 
-Es un proyecal desarrollado en Symfony2, utilizando MySQL-Phpmyadmin, 
-Netbeans/gVIM entre otras herramientas.
-
-Este proyecal servirá al Bachiller Carlos Ruiz optar por el título 
-Ingeniero de Sistemas de la Universidad Nacional Experimental 
-Politécnica "Analnio José de Sucre" (UNEXPO).
+Install:
 
 Update de vendor
  composer update
+
+If you want to reset the seed use:
+   ALTER TABLE <table_name> AUTO_INCREMENT = 1;
+
+Force the remove of the schema
+   php app/console doctrine:schema:drop --force
 
 Force the creation of the schema
    php app/console doctrine:schema:update --force

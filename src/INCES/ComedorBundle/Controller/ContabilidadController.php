@@ -22,19 +22,12 @@ class ContabilidadController extends Controller
     return $this->render('INCESComedorBundle:Contabilidad:index.html.twig');
   }
 
-  private function isValid($value){
-    $valid = false;
-    $from = $value->get('from')->getData();
-    $to   = $value->get('to')->getData();
-    $rol  = $value->get('rol')->getData();
-  }
-
   public function reporteIngresosTodayAction(){
 
     $from = new \DateTime('now');
     $to   = new \DateTime('now');
 
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
     $request    = $this->getRequest();
     $filterForm = $this->createForm(new ContabilidadType());
 
@@ -87,7 +80,7 @@ class ContabilidadController extends Controller
 
   public function reporteIngresosAction(){
 
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
     $request    = $this->getRequest();
     $filterForm = $this->createForm(new ContabilidadType());
 
@@ -105,7 +98,7 @@ class ContabilidadController extends Controller
       $dql = $em->createQueryBuilder();
 
       // calling dispatcher
-      $dql = $this->disReporteIngresosAction($from, $to, $rol, "");
+      $dql = $this->disReporteIngresos($from, $to, $rol, "");
 
       $qry = $em->createQuery($dql);
       $pagination = $qry->getResult();
@@ -138,7 +131,7 @@ class ContabilidadController extends Controller
 
   public function reporteUsuariosAction(){
 
-    $em         = $this->getDoctrine()->getEntityManager();
+    $em         = $this->getDoctrine()->getManager();
     $request    = $this->getRequest();
     $filterForm = $this->createForm(new ContabilidadType());
 
@@ -174,7 +167,7 @@ class ContabilidadController extends Controller
 
   public function printReporteUsuariosAction($ced = "", $from = "", $to = ""){
 
-    $em         = $this->getDoctrine()->getEntityManager();
+    $em         = $this->getDoctrine()->getManager();
     $request    = $this->getRequest();
 
     $dql = $em->createQueryBuilder();
@@ -200,7 +193,7 @@ class ContabilidadController extends Controller
     $from = new \DateTime('now');
     $to   = new \DateTime('now');
 
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
     $request    = $this->getRequest();
 
     /* TODO Hacer el calculo del dinero ganado */
@@ -221,7 +214,7 @@ class ContabilidadController extends Controller
     // Get cantidadTotal
     $cantidadTotal = count($pagination);
 
-    // Get monal total
+    // Get monto total
     foreach($pagination as $value){
       $montoTotal += floatval($value->getUsuario()->getRol()->getMonto());
     }
@@ -242,7 +235,7 @@ class ContabilidadController extends Controller
 
   public function printReportIncomeAction($rol = "", $from = "", $to = ""){
 
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
     $request    = $this->getRequest();
 
     /* TODO Hacer el calculo del dinero ganado */
@@ -253,7 +246,7 @@ class ContabilidadController extends Controller
     $dql = $em->createQueryBuilder();
 
     // calling dispatcher
-    $dql = $this->disReportIncomeAction($from, $to, $rol, "");
+    $dql = $this->disReportIncome($from, $to, $rol, "");
 
     $qry = $em->createQuery($dql);
     $pagination = $qry->getResult();
@@ -282,6 +275,13 @@ class ContabilidadController extends Controller
     return $this->printReporte($html, $translated);
   }
 
+  private function isValid($value){
+    $valid = false;
+    $from = $value->get('from')->getData();
+    $to   = $value->get('to')->getData();
+    $rol  = $value->get('rol')->getData();
+  }
+
   private function printReporte($html, $nameFile){
     return new Response(
       $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
@@ -294,7 +294,7 @@ class ContabilidadController extends Controller
   }
 
   private function doSelect($from, $to, $rol, $ced) {
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
     $dql = $em->createQueryBuilder();
     $dql->select('um', 'u', 'r')
       ->from('INCESComedorBundle:UsuarioMenu', 'um')
@@ -340,8 +340,8 @@ class ContabilidadController extends Controller
     return $totals;
   }
 
-  private function disReportIncomeAction($from, $to, $rol, $ced){
-    $em = $this->getDoctrine()->getEntityManager();
+  private function disReportIncome($from, $to, $rol, $ced){
+    $em = $this->getDoctrine()->getManager();
     $dql = $em->createQueryBuilder();
     // First Case: Fechas vacio y rol vacio
     if($from == "" and $to == "" and $rol == "")
@@ -359,8 +359,8 @@ class ContabilidadController extends Controller
     return $dql;
   }
 
-  private function disReporteIngresosAction($from, $to, $rol, $ced) {
-    $em = $this->getDoctrine()->getEntityManager();
+  private function disReporteIngresos($from, $to, $rol, $ced) {
+    $em = $this->getDoctrine()->getManager();
     $dql = $em->createQueryBuilder();
     // First Case: Fechas vacio y rol vacio
     if($from == "" and $to == "" and $rol == "")

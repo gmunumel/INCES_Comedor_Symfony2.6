@@ -4,51 +4,26 @@ namespace INCES\ComedorBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class MenuControllerTest extends WebTestCase
+class MenuControllerTest extends AbstractControllerTest
 {
-    /*
-    public function testCompleteScenario()
-    {
-        // Create a new client al browse the application
-        $client = static::createClient();
+  public function testIndex()
+  {
+    $crawler = $this->client->request('GET', '/menu');
+    $crawler = $this->client->followRedirect();
 
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/menu/');
-        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("List Menus")')->count()
+    );
+  }
 
-        // Fill in the form and submit it
-        $form = $crawler->selectButaln('Create')->form(array(
-            'menu[field_name]'  => 'Test',
-            // ... other fields al fill
-        ));
+  public function testShow()
+  {
+    $crawler = $this->client->request('GET', '/menu/1/show');
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check data in the show view
-        $this->assertTrue($crawler->filter('td:contains("Test")')->count() > 0);
-
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
-
-        $form = $crawler->selectButaln('Edit')->form(array(
-            'menu[field_name]'  => 'Foo',
-            // ... other fields al fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertTrue($crawler->filter('[value="Foo"]')->count() > 0);
-
-        // Delete the entity
-        $client->submit($crawler->selectButaln('Delete')->form());
-        $crawler = $client->followRedirect();
-
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
-    }
-     */
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Show Menu")')->count()
+    );
+  }
 }

@@ -94,22 +94,22 @@ class MenuController extends Controller
      */
     public function showAction($id)
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:Menu')->find($id);
 
       if (!$entity) {
-        $translated = 'Unable al find Menu entity';
+        $translated = 'Unable to find Menu entity';
         throw $this->createNotFoundException($translated);
-        }
+      }
 
-        $deleteForm = $this->createDeleteForm($id);
+      $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('INCESComedorBundle:Menu:show.html.twig', array(
+      return $this->render('INCESComedorBundle:Menu:show.html.twig', array(
           'entity'      => $entity,
           'delete_form' => $deleteForm->createView(),
 
-        ));
+      ));
     }
 
     /**
@@ -139,7 +139,7 @@ class MenuController extends Controller
       $form->bind($request);
 
       if ($form->isValid()) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->persist($entity);
         $em->flush();
 
@@ -159,7 +159,7 @@ class MenuController extends Controller
      */
     public function editAction($id)
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:Menu')->find($id);
 
@@ -184,7 +184,7 @@ class MenuController extends Controller
      */
     public function updateAction($id)
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:Menu')->find($id);
 
@@ -227,7 +227,7 @@ class MenuController extends Controller
       $form->bind($request);
 
       if ($form->isValid()) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('INCESComedorBundle:Menu')->find($id);
 
         if (!$entity) {
@@ -249,7 +249,7 @@ class MenuController extends Controller
      */
     public function showTodayAction($id)
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:Menu')->find($id);
 
@@ -294,7 +294,7 @@ class MenuController extends Controller
       $form->bind($request);
 
       if ($form->isValid()) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->persist($entity);
         $em->flush();
 
@@ -314,7 +314,7 @@ class MenuController extends Controller
      */
     public function editTodayAction($id)
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:Menu')->find($id);
 
@@ -339,7 +339,7 @@ class MenuController extends Controller
      */
     public function updateTodayAction($id)
     {
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('INCESComedorBundle:Menu')->find($id);
 
@@ -382,7 +382,7 @@ class MenuController extends Controller
       $form->bind($request);
 
       if ($form->isValid()) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('INCESComedorBundle:Menu')->find($id);
 
         if (!$entity) {
@@ -461,7 +461,7 @@ class MenuController extends Controller
     {
       $request = $this->getRequest();
 
-      $em = $this->getDoctrine()->getEntityManager();
+      $em = $this->getDoctrine()->getManager();
       $emConfig = $em->getConfiguration();
       $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
       $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
@@ -476,8 +476,8 @@ class MenuController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         //Verificar si se encuentra dentro del horario
-	/*        
-	$em = $this->get('doctrine.orm.entity_manager');        
+	/*
+	$em = $this->get('doctrine.orm.entity_manager');
 	$dql = $em->createQueryBuilder();
         $dql->select('u, r')
           ->from('INCESComedorBundle:Usuario', 'u')
@@ -489,19 +489,19 @@ class MenuController extends Controller
 
         $now = new \DateTime('now');
         $hour = $now->format('H');
-        $hours = $this->comparisonHours($entity->getRol()->getHoraComerStartAMPM(), 
-			$entity->getRol()->getHoraComerEndAMPM(), 
+        $hours = $this->comparisonHours($entity->getRol()->getHoraComerStartAMPM(),
+			$entity->getRol()->getHoraComerEndAMPM(),
 			$entity->getRol()->getHoraComerStart(),
 			$entity->getRol()->getHoraComerEnd());
 
 	*/
 	$hours = $this->validHours($id);
-	$hourStart = $hours[0];	
+	$hourStart = $hours[0];
         $hourEnd = $hours[1];
 	$entity = $hours[2];
 	$now = new \DateTime('now');
 	$hour = $now->format('H');
-        
+
         if ($hour < $hourStart || $hour > $hourEnd){
           $content = $this->renderView(
             'INCESComedorBundle:Menu:error_already_eat.html.twig', array(
@@ -531,14 +531,14 @@ class MenuController extends Controller
          *  Arreglar URL
      */
         //if($count > 0){
-	  $em = $this->get('doctrine.orm.entity_manager'); 
+	  $em = $this->get('doctrine.orm.entity_manager');
           $dql = $em->createQuery('SELECT um FROM INCES\ComedorBundle\Entity\UsuarioMenu um WHERE um.usuario = :id and YEAR(um.dia) = :year and MONTH(um.dia) = :month and DAY(um.dia) = :day');
           $dql->setParameter('id', $id);
           $dql->setParameter('year', $now->format("Y"));
           $dql->setParameter('month', $now->format("m"));
           $dql->setParameter('day', $now->format("d"));
           $_entity   = $dql->getOneOrNullResult();
-	  if($_entity != null){	
+	  if($_entity != null){
 		  //$_entity   = $_entity[0];
 		  $lncHora   = $_entity->getDia()->format("H");
 		  $lncMinuto = $_entity->getDia()->format("i");
@@ -754,8 +754,8 @@ class MenuController extends Controller
 
         $now = new \DateTime('now');
         $hour = $now->format('H');
-        $hours = $this->comparisonHours($entity->getRol()->getHoraComerStartAMPM(), 
-			$entity->getRol()->getHoraComerEndAMPM(), 
+        $hours = $this->comparisonHours($entity->getRol()->getHoraComerStartAMPM(),
+			$entity->getRol()->getHoraComerEndAMPM(),
 			$entity->getRol()->getHoraComerStart(),
 			$entity->getRol()->getHoraComerEnd());
 
