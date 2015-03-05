@@ -2,47 +2,27 @@
 
 namespace INCES\ComedorBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
+//use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+//use Symfony\Component\BrowserKit\Cookie;
 
 abstract class AbstractControllerTest extends WebTestCase
 {
-  /**
-   * @var Client
-   **/
-  protected $client = null;
-  protected $username = 'root';
-
-
   public function setUp()
   {
-    $this->client = $this->createAuthorizedClient();
-  }
+    // add all your fixtures classes that implement
+    // Doctrine\Common\DataFixtures\FixtureInterface
+    $this->loadFixtures(array(
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadUserAdminData',
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadMenuData'
+    ));
 
-  /**
-   * @return Client
-   **/
-  protected function createAuthorizedClient()
-  {
-    $client = static::createClient();
-    $container = $client->getContainer();
+    $user = $this->getContainer()
+      ->get('doctrine.orm.default_entity_manager')
+      ->getRepository('INCESComedorBundle:UserAdmin')->find(1);
 
-    $session = $container->get('session');
-    /** @var $userManager \FOS\UserBundle\Doctrine\UserManager */
-    $userManager = $container->get('fos_user.user_manager');
-    /** @var $loginManager \FOS\UserBundle\Security\LoginManager */
-    $loginManager = $container->get('fos_user.security.login_manager');
-    $firewallName = $container->getParameter('fos_user.firewall_name');
+    $this->loginAs($user, 'main');
 
-    $user = $userManager->findUserBy(array('username' => $this->username));
-    $loginManager->loginUser($firewallName, $user);
-
-    // save the login token into the session and put it in a cookie
-    $container->get('session')->set('_security_' . $firewallName,
-      serialize($container->get('security.context')->getToken()));
-    $container->get('session')->save();
-    $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
-
-    return $client;
+    $this->client = $this->makeClient(true);
   }
 }

@@ -7,7 +7,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use INCES\ComedorBundle\Entity\Menu;
 
-class LoadmenuData extends AbstractFixture implements OrderedFixtureInterface
+class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
 {
   public function load(ObjectManager $manager)
   {

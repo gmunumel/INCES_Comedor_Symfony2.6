@@ -18,7 +18,7 @@ class LoadUsuarioMenuData extends AbstractFixture implements OrderedFixtureInter
 
     $manager->persist($userMenu);
     $manager->flush();
-    }
+  }
 
     public function getOrder()
     {

@@ -3,7 +3,7 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: null
-    database_name: symfony
+    database_name: inces_comedor
     database_user: root
     database_password: admin
     mailer_transport: smtp
@@ -13,3 +13,4 @@ parameters:
     locale: en
     secret: ThisTokenIsNotSoSecretChangeIt
     RESULTS_PER_PAGE: 2
+    LUNCH_PER_PAGE: 10

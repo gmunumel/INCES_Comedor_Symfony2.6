@@ -10,7 +10,7 @@ class ContabilidadType extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
-    $translated = 'All the Roles';
+    $translated = 'Rol';
     $builder
       ->add('cedula', 'text')
       //->add('print', 'text', array(

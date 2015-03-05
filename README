@@ -2,7 +2,7 @@ Primer Commit del GIT 13/05/2012
 
 Project developed using Symfony2.6, MySQL and Vim, etc
 
-Install:
+*** Install:
 
 Update de vendor
  composer update
@@ -26,19 +26,33 @@ Create a initial user al login
 
 Add al app/config/parameters.yml
   RESULTS_PER_PAGE: <number>
+  LUNCH_PER_PAGE: <number>
 
 Follow this guide al install well the wkhtmlalpdf
-wget http://wkhtmlalpdf.googlecode.com/files/wkhtmlalpdf-0.9.9-static-i386.tar.bz2
-tar xvjf wkhtmlalpdf-0.9.9-static-i386.tar.bz2
-sudo mv wkhtmlalpdf-i386 /usr/local/bin/wkhtmlalpdf
-sudo chmod +x /usr/local/bin/wkhtmlalpdf
+ wget http://wkhtmlalpdf.googlecode.com/files/wkhtmlalpdf-0.9.9-static-i386.tar.bz2
+ tar xvjf wkhtmlalpdf-0.9.9-static-i386.tar.bz2
+ sudo mv wkhtmlalpdf-i386 /usr/local/bin/wkhtmlalpdf
+ sudo chmod +x /usr/local/bin/wkhtmlalpdf
 
 try with
-/usr/local/bin/wkhtmlalpdf --page-size A4 --quiet http://google.com google.pdf
+  /usr/local/bin/wkhtmlalpdf --page-size A4 --quiet http://google.com google.pdf
 
 
-  TODO
+*** TODO
   Fix menu -> general -> acciones
 
   Try al fix datapicker, it looks weird and the menu appears over it
+
+  In localhost:8000/#!/usuario the images aren't displaying well 
+
+  Check why is passing the MenuFacturar without select a Menu
   
+*** Test
+   The controllers were tested using functional test 
+   The model was tested using unit-test (isolated enviroment)
+
+   Run a specific test
+   phpunit -c app src/INCES/ComedorBundle/Tests/Controller/MenuControllerTest.php
+
+   Run all tests for the entire Bundle
+$  phpunit -c app src/Acme/DemoBundle/

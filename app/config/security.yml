@@ -29,7 +29,7 @@ security:
                 path:   /admin/logout
                 target: /
             anonymous: true
-            #http_basic:
+            http_basic: ~
             #    realm: "Secured Demo Area"
 
     access_control:

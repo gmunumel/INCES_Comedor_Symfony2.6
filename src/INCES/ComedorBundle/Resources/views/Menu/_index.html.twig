@@ -10,7 +10,7 @@
           <form class="generic" action="{{ app.request.uriForPath('/menu/search') }}" method="get">
             <img src="{{ asset('img/search.png') }}" class="searchbox_submit" value="" />
             <input autocomplete="off" type="text" class="text" name="query" value="{{query}}" id="search_keywords" />
-            <input class="search_keywords" type="submit" value="search" style="display:none;"/>
+            <input id="query-submit" class="search_keywords" type="submit" value="search" style="display:none;"/>
           </form>
         </div>
         <td>
@@ -138,19 +138,12 @@
         </li>
       </ul>
       #}
-      {#
-      <script type="text/javascript" src="{{ asset('js/jquery-1.7.2.min.js') }}"></script>
-      <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
-      #}
       {% if pagination|length != 0 %}
       <div class="navigation">
         {{knp_pagination_render(pagination)|replace({'menu': '#!/menu'})|raw}}
       </div>
       {% endif %}
 
-      {#
-      <script type="text/javascript" src="{{ asset('js/jquery-1.7.2.min.js') }}"></script>
-      #}
       <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
 
     </div> <!-- /col-text -->

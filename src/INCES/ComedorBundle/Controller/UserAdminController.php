@@ -23,7 +23,7 @@ class UserAdminController extends Controller
   public function indexAction()
   {
     return $this->render('INCESComedorBundle:UserAdmin:index.html.twig');
-    }
+  }
 
     /**
      * Lists all UserAdmin entities.
@@ -81,14 +81,14 @@ class UserAdminController extends Controller
         if (!$entity) {
           $translated = 'Unable to find UserAdmin entity';
           throw $this->createNotFoundException($translated);
-            }
-
-            $em->remove($entity);
-            $em->flush();
         }
 
-        $route = $request->getBaseUrl();
-        return new Response($route.'/#!/admin/list');
+        $em->remove($entity);
+        $em->flush();
+      }
+
+      $route = $request->getBaseUrl();
+      return new Response($route.'/#!/admin/list');
     }
 
     private function createDeleteForm($id)

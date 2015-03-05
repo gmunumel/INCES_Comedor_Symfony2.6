@@ -470,33 +470,6 @@ class appTestUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
             }
             not_usuariomenu_create:
 
-            // usuariomenu_edit
-            if (preg_match('#^/usuariomenu/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'usuariomenu_edit')), array (  '_controller' => 'INCES\\ComedorBundle\\Controller\\UsuarioMenuController::editAction',));
-            }
-
-            // usuariomenu_update
-            if (preg_match('#^/usuariomenu/(?P<id>[^/]++)/update$#s', $pathinfo, $matches)) {
-                if ($this->context->getMethod() != 'POST') {
-                    $allow[] = 'POST';
-                    goto not_usuariomenu_update;
-                }
-
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'usuariomenu_update')), array (  '_controller' => 'INCES\\ComedorBundle\\Controller\\UsuarioMenuController::updateAction',));
-            }
-            not_usuariomenu_update:
-
-            // usuariomenu_delete
-            if (preg_match('#^/usuariomenu/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
-                if ($this->context->getMethod() != 'POST') {
-                    $allow[] = 'POST';
-                    goto not_usuariomenu_delete;
-                }
-
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'usuariomenu_delete')), array (  '_controller' => 'INCES\\ComedorBundle\\Controller\\UsuarioMenuController::deleteAction',));
-            }
-            not_usuariomenu_delete:
-
             // usuariomenu_search_ajax
             if ($pathinfo === '/usuariomenu/searcha') {
                 if (!in_array($this->context->getMethod(), array('GET', 'POST', 'HEAD'))) {

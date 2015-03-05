@@ -10,7 +10,7 @@
           <form class="generic" action="{{ app.request.uriForPath('/menu/search') }}" method="get">
             <img src="{{ asset('img/search.png') }}" class="searchbox_submit" value="" />
             <input autocomplete="off" type="text" class="text" name="query" value="{{query}}" id="search_keywords" />
-            <input type="submit" value="search" style="display:none;"/>
+            <input id="query-submit" type="submit" value="search" style="display:none;"/>
           </form>
         </div>
         <td>
@@ -124,9 +124,6 @@
       </div>
       {% endif %}
 
-      {#
-      <script type="text/javascript" src="{{ asset('js/jquery-1.7.2.min.js') }}"></script>
-      #}
       <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
 
     </div> <!-- /col-text -->

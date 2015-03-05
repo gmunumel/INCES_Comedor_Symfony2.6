@@ -19,21 +19,21 @@ usuariomenu_create:
     requirements: 
         _method: post 
 
-usuariomenu_edit:
-    pattern:  /{id}/edit
-    defaults: { _controller: "INCESComedorBundle:UsuarioMenu:edit" }
+#usuariomenu_edit:
+#    pattern:  /{id}/edit
+#    defaults: { _controller: "INCESComedorBundle:UsuarioMenu:edit" }
 
-usuariomenu_update:
-    pattern:  /{id}/update
-    defaults: { _controller: "INCESComedorBundle:UsuarioMenu:update" }
-    requirements: 
-        _method: post 
+#usuariomenu_update:
+#    pattern:  /{id}/update
+#    defaults: { _controller: "INCESComedorBundle:UsuarioMenu:update" }
+#    requirements: 
+#        _method: post 
 
-usuariomenu_delete:
-    pattern:  /{id}/delete
-    defaults: { _controller: "INCESComedorBundle:UsuarioMenu:delete" }
-    requirements: 
-        _method: post 
+#usuariomenu_delete:
+#    pattern:  /{id}/delete
+#    defaults: { _controller: "INCESComedorBundle:UsuarioMenu:delete" }
+#    requirements: 
+#        _method: post 
 
 usuariomenu_search_ajax:
     pattern:  /searcha

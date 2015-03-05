@@ -11,7 +11,7 @@
           <form class="generic" action="{{ app.request.uriForPath('/usuario/searchalnc') }}" method="get">
             <img src="{{ asset('img/search.png') }}" class="searchbox_submit" value="" />
             <input autocomplete="off" type="text" class="text" name="query" value="{{query}}" id="search_keywords" />
-            <input type="submit" value="search" style="display:none;"/>
+            <input id="query-submit" type="submit" value="search" style="display:none;"/>
           </form>
         </div>
         <td>

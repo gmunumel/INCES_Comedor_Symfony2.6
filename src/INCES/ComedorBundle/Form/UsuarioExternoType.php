@@ -36,9 +36,8 @@ class UsuarioExternoType extends AbstractType
         'query_builder' => function(EntityRepository $er) {
           return $er->createQueryBuilder('r')
             ->where("r.nombre = 'Externo'");
-                },
-                ))
-                ;
+          },
+      ));
     }
 
     public function getName()

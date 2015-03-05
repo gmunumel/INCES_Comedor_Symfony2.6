@@ -134,6 +134,7 @@ $(document).ready(function()
             'inces_comedorbundle_usuariotype[cedula]'   : { isANumber          : true },
             'inces_comedorbundle_usuariotype[ncarnet]'  : { isANumber          : true },
             'inces_comedorbundle_usuariotype[correo]'   : { validateEmail      : true },
+	    'inces_comedorbundle_usuariotype[rol]'      : { required           : true },
             'inces_comedorbundle_usuariotype[image]'    : { userImageExtension : true }
         },
         messages: {
@@ -142,7 +143,8 @@ $(document).ready(function()
             'inces_comedorbundle_usuariotype[cedula]'   : { isANumber          : 'Fill the field \'Id\' with a valid input' },
             'inces_comedorbundle_usuariotype[ncarnet]'  : { isANumber          : 'Fill the field \'Card Number\' with a valid input' },
             'inces_comedorbundle_usuariotype[correo]'   : { validateEmail      : 'Fill the field \'Email\' with a valid format' },
-            'inces_comedorbundle_usuariotype[image]'    : { userImageExtension : 'The format must be gif|jpg|png' }
+            'inces_comedorbundle_usuariotype[rol]'      : { required           : 'Fill the field \'Rol\'' },
+	    'inces_comedorbundle_usuariotype[image]'    : { userImageExtension : 'The format must be gif|jpg|png' }
         }
     });
     $('.usuario_externo_form').validate({

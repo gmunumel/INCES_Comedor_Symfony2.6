@@ -2,10 +2,31 @@
 
 namespace INCES\ComedorBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+//use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
-class ContabilidadControllerTest extends AbstractControllerTest
+class ContabilidadControllerTest extends WebTestCase
 {
+  public function setUp()
+  {
+    // add all your fixtures classes that implement
+    // Doctrine\Common\DataFixtures\FixtureInterface
+    $this->loadFixtures(array(
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadUserAdminData',
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadRolData',
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadUsuarioData',
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadMenuData',
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadUsuarioMenuData'
+    ));
+
+    $user = $this->getContainer()
+      ->get('doctrine.orm.default_entity_manager')
+      ->getRepository('INCESComedorBundle:UserAdmin')->find(1);
+
+    $this->loginAs($user, 'main');
+
+    $this->client = $this->makeClient(true);
+  }
 
   public function testIndex()
   {
@@ -25,7 +46,7 @@ class ContabilidadControllerTest extends AbstractControllerTest
   public function testReporteIngresos()
   {
     // Scenario - GET
-      $crawler = $this->client->request('GET', '/contabilidad/reporteingresos');
+    $crawler = $this->client->request('GET', '/contabilidad/reporteingresos');
     $this->assertGreaterThan(
       0,
       $crawler->filter('html:contains("Income Report")')->count()

@@ -32,15 +32,15 @@ class UsuarioMenuController extends Controller
     if (!$entity) {
       $translated = 'Unable to find User entityMenu';
       throw $this->createNotFoundException($translated);
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('INCESComedorBundle:UsuarioMenu:show.html.twig', array(
-          'entity'      => $entity,
-          'delete_form' => $deleteForm->createView(),
-        ));
     }
+
+    $deleteForm = $this->createDeleteForm($id);
+
+    return $this->render('INCESComedorBundle:UsuarioMenu:show.html.twig', array(
+        'entity'      => $entity,
+        'delete_form' => $deleteForm->createView(),
+    ));
+  }
 
     /**
      * Displays a form to create a new UsuarioMenu entity.
@@ -73,20 +73,22 @@ class UsuarioMenuController extends Controller
         $em->persist($entity);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('usuariomenu_show', array('id' => $entity->getId())));
+        return $this->redirect(
+          $this->generateUrl('usuariomenu_show',
+                 array('id' => $entity->getId())));
+      }
 
-        }
-
-        return $this->render('INCESComedorBundle:UsuarioMenu:new.html.twig', array(
-          'entity' => $entity,
-          'form'   => $form->createView()
-        ));
+      return $this->render('INCESComedorBundle:UsuarioMenu:new.html.twig', array(
+        'entity' => $entity,
+        'form'   => $form->createView()
+      ));
     }
 
     /**
      * Displays a form to edit an existing UsuarioMenu entity.
      *
      */
+    /*
     public function editAction($id)
     {
       $em = $this->getDoctrine()->getManager();
@@ -107,11 +109,12 @@ class UsuarioMenuController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
-
+    */
     /**
      * Edits an existing UsuarioMenu entity.
      *
      */
+    /*
     public function updateAction($id)
     {
       $em = $this->getDoctrine()->getManager();
@@ -144,11 +147,13 @@ class UsuarioMenuController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+    */
 
     /**
      * Deletes a UsuarioMenu entity.
      *
      */
+    /*
     public function deleteAction($id)
     {
       $form = $this->createDeleteForm($id);
@@ -172,6 +177,7 @@ class UsuarioMenuController extends Controller
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/usuariomenu');
     }
+    */
 
     private function createDeleteForm($id)
     {
@@ -191,7 +197,7 @@ class UsuarioMenuController extends Controller
       $direction = $request->query->get('direction');
 
       if(is_null($query))
-        $query   = $request->query->get('query')."*";
+        $query   = $query.'*';
 
       if (!$query) {
         $pagination = $this->_indexPagination($query, $sort, $direction);
@@ -211,15 +217,15 @@ class UsuarioMenuController extends Controller
                 ,'sort' => $sort
                 ,'direction'  => $direction
               ));
-                }
-                $query = htmlspecialchars(urldecode($query));
-                $query = substr_replace($query ,"",-1);
-                $_query = $this->params($query);
-                $pagination = $this->_indexPagination($_query);
-                return $this->render('INCESComedorBundle:UsuarioMenu:_list.html.twig', array(
-                  'pagination'  => $pagination
-                  ,'query'      => $query
-                ));
+            }
+            $query = htmlspecialchars(urldecode($query));
+            $query = substr_replace($query ,"",-1);
+            $_query = $this->params($query);
+            $pagination = $this->_indexPagination($_query);
+            return $this->render('INCESComedorBundle:UsuarioMenu:_list.html.twig', array(
+                'pagination'  => $pagination
+               ,'query'      => $query
+            ));
         }
     }
 
@@ -227,10 +233,12 @@ class UsuarioMenuController extends Controller
      * Do a general select for UsuarioMenu
      */
     private function doSelectUsuarioMenu($sort, $query, $direction){
-	$em = $this->get('doctrine.orm.entity_manager');
+	    $em = $this->get('doctrine.orm.entity_manager');
     	$dql = $em->createQueryBuilder();
 	$dql->select('um')
-      	    ->from('INCESComedorBundle:UsuarioMenu', 'um');
+      	    ->from('INCESComedorBundle:UsuarioMenu', 'um')
+            ->join('um.usuario', 'u')
+            ->join('um.menu', 'm');
 	if($query != "")
 	  $dql->andWhere($query);
         if($sort != "")
@@ -323,9 +331,17 @@ class UsuarioMenuController extends Controller
 
       foreach($explote as $value){
         $res .= $this->setDate($value);
+	if($res == ""){
+          $res .= " (u.cedula like '%" . $value . "%'";
+          $res .= " or u.nombre like '%" . $value . "%'";
+	  $res .= " or u.apellido like '%" . $value . "%'";
+          $res .= " or m.seco like '%" . $value . "%'";
+          $res .= " or m.sopa like '%" . $value . "%'";
+          $res .= " or m.postre like '%" . $value . "%') AND";
         }
-        if(strlen($res) > 3)
-          $res = substr_replace($res ,"",-4);
-        return $res;
+      }
+      if(strlen($res) > 3)
+        $res = substr_replace($res ,"",-4);
+      return $res;
     }
 }

@@ -17,6 +17,7 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src'),
     'Metadata\\' => array($vendorDir . '/jms/metadata/src'),
+    'Liip\\FunctionalTestBundle' => array($vendorDir . '/liip/functional-test-bundle'),
     'Knp\\Snappy' => array($vendorDir . '/knplabs/knp-snappy/src'),
     'Knp\\Component' => array($vendorDir . '/knplabs/knp-components/src'),
     'Knp\\Bundle\\SnappyBundle' => array($vendorDir . '/knplabs/knp-snappy-bundle'),

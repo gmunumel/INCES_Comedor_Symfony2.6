@@ -2,53 +2,121 @@
 
 namespace INCES\ComedorBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+//use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class RolControllerTest extends WebTestCase
 {
-    /*
-    public function testCompleteScenario()
-    {
-        // Create a new client al browse the application
-        $client = static::createClient();
+  public function setUp()
+  {
+    // add all your fixtures classes that implement
+    // Doctrine\Common\DataFixtures\FixtureInterface
+    $this->loadFixtures(array(
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadUserAdminData',
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadRolData'
+    ));
 
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/rol/');
-        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
+    $user = $this->getContainer()
+      ->get('doctrine.orm.default_entity_manager')
+      ->getRepository('INCESComedorBundle:UserAdmin')->find(1);
 
-        // Fill in the form and submit it
-        $form = $crawler->selectButaln('Create')->form(array(
-            'rol[field_name]'  => 'Test',
-            // ... other fields al fill
-        ));
+    $this->loginAs($user, 'main');
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+    $this->client = $this->makeClient(true);
+  }
 
-        // Check data in the show view
-        $this->assertTrue($crawler->filter('td:contains("Test")')->count() > 0);
+  public function testIndex()
+  {
+    $crawler = $this->client->request('GET', '/rol');
+    $crawler = $this->client->followRedirect();
 
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Rol")')->count()
+    );
 
-        $form = $crawler->selectButaln('Edit')->form(array(
-            'rol[field_name]'  => 'Foo',
-            // ... other fields al fill
-        ));
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Jubilado")')->count()
+    );
+  }
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+  public function testShow()
+  {
+    $crawler = $this->client->request('GET', '/rol/1/show');
 
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertTrue($crawler->filter('[value="Foo"]')->count() > 0);
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Jubilado")')->count()
+    );
+  }
 
-        // Delete the entity
-        $client->submit($crawler->selectButaln('Delete')->form());
-        $crawler = $client->followRedirect();
+  public function testIndexCreate()
+  {
+    // Showing the initial new page
+    $crawler = $this->client->request('GET', '/rol/new');
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Add Rol")')->count()
+    );
 
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
-    }
-     */
+    // Fill in the form and submit it
+    $form = $crawler->selectButton('login-submit')->form(array(
+              'inces_comedorbundle_roltype[nombre]'    => 'Test Nombre',
+              'inces_comedorbundle_roltype[monto]'     => 'Test quantity'
+    ));
+    $crawler = $this->client->submit($form);
+
+    // Doing the manual redirect because
+    // I get an url
+    $response = $this->client->getResponse()->getContent();
+    $response = substr($response, 3);
+
+    // Redirecting to new show page
+    $crawler = $this->client->request( 'GET', $response);
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Test Nombre")')->count()
+    );
+  }
+
+  public function testEditUpdate()
+  {
+    // Showing the initial edit page
+    $crawler = $this->client->request('GET', '/rol/1/edit');
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Edit Rol")')->count()
+    );
+
+    // Fill in the form and submit it
+    $form = $crawler->selectButton('login-submit')->form(array(
+              'inces_comedorbundle_roltype[nombre]'  => 'Test Nombre Edit'
+    ));
+    $crawler = $this->client->submit($form);
+
+    // Doing the manual redirect because
+    // I get an url
+    $response = $this->client->getResponse()->getContent();
+    $response = substr($response, 3);
+
+    // Redirecting to new show page
+    $crawler = $this->client->request( 'GET', $response);
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Test Nombre Edit")')->count()
+    );
+  }
+
+  public function testErrorDelete()
+  {
+    $crawler = $this->client->request('GET', '/rol/edelete');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Cannot delete")')->count()
+    );
+  }
 }

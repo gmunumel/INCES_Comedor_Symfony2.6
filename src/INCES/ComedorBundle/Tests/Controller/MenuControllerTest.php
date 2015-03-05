@@ -2,10 +2,32 @@
 
 namespace INCES\ComedorBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+//use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
-class MenuControllerTest extends AbstractControllerTest
+class MenuControllerTest extends WebTestCase
 {
+  public function setUp()
+  {
+    // add all your fixtures classes that implement
+    // Doctrine\Common\DataFixtures\FixtureInterface
+    $this->loadFixtures(array(
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadUserAdminData',
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadRolData',
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadUsuarioData',
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadMenuData',
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadUsuarioMenuData'
+    ));
+
+    $user = $this->getContainer()
+      ->get('doctrine.orm.default_entity_manager')
+      ->getRepository('INCESComedorBundle:UserAdmin')->find(1);
+
+    $this->loginAs($user, 'main');
+
+    $this->client = $this->makeClient(true);
+  }
+
   public function testIndex()
   {
     $crawler = $this->client->request('GET', '/menu');
@@ -26,4 +48,173 @@ class MenuControllerTest extends AbstractControllerTest
       $crawler->filter('html:contains("Show Menu")')->count()
     );
   }
+
+  public function testIndexCreate()
+  {
+    // Showing the initial new page
+    $crawler = $this->client->request('GET', '/menu/new');
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Add Menu")')->count()
+    );
+
+    // Fill in the form and submit it
+    $form = $crawler->selectButton('login-submit')->form(array(
+              'inces_comedorbundle_menutype[seco]'     => 'Test Seco',
+              'inces_comedorbundle_menutype[sopa]'     => 'Test Sopa',
+              'inces_comedorbundle_menutype[salado]'   => 'Test Salado',
+              'inces_comedorbundle_menutype[jugo]'     => 'Test Jugo',
+              'inces_comedorbundle_menutype[ensalada]' => 'Test Ensalada',
+              'inces_comedorbundle_menutype[postre]'   => 'Test Postre'
+    ));
+    $crawler = $this->client->submit($form);
+
+    // Doing the manual redirect because
+    // I get an url
+    $response = $this->client->getResponse()->getContent();
+    $response = substr($response, 3);
+
+    // Redirecting to new show page
+    $crawler = $this->client->request( 'GET', $response);
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Test Sopa")')->count()
+    );
+  }
+
+  public function testEditUpdate()
+  {
+    // Showing the initial edit page
+    $crawler = $this->client->request('GET', '/menu/1/edit');
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Update Menu")')->count()
+    );
+
+    // Fill in the form and submit it
+    $form = $crawler->selectButton('login-submit')->form(array(
+              'inces_comedorbundle_menutype[seco]'     => 'Test Seco Edit'
+    ));
+    $crawler = $this->client->submit($form);
+
+    // Doing the manual redirect because
+    // I get an url
+    $response = $this->client->getResponse()->getContent();
+    $response = substr($response, 3);
+
+    // Redirecting to new show page
+    $crawler = $this->client->request( 'GET', $response);
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Test Seco Edit")')->count()
+    );
+  }
+
+  public function testShowToday()
+  {
+    $crawler = $this->client->request('GET', '/menu/1/showtoday');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Today\'s Menu")')->count()
+    );
+  }
+
+  public function testIndexCreateToday()
+  {
+    // Showing the initial new page
+    $crawler = $this->client->request('GET', '/menu/newtoday');
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Add Today\'s Menu")')->count()
+    );
+
+    // Fill in the form and submit it
+    $form = $crawler->selectButton('login-submit')->form(array(
+              'inces_comedorbundle_menutodaytype[seco]'     => 'Test Seco',
+              'inces_comedorbundle_menutodaytype[sopa]'     => 'Test Sopa',
+              'inces_comedorbundle_menutodaytype[salado]'   => 'Test Salado',
+              'inces_comedorbundle_menutodaytype[jugo]'     => 'Test Jugo',
+              'inces_comedorbundle_menutodaytype[ensalada]' => 'Test Ensalada',
+              'inces_comedorbundle_menutodaytype[postre]'   => 'Test Postre'
+    ));
+    $crawler = $this->client->submit($form);
+
+    // Doing the manual redirect because
+    // I get an url
+    $response = $this->client->getResponse()->getContent();
+    $response = substr($response, 3);
+
+    // Redirecting to new show page
+    $crawler = $this->client->request( 'GET', $response);
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Test Sopa")')->count()
+    );
+  }
+
+  public function testEditUpdateToday()
+  {
+    // Showing the initial edit page
+    $crawler = $this->client->request('GET', '/menu/1/edittoday');
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Today\'s Menu Update")')->count()
+    );
+
+    // Fill in the form and submit it
+    $form = $crawler->selectButton('login-submit')->form(array(
+              'inces_comedorbundle_menutodaytype[seco]' => 'Test Seco Edit'
+    ));
+    $crawler = $this->client->submit($form);
+
+    // Doing the manual redirect because
+    // I get an url
+    $response = $this->client->getResponse()->getContent();
+    $response = substr($response, 3);
+
+    // Redirecting to new show page
+    $crawler = $this->client->request( 'GET', $response);
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Test Seco Edit")')->count()
+    );
+  }
+
+  public function testToday()
+  {
+    $crawler = $this->client->request('GET', '/menu/today');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Today\'s Menus")')->count()
+    );
+  }
+
+  public function testSearchAjaxFacturar()
+  {
+    $crawler = $this->client->request('GET', '/menu/facturar');
+    print_r($crawler);
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Menu Bill")')->count()
+    );
+
+    // Good scenario
+    // User can facturar
+
+
+
+    // Bad scenario
+    // User cannot facturar
+    $link = $crawler->selectLink('img-uncheck')->link();
+    $crawler = $this->client->click($link);
+    print_r($crawler);
+  }
+
 }

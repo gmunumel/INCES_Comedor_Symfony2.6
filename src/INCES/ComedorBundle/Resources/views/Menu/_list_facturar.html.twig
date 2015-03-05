@@ -22,7 +22,7 @@
           <form class="generic" action="{{ app.request.uriForPath('/menu/searchafact') }}" method="get">
             <img src="{{ asset('img/search.png') }}" class="searchbox_submit" value="" />
             <input autocomplete="off" type="text" class="text" name="query" value="{{query}}" id="search_keywords" />
-            <input type="submit" value="search" style="display:none;"/>
+            <input id="query-submit" type="submit" value="search" style="display:none;"/>
           </form>
         </div>
         <td>
@@ -124,7 +124,7 @@
 
             <tr>
               {% if hour >= hourStart and hour <= hourEnd and not _lncTd %}
-              <td><a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/showfacturar"><img src="{{ asset('img/check.gif') }}" alt="img" height="30" width="30" /></a></td>
+              <td><a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/showfacturar"><img src="{{ asset('img/check.gif') }}" alt="img-check" height="30" width="30" /></a></td>
               <td>{{ entity.cedula }}</td>
               <td>{{ entity.nombre }}</td>
               <td>{{ entity.apellido }}</td>
@@ -136,7 +136,7 @@
               <td><img src="{{ asset('img/uploaded/') }}{{entity.image|replace({'/tmp/':''})}}" width="75" height="75" alt="" /></td>
               {% endif %}
               {% else %}
-              <td><a class="opener" href="" value="{{ app.request.uriForPath('/menu/') }}{{ entity.id }}/showfacturar"><img src="{{ asset('img/uncheck.jpg') }}" alt="img" height="30" width="30" /></a></td>
+              <td><a class="opener" href="" value="{{ app.request.uriForPath('/menu/') }}{{ entity.id }}/showfacturar"><img src="{{ asset('img/uncheck.jpg') }}" alt="img-uncheck" height="30" width="30" /></a></td>
               <td>{{ entity.cedula }}</td>
               <td>{{ entity.nombre }}</td>
               <td>{{ entity.apellido }}</td>

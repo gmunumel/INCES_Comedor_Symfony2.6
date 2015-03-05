@@ -145,12 +145,12 @@ class MenuController extends Controller
 
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/menu/'.$entity->getId().'/show');
-        }
+      }
 
-        return $this->render('INCESComedorBundle:Menu:new.html.twig', array(
-          'entity' => $entity,
-          'form'   => $form->createView()
-        ));
+      return $this->render('INCESComedorBundle:Menu:new.html.twig', array(
+        'entity' => $entity,
+        'form'   => $form->createView()
+      ));
     }
 
     /**
@@ -166,16 +166,16 @@ class MenuController extends Controller
       if (!$entity) {
         $translated = 'Unable to find Menu entity';
         throw $this->createNotFoundException($translated);
-        }
+      }
 
-        $editForm = $this->createForm(new MenuType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
+      $editForm = $this->createForm(new MenuType(), $entity);
+      $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('INCESComedorBundle:Menu:edit.html.twig', array(
-          'entity'      => $entity,
-          'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+      return $this->render('INCESComedorBundle:Menu:edit.html.twig', array(
+        'entity'      => $entity,
+        'edit_form'   => $editForm->createView(),
+          'delete_form' => $deleteForm->createView(),
+      ));
     }
 
     /**
@@ -191,28 +191,28 @@ class MenuController extends Controller
       if (!$entity) {
         $translated = 'Unable to find Menu entity';
         throw $this->createNotFoundException($translated);
-        }
+      }
 
-        $editForm   = $this->createForm(new MenuType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
+      $editForm   = $this->createForm(new MenuType(), $entity);
+      $deleteForm = $this->createDeleteForm($id);
 
-        $request = $this->getRequest();
+      $request = $this->getRequest();
 
-        $editForm->bind($request);
+      $editForm->bind($request);
 
-        if ($editForm->isValid()) {
-          $em->persist($entity);
-          $em->flush();
+      if ($editForm->isValid()) {
+        $em->persist($entity);
+        $em->flush();
 
-          $route = $request->getBaseUrl();
-          return new Response($route.'/#!/menu/'.$entity->getId().'/show');
-        }
+        $route = $request->getBaseUrl();
+        return new Response($route.'/#!/menu/'.$entity->getId().'/show');
+      }
 
-        return $this->render('INCESComedorBundle:Menu:edit.html.twig', array(
-          'entity'      => $entity,
-          'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+      return $this->render('INCESComedorBundle:Menu:edit.html.twig', array(
+        'entity'      => $entity,
+        'edit_form'   => $editForm->createView(),
+        'delete_form' => $deleteForm->createView(),
+      ));
     }
 
     /**
@@ -233,14 +233,14 @@ class MenuController extends Controller
         if (!$entity) {
           $translated = 'Unable to find Menu entity';
           throw $this->createNotFoundException($translated);
-            }
-
-            $em->remove($entity);
-            $em->flush();
         }
 
-        $route = $request->getBaseUrl();
-        return new Response($route.'/#!/menu');
+        $em->remove($entity);
+        $em->flush();
+      }
+
+      $route = $request->getBaseUrl();
+      return new Response($route.'/#!/menu');
     }
 
     /**
@@ -256,15 +256,15 @@ class MenuController extends Controller
       if (!$entity) {
         $translated = 'Unable to find Menu entity';
         throw $this->createNotFoundException($translated);
-        }
+      }
 
-        $deleteForm = $this->createDeleteForm($id);
+      $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('INCESComedorBundle:Menu:show_today.html.twig', array(
-          'entity'      => $entity,
-          'delete_form' => $deleteForm->createView(),
+      return $this->render('INCESComedorBundle:Menu:show_today.html.twig', array(
+        'entity'      => $entity,
+        'delete_form' => $deleteForm->createView(),
 
-        ));
+      ));
     }
 
     /**
@@ -374,6 +374,7 @@ class MenuController extends Controller
      * Deletes a Menu entity.
      *
      */
+    
     public function deleteTodayAction($id)
     {
       $form = $this->createDeleteForm($id);
@@ -388,15 +389,16 @@ class MenuController extends Controller
         if (!$entity) {
           $translated = 'Unable to find Menu entity';
           throw $this->createNotFoundException($translated);
-            }
-
-            $em->remove($entity);
-            $em->flush();
         }
 
-        $route = $request->getBaseUrl();
-        return new Response($route.'/#!/menu/today');
+        $em->remove($entity);
+        $em->flush();
+      }
+
+      $route = $request->getBaseUrl();
+      return new Response($route.'/#!/menu/today');
     }
+    
 
     /*
      * Mostrar el menu del dia
@@ -437,20 +439,20 @@ class MenuController extends Controller
         $conn->insert('UsuarioMenu',
           array('usuario_id' => $usuario
           ,'dia'             => $dia
-        )
-      );
+          )
+        );
       }else{
         $menu    = $_POST["menus"];
         $conn->insert('UsuarioMenu',
           array('usuario_id' => $usuario
           ,'dia'        => $dia
           ,'menu_id'    => $menu
-        )
-      );
-        }
+          )
+        );
+      }
 
-        $route = $request->getBaseUrl();
-        return new Response($route.'/#!/menu/facturar');
+      $route = $request->getBaseUrl();
+      return new Response($route.'/#!/menu/facturar');
     }
 
     /**
@@ -472,8 +474,8 @@ class MenuController extends Controller
       if (!$entity) {
         $translated = 'Unable to find User entity';
         throw $this->createNotFoundException($translated);
-        }
-        $deleteForm = $this->createDeleteForm($id);
+      }
+      $deleteForm = $this->createDeleteForm($id);
 
         //Verificar si se encuentra dentro del horario
 	/*
@@ -495,89 +497,89 @@ class MenuController extends Controller
 			$entity->getRol()->getHoraComerEnd());
 
 	*/
-	$hours = $this->validHours($id);
-	$hourStart = $hours[0];
-        $hourEnd = $hours[1];
-	$entity = $hours[2];
-	$now = new \DateTime('now');
-	$hour = $now->format('H');
+      $hours = $this->validHours($id);
+      $hourStart = $hours[0];
+      $hourEnd = $hours[1]; 
+      $entity = $hours[2];
+      $now = new \DateTime('now');
+      $hour = $now->format('H');
 
-        if ($hour < $hourStart || $hour > $hourEnd){
-          $content = $this->renderView(
-            'INCESComedorBundle:Menu:error_already_eat.html.twig', array(
-              'nombre' => $entity->getNombre(),
-               'apellido' => $entity->getApellido(),
-               'rol_name' => $entity->getRol()->getNombre(),
-               'hora_start' => $entity->getRol()->getHoraComerStart(),
-               'hora_startAMPM' => $entity->getRol()->getHoraComerStartAMPM(),
-               'hora_end' => $entity->getRol()->getHoraComerEnd(),
-               'hora_endAMPM' => $entity->getRol()->getHoraComerEndAMPM()
-             ));
-          return new Response($content);
-        }
-        //
-        //Verificar si ya ha comido esa persona ese mismo dia
-        $now = new \DateTime('now');
-        /*
-        $dql = $em->createQuery('SELECT COUNT(um.id) FROM INCES\ComedorBundle\Entity\UsuarioMenu um WHERE um.usuario = :id and YEAR(um.dia) = :year and MONTH(um.dia) = :month and DAY(um.dia) = :day');
-        $dql->setParameter('id', $id);
-        $dql->setParameter('year', $now->format("Y"));
-        $dql->setParameter('month', $now->format("m"));
-        $dql->setParameter('day', $now->format("d"));
-        $count = $dql->getSingleScalarResult();
-	*/
-
-        /* TODO Optimizar estos 2 querys
-         *  Arreglar URL
-     */
-        //if($count > 0){
-	  $em = $this->get('doctrine.orm.entity_manager');
-          $dql = $em->createQuery('SELECT um FROM INCES\ComedorBundle\Entity\UsuarioMenu um WHERE um.usuario = :id and YEAR(um.dia) = :year and MONTH(um.dia) = :month and DAY(um.dia) = :day');
-          $dql->setParameter('id', $id);
-          $dql->setParameter('year', $now->format("Y"));
-          $dql->setParameter('month', $now->format("m"));
-          $dql->setParameter('day', $now->format("d"));
-          $_entity   = $dql->getOneOrNullResult();
-	  if($_entity != null){
-		  //$_entity   = $_entity[0];
-		  $lncHora   = $_entity->getDia()->format("H");
-		  $lncMinuto = $_entity->getDia()->format("i");
-		  $ampm      = "am";
-		  if($lncHora > 12){
-		    $lncHora = $lncHora - 12;
-		    $ampm = "pm";
-		  }
-		  if($lncHora == 12) $ampm = "pm";
-		  if($lncHora == 24) $ampm = "am";
-		  $path = $request->getBaseUrl().'/#!/usuario/searchalnc';
-		  $content = $this->renderView(
-		    'INCESComedorBundle:Menu:last_eat.html.twig', array(
-		      'nombre' => $entity->getNombre(),
-		      'apellido' => $entity->getApellido(),
-		      'hora' => $lncHora,
-		      'minuto' => $lncMinuto,
-		      'ampm' => $ampm,
-		      'path' => $path
-		  ));
-		  return new Response($content);
-           }
-
-
-        // Buscando menus del dia
-        $now = new \DateTime;
-        $menus = $em->createQueryBuilder();
-        $menus->add('select', 'm')
-          ->add('from', 'INCESComedorBundle:Menu m')
-          ->add('where', "m.dia = '".$now->format("Y-m-d 00:00:00")."'");
-
-        $qry   = $em->createQuery($menus);
-        $menus = $qry->getResult();
-
-        return $this->render('INCESComedorBundle:Menu:show_facturar.html.twig', array(
-          'entity'      => $entity,
-          'menus'       => $menus,
-          'delete_form' => $deleteForm->createView(),
+      if ($hour < $hourStart || $hour > $hourEnd){
+        $content = $this->renderView(
+          'INCESComedorBundle:Menu:error_already_eat.html.twig', array(
+            'nombre' => $entity->getNombre(),
+            'apellido' => $entity->getApellido(),
+            'rol_name' => $entity->getRol()->getNombre(),
+            'hora_start' => $entity->getRol()->getHoraComerStart(),
+            'hora_startAMPM' => $entity->getRol()->getHoraComerStartAMPM(),
+            'hora_end' => $entity->getRol()->getHoraComerEnd(),
+            'hora_endAMPM' => $entity->getRol()->getHoraComerEndAMPM()
         ));
+        return new Response($content);
+      }
+      //
+      //Verificar si ya ha comido esa persona ese mismo dia
+      $now = new \DateTime('now');
+      /*
+      $dql = $em->createQuery('SELECT COUNT(um.id) FROM INCES\ComedorBundle\Entity\UsuarioMenu um WHERE um.usuario = :id and YEAR(um.dia) = :year and MONTH(um.dia) = :month and DAY(um.dia) = :day');
+      $dql->setParameter('id', $id);
+      $dql->setParameter('year', $now->format("Y"));
+      $dql->setParameter('month', $now->format("m"));
+      $dql->setParameter('day', $now->format("d"));
+      $count = $dql->getSingleScalarResult();
+      */
+
+      /* TODO Optimizar estos 2 querys
+       *  Arreglar URL
+       */
+      //if($count > 0){
+      //$em = $this->get('doctrine.orm.entity_manager');
+      $dql = $em->createQuery('SELECT um FROM INCES\ComedorBundle\Entity\UsuarioMenu um WHERE um.usuario = :id and YEAR(um.dia) = :year and MONTH(um.dia) = :month and DAY(um.dia) = :day');
+      $dql->setParameter('id', $id);
+      $dql->setParameter('year', $now->format("Y"));
+      $dql->setParameter('month', $now->format("m"));
+      $dql->setParameter('day', $now->format("d"));
+      $_entity   = $dql->getOneOrNullResult();
+      if($_entity != null){
+        //$_entity   = $_entity[0];
+        $lncHora   = $_entity->getDia()->format("H");
+        $lncMinuto = $_entity->getDia()->format("i");
+        $ampm      = "am";
+        if($lncHora > 12){
+	  $lncHora = $lncHora - 12;
+	  $ampm = "pm";
+	}
+        if($lncHora == 12) $ampm = "pm";
+        if($lncHora == 24) $ampm = "am";
+	$path = $request->getBaseUrl().'/#!/usuario/searchalnc';
+        $content = $this->renderView(
+	   'INCESComedorBundle:Menu:last_eat.html.twig', array(
+	      'nombre' => $entity->getNombre(),
+	      'apellido' => $entity->getApellido(),
+	      'hora' => $lncHora,
+	      'minuto' => $lncMinuto,
+	      'ampm' => $ampm,
+	      'path' => $path
+         ));
+         return new Response($content);
+      }
+
+
+      // Buscando menus del dia
+      $now = new \DateTime;
+      $menus = $em->createQueryBuilder();
+      $menus->add('select', 'm')
+        ->add('from', 'INCESComedorBundle:Menu m')
+        ->add('where', "m.dia = '".$now->format("Y-m-d 00:00:00")."'");
+
+      $qry   = $em->createQuery($menus);
+      $menus = $qry->getResult();
+
+      return $this->render('INCESComedorBundle:Menu:show_facturar.html.twig', array(
+        'entity'      => $entity,
+        'menus'       => $menus,
+        'delete_form' => $deleteForm->createView(),
+      ));
     }
 
     /*
@@ -721,19 +723,22 @@ class MenuController extends Controller
      */
     private function comparisonHours($hourStartAMPM, $hourEndAMPM, $hourStart, $hourEnd){
 	$hours = array(0, 0);
+	$hours[0] = $hourStart;
+        $hours[1] = $hourEnd;
 	if ($hourStartAMPM == "pm"){
           $hours[0] = $hourStart + 12;
-          $hours[1] = $hourEnd + 12;
-        }elseif ($hourStartAMPM == "pm" and $hourEndAMPM == "am"){
+        }
+        if ($hourEndAMPM == "pm") {
+	  $hours[1] = $hourEnd + 12;
+        }
+        /*
+	elseif ($hourStartAMPM == "pm" and $hourEndAMPM == "am"){
           $hours[0] = $hourStart + 12;
           $hours[1] = $hourEnd;
         }elseif ($hourStartAMPM == "am" and $hourEndAMPM == "pm"){
           $hours[0] = $hourStart;
           $hours[1] = $hourEnd + 12;
-        }else{
-          $hours[0] = $hourStart;
-          $hours[1] = $hourEnd;
-        }
+         */
 	return $hours;
     }
 
@@ -898,7 +903,7 @@ class MenuController extends Controller
    /*
    * Adding pagination
    */
-  public function _indexPagination($query, $sort = null, $direction = null){
+  private function _indexPagination($query, $sort = null, $direction = null){
 
     $em = $this->get('doctrine.orm.entity_manager');
     //$dql = $em->createQueryBuilder();

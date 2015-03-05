@@ -5,6 +5,7 @@ framework:
     test: ~
     session:
         storage_id: session.storage.filesystem
+        name: MOCKSESSID
 
 web_profiler:
     toolbar: false
@@ -12,3 +13,23 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+liip_functional_test: 
+  cache_sqlite_db: true
+  authentication:
+    username: "root"
+    password: "admin"
+
+doctrine:
+  dbal:
+    default_connection: default
+    connections:
+      default:
+        driver:   pdo_sqlite
+        path:     %kernel.cache_dir%/test.db
+  orm:
+    dql:
+      datetime_functions:
+        YEAR: DoctrineExtensions\Query\Mysql\Year
+        MONTH: DoctrineExtensions\Query\Mysql\Month
+        DAY: DoctrineExtensions\Query\Mysql\Day

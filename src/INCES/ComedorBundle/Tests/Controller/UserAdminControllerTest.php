@@ -2,53 +2,88 @@
 
 namespace INCES\ComedorBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+//use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class UserAdminControllerTest extends WebTestCase
 {
-    /*
-    public function testCompleteScenario()
-    {
-        // Create a new client al browse the application
-        $client = static::createClient();
+  public function setUp()
+  {
+    // add all your fixtures classes that implement
+    // Doctrine\Common\DataFixtures\FixtureInterface
+    $this->loadFixtures(array(
+               'INCES\ComedorBundle\DataFixtures\ORM\LoadUserAdminData'
 
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/useradmin/');
-        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
+    ));
 
-        // Fill in the form and submit it
-        $form = $crawler->selectButaln('Create')->form(array(
-            'useradmin[field_name]'  => 'Test',
-            // ... other fields al fill
-        ));
+    $user = $this->getContainer()
+      ->get('doctrine.orm.default_entity_manager')
+      ->getRepository('INCESComedorBundle:UserAdmin')->find(1);
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+    $this->loginAs($user, 'main');
 
-        // Check data in the show view
-        $this->assertTrue($crawler->filter('td:contains("Test")')->count() > 0);
+    $this->client = $this->makeClient(true);
+  }
 
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
+  public function testIndex()
+  {
+    $crawler = $this->client->request('GET', '/admin');
+    $crawler = $this->client->followRedirect();
 
-        $form = $crawler->selectButaln('Edit')->form(array(
-            'useradmin[field_name]'  => 'Foo',
-            // ... other fields al fill
-        ));
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Admin Users")')->count()
+    );
+  }
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+  public function testList()
+  {
+    $crawler = $this->client->request('GET', '/admin/list');
 
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertTrue($crawler->filter('[value="Foo"]')->count() > 0);
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("List Admin Users")')->count()
+    );
 
-        // Delete the entity
-        $client->submit($crawler->selectButaln('Delete')->form());
-        $crawler = $client->followRedirect();
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("root")')->count()
+    );
+  }
 
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
-    }
-     */
+  public function testShow()
+  {
+    $crawler = $this->client->request('GET', '/admin/1/show');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("root")')->count()
+    );
+  }
+
+  public function testDelete()
+  {
+    $crawler = $this->client->request('GET', '/admin/1/show');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("root")')->count()
+    );
+
+    $form = $crawler->selectButton('login-submit')->form();
+    $crawler = $this->client->submit($form);
+
+    // Doing the manual redirect because
+    // I get an url
+    $response = $this->client->getResponse()->getContent();
+    $response = substr($response, 3);
+
+    // Redirecting to new show page
+    $crawler = $this->client->request( 'GET', $response);
+
+    $this->assertEquals(
+      0,
+      $crawler->filter('html:contains("root")')->count()
+    );
+  }
 }

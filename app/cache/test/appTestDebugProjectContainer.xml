@@ -27,13 +27,14 @@
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
       <parameter key="SensioGeneratorBundle">Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle</parameter>
       <parameter key="DoctrineFixturesBundle">Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle</parameter>
+      <parameter key="LiipFunctionalTestBundle">Liip\FunctionalTestBundle\LiipFunctionalTestBundle</parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
     <parameter key="kernel.container_class">appTestDebugProjectContainer</parameter>
     <parameter key="database_driver">pdo_mysql</parameter>
     <parameter key="database_host">localhost</parameter>
     <parameter key="database_port">null</parameter>
-    <parameter key="database_name">symfony</parameter>
+    <parameter key="database_name">inces_comedor</parameter>
     <parameter key="database_user">root</parameter>
     <parameter key="database_password">admin</parameter>
     <parameter key="mailer_transport">smtp</parameter>
@@ -43,6 +44,7 @@
     <parameter key="locale">en</parameter>
     <parameter key="secret">ThisTokenIsNotSoSecretChangeIt</parameter>
     <parameter key="results_per_page">2</parameter>
+    <parameter key="lunch_per_page">10</parameter>
     <parameter key="controller_resolver.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver</parameter>
     <parameter key="controller_name_converter.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser</parameter>
     <parameter key="response_listener.class">Symfony\Component\HttpKernel\EventListener\ResponseListener</parameter>
@@ -113,6 +115,7 @@
     <parameter key="session.handler.write_check.class">Symfony\Component\HttpFoundation\Session\Storage\Handler\WriteCheckSessionHandler</parameter>
     <parameter key="session_listener.class">Symfony\Bundle\FrameworkBundle\EventListener\SessionListener</parameter>
     <parameter key="session.storage.options" type="collection">
+      <parameter key="name">MOCKSESSID</parameter>
       <parameter key="gc_probability">1</parameter>
     </parameter>
     <parameter key="session.save_path">/home/alucard/workspace/Code/INCES_Comedor_Symfony2.6/app/cache/test/sessions</parameter>
@@ -659,6 +662,14 @@
     <parameter key="sensio_distribution.webconfigurator.secret_step.class">Sensio\Bundle\DistributionBundle\Configurator\Step\SecretStep</parameter>
     <parameter key="sensio_distribution.security_checker.class">SensioLabs\Security\SecurityChecker</parameter>
     <parameter key="sensio_distribution.security_checker.command.class">SensioLabs\Security\Command\SecurityCheckerCommand</parameter>
+    <parameter key="liip_functional_test.cache_sqlite_db">true</parameter>
+    <parameter key="liip_functional_test.html5validation.url">http://validator.nu/</parameter>
+    <parameter key="liip_functional_test.html5validation.ignores" type="collection"/>
+    <parameter key="liip_functional_test.authentication" type="collection">
+      <parameter key="username">root</parameter>
+      <parameter key="password">admin</parameter>
+    </parameter>
+    <parameter key="liip_functional_test.query_count.max_query_count">null</parameter>
     <parameter key="console.command.ids" type="collection">
       <parameter>sensio_distribution.security_checker.command</parameter>
     </parameter>
@@ -2237,6 +2248,7 @@
     </service>
     <service id="session.storage.native" class="Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage">
       <argument type="collection">
+        <argument key="name">MOCKSESSID</argument>
         <argument key="gc_probability">1</argument>
       </argument>
       <argument type="service" id="session.handler"/>
@@ -2890,7 +2902,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>54f519f5adaf9</argument>
+            <argument>54f78f811a195</argument>
           </service>
         </argument>
       </argument>
@@ -3410,9 +3422,30 @@
           </service>
         </argument>
         <argument type="service">
+          <service class="Symfony\Component\Security\Http\Firewall\BasicAuthenticationListener" public="false">
+            <argument type="service" id="security.context"/>
+            <argument type="service" id="security.authentication.manager"/>
+            <argument>main</argument>
+            <argument type="service">
+              <service class="Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint" public="false">
+                <argument type="service" id="http_kernel"/>
+                <argument type="service">
+                  <service class="Symfony\Component\Security\Http\HttpUtils" public="false">
+                    <argument type="service" id="router" on-invalid="null"/>
+                    <argument type="service" id="router" on-invalid="null"/>
+                  </service>
+                </argument>
+                <argument>/admin/login</argument>
+                <argument>false</argument>
+              </service>
+            </argument>
+            <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+          </service>
+        </argument>
+        <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>54f519f5adaf9</argument>
+            <argument>54f78f811a195</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -3957,13 +3990,14 @@
     </service>
     <service id="doctrine.dbal.default_connection" class="Doctrine\DBAL\Connection">
       <argument type="collection">
-        <argument key="driver">pdo_mysql</argument>
+        <argument key="driver">pdo_sqlite</argument>
         <argument key="host">localhost</argument>
         <argument key="port">null</argument>
-        <argument key="dbname">symfony</argument>
+        <argument key="dbname">inces_comedor</argument>
         <argument key="user">root</argument>
         <argument key="password">admin</argument>
         <argument key="charset">UTF8</argument>
+        <argument key="path">/home/alucard/workspace/Code/INCES_Comedor_Symfony2.6/app/cache/test/test.db</argument>
         <argument key="driverOptions" type="collection"/>
       </argument>
       <argument type="service">
@@ -4125,6 +4159,18 @@
           </call>
           <call method="addCustomDatetimeFunction">
             <argument>day</argument>
+            <argument>DoctrineExtensions\Query\Mysql\Day</argument>
+          </call>
+          <call method="addCustomDatetimeFunction">
+            <argument>YEAR</argument>
+            <argument>DoctrineExtensions\Query\Mysql\Year</argument>
+          </call>
+          <call method="addCustomDatetimeFunction">
+            <argument>MONTH</argument>
+            <argument>DoctrineExtensions\Query\Mysql\Month</argument>
+          </call>
+          <call method="addCustomDatetimeFunction">
+            <argument>DAY</argument>
             <argument>DoctrineExtensions\Query\Mysql\Day</argument>
           </call>
         </service>
@@ -4511,6 +4557,10 @@
     <service id="sensio_distribution.security_checker.command" class="SensioLabs\Security\Command\SecurityCheckerCommand">
       <tag name="console.command"/>
       <argument type="service" id="sensio_distribution.security_checker"/>
+    </service>
+    <service id="liip_functional_test.query_count.query_counter" class="Liip\FunctionalTestBundle\QueryCounter">
+      <argument>null</argument>
+      <argument type="service" id="annotation_reader"/>
     </service>
     <service id="monolog.logger.request" class="Symfony\Bridge\Monolog\Logger">
       <argument>request</argument>

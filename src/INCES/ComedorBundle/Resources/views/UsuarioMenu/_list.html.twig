@@ -1,7 +1,5 @@
-<div id="col-browser">{#<a href="#"><img src="{{ asset('img/browser.gif') }}" width="255" height="177" alt="" /></a>#}
-</div>
 
-<div id="col-text">
+<div id="my-col-text">
 
   <table>
     <tr class="tsearch">
@@ -13,7 +11,7 @@
           <form class="generic" action="{{ app.request.uriForPath('/usuariomenu/searcha') }}" method="get">
             <img src="{{ asset('img/search.png') }}" class="searchbox_submit" value="" />
             <input autocomplete="off" type="text" class="text" name="query" value="{{query}}" id="search_keywords" />
-            <input type="submit" value="search" style="display:none;"/>
+            <input id="query-submit" type="submit" value="search" style="display:none;"/>
           </form>
         </div>
         <td>

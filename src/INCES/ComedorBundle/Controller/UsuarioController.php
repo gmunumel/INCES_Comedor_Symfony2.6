@@ -83,12 +83,12 @@ class UsuarioController extends Controller
 
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/usuario/'.$entity->getId().'/show');
-        }
+      }
 
-        return $this->render('INCESComedorBundle:Usuario:new.html.twig', array(
+      return $this->render('INCESComedorBundle:Usuario:new.html.twig', array(
           'entity' => $entity,
           'form'   => $form->createView()
-        ));
+      ));
     }
 
     /**
@@ -129,12 +129,12 @@ class UsuarioController extends Controller
 
         $route = $request->getBaseUrl();
         return new Response($route.'/#!/menu/facturar');
-        }
+      }
 
-        return $this->render('INCESComedorBundle:Usuario:new_externo.html.twig', array(
-          'entity' => $entity,
-          'form'   => $form->createView()
-        ));
+      return $this->render('INCESComedorBundle:Usuario:new_externo.html.twig', array(
+        'entity' => $entity,
+        'form'   => $form->createView()
+      ));
     }
 
     /**
@@ -238,33 +238,6 @@ class UsuarioController extends Controller
         ->add('id', 'hidden')
         ->getForm()
         ;
-    }
-
-    /*
-     * Debe ser de la forma *\/*\/* - 20/01/2002
-     */
-    public function setDate($val){
-      $res = "";
-      $params = trim($val);
-      $explote = explode("/", $params);
-
-      if(count($explote) != 3) return $res;
-      if(!is_numeric($explote[0]))
-        if($explote[0] != "*")
-          return $res;
-      if(!is_numeric($explote[1]))
-        if($explote[1] != "*")
-          return $res;
-      if(!is_numeric($explote[2]))
-        if($explote[2] != "*")
-          return $res;
-      if($explote[0] != '*')
-        $res .= " (DAY(um.dia) = " . $explote[0] . ") AND";
-      if($explote[1] != '*')
-        $res .= " (MONTH(um.dia) = " . $explote[1] . ") AND";
-      if($explote[2] != '*')
-        $res .= " (YEAR(um.dia) = " . $explote[2] . ") AND";
-      return $res;
     }
 
     /*
@@ -443,29 +416,32 @@ class UsuarioController extends Controller
         $cm_form->bind($request);
         $dir = dirname(__FILE__).'/../../../../web/uploads/';
 
-	$errores = $this->loadFile($cm_form, $dir);
+	      $result = $this->loadSaveFile($cm_form, $dir);
+        $errores = $result[0];
+        $nameFile = $result[1];
+
+        // Eliminar el archivo .csv
+        if ($nameFile != "" & file_exists($dir . $nameFile))
+          unlink($dir . $nameFile);
 
         if($errores != ""){
           return new Response("<p>".$errores."</p>");
-
-          // Eliminar el archivo .csv
-          unlink($dir . $nameFile);
-            }
-
-            // Guardando en Base de Datos
-            $this->saveValues($arr);
-
-            // Eliminar el archivo .csv
-            unlink($dir . $nameFile);
-
-            $translated = 'Users loaded succesfully';
-            $messages = $translated;
-            return new Response("<p>".$messages."</p>");
         }
 
-        return $this->render('INCESComedorBundle:Usuario:carga_masiva.html.twig', array(
-          'cm_form'    => $cm_form->createView()
-        ));
+        // Guardando en Base de Datos
+        //$this->saveValues($arr);
+
+        // Eliminar el archivo .csv
+        //unlink($dir . $nameFile);
+
+        $translated = 'Users loaded successfully';
+        $messages = $translated;
+        return new Response("<p>".$messages."</p>");
+      }
+
+      return $this->render('INCESComedorBundle:Usuario:carga_masiva.html.twig', array(
+        'cm_form'    => $cm_form->createView()
+      ));
     }
 
     public function editMasivoAction(){
@@ -479,7 +455,7 @@ class UsuarioController extends Controller
         $cm_form->bind($request);
         $dir = dirname(__FILE__).'/../../../../web/uploads/';
 
-	/*
+	      /*
         // Colocando en el archivo en la carpeta web/uploads/
         $name        = $cm_form['file']->getData()->move($dir);
         $nameExplode = explode("/", $name);
@@ -496,46 +472,96 @@ class UsuarioController extends Controller
         $errores = $this->validaciones($arr, true);
         */
 
-        $errores = $this->loadFile($cm_form, $dir, true);
+        $result = $this->loadSaveFile($cm_form, $dir, true);
+        $errores = $result[0];
+        $nameFile = $result[1];
+
+        // Eliminar el archivo .csv
+        if ($nameFile != "" & file_exists($dir . $nameFile))
+          unlink($dir . $nameFile);
 
         if($errores != ""){
           return new Response("<p>".$errores."</p>");
 
           // Eliminar el archivo .csv
-          unlink($dir . $nameFile);
-            }
-
-            // Guardando en Base de Datos
-            $this->updateValues($arr);
-
-            // Eliminar el archivo .csv
-            unlink($dir . $nameFile);
-
-            $translated = 'Users updated succesfully';
-            $messages = $translated;
-            return new Response("<p>".$messages."</p>");
+          //unlink($dir . $nameFile);
         }
 
-        return $this->render('INCESComedorBundle:Usuario:edit_masivo.html.twig', array(
-          'cm_form'    => $cm_form->createView()
-        ));
+        // Guardando en Base de Datos
+        //$this->updateValues($arr);
+
+        // Eliminar el archivo .csv
+        //unlink($dir . $nameFile);
+
+        $translated = 'Users updated successfully';
+        $messages = $translated;
+        return new Response("<p>".$messages."</p>");
+      }
+
+      return $this->render('INCESComedorBundle:Usuario:edit_masivo.html.twig', array(
+        'cm_form'    => $cm_form->createView()
+      ));
     }
 
-    private function loadFile($form, $dir, $flag = false){
-	// Colocando en el archivo en la carpeta web/uploads/
-        $name        = $form['file']->getData()->move($dir);
-        $nameExplode = explode("/", $name);
-        $nameFile    = end($nameExplode);
+    /*
+     * Debe ser de la forma *\/*\/* - 20/01/2002
+     */
+    private function setDate($val){
+      $res = "";
+      $params = trim($val);
+      $explote = explode("/", $params);
 
-        // Comprobando que el archivo tenga los parametros adecuados
-        // Llenando estructura temporal con la informacion del archivo
-        $f = fopen ($dir . $nameFile, 'r');
-        while (false !== $data = fgetcsv($f, 0, ';'))
-          $arr[] = $data;
-        fclose($f);
+      if(count($explote) != 3) return $res;
+      if(!is_numeric($explote[0]))
+        if($explote[0] != "*")
+          return $res;
+      if(!is_numeric($explote[1]))
+        if($explote[1] != "*")
+          return $res;
+      if(!is_numeric($explote[2]))
+        if($explote[2] != "*")
+          return $res;
+      if($explote[0] != '*')
+        $res .= " (DAY(um.dia) = " . $explote[0] . ") AND";
+      if($explote[1] != '*')
+        $res .= " (MONTH(um.dia) = " . $explote[1] . ") AND";
+      if($explote[2] != '*')
+        $res .= " (YEAR(um.dia) = " . $explote[2] . ") AND";
+      return $res;
+    }
+    private function loadSaveFile($form, $dir, $flag = false){
+	  // Colocando en el archivo en la carpeta web/uploads/
+        try {
+          if (!file_exists($form['file']->getData())) {
+            $errores = 'File doesn\'t exist';
+            return array($errores, "");
+          }
+          $name        = $form['file']->getData()->move($dir);
+          $nameExplode = explode("/", $name);
+          $nameFile    = end($nameExplode);
 
+          // Comprobando que el archivo tenga los parametros adecuados
+          // Llenando estructura temporal con la informacion del archivo
+          $f = fopen ($dir . $nameFile, 'r');
+          while (false !== $data = fgetcsv($f, 0, ';'))
+            $arr[] = $data;
+          fclose($f);
+        } catch (Exception $e) {
+          print_r($e);
+          $errores = $e;
+          return array($errores, $nameFile);
+        }
+
+        // Checking values
         $errores = $this->validaciones($arr, $flag);
-	return $errores;
+
+        // Saving in data base
+        if($errores == "") {
+          if($flag) $this->updateValues($arr);
+          else $this->saveValues($arr);
+        }
+
+	      return array($errores, $nameFile);
     }
 
     private function params($params){
@@ -565,15 +591,16 @@ class UsuarioController extends Controller
           $res .= " (u.cedula like '%" . $value . "%'";
           $res .= " or u.nombre like '%" . $value . "%'";
           $res .= " or u.apellido like '%" . $value . "%') AND";
-            }
         }
-        if(strlen($res) > 3)
-          $res = substr_replace($res ,"",-4);
-        return $res;
+      }
+      if(strlen($res) > 3)
+        $res = substr_replace($res ,"",-4);
+      return $res;
     }
 
     private function validaciones($arr, $edit = false){
       $i     = 0;
+      $ret   = "";
       $em    = $this->getDoctrine()->getManager();
       $dql   = $em->createQueryBuilder();
       $dql->select('r.nombre')
@@ -613,47 +640,47 @@ class UsuarioController extends Controller
         // Cantidad de valores
         $split = explode(",", $value[0]);
         if(count($split) != 6)
-          return $translated_pll." ".$i." ". $translated_nf;
+          $ret .= $translated_pll." ".$i." ".$translated_nf."<br />";
 
         // Rol
         if(!in_array($split[0], $roles))
-          return $translated_pll ." ".$i." " .$translated_rn;
+          $ret .= $translated_pll." ".$i." ".$translated_rn."<br />";
 
         // Nombre
         if($split[1] == "")
-          return $translated_pll . " ".$i." " .$translated_nv;
+          $ret .= $translated_pll." ".$i." ".$translated_nv."<br />";
         elseif(!ctype_alpha($split[1]))
-          return $translated_pll . " ".$i." " .$translated_nci;
+          $ret .= $translated_pll." ".$i." ".$translated_nci."<br />";
 
         // Apellido
         if($split[2] == "")
-          return $translated_pll . " ".$i." ".$translated_av;
+          $ret .= $translated_pll." ".$i." ".$translated_av."<br />";
         elseif(!ctype_alpha($split[2]))
-          return $translated_pll . " ".$i." ".$translated_aci;
+          $ret .= $translated_pll." ".$i." ".$translated_aci."<br />";
 
         // Cedula
         if($split[3] == "")
-          return $translated_pll . " ".$i." ".$translated_ci;
+          $ret .= $translated_pll." ".$i." ".$translated_ci."<br />";
         elseif(!ctype_digit($split[3]))
-          return $translated_pll . " ".$i." ".$translated_cci;
+          $ret .= $translated_pll." ".$i." ".$translated_cci."<br />";
 
         // Cedula que exista en BD
         if($edit)
           if(!in_array($split[3], $users))
-            return $translated_pll . " ".$i." ".$translated_cndb;
+            $ret .= $translated_pll." ".$i." ".$translated_cndb."<br />";
 
         // N Carnet
         if($split[4] == "")
-          return $translated_pll . " ".$i." ".$translated_ncci;
+          $ret .= $translated_pll . " ".$i." ".$translated_ncci."<br />";
         elseif(!ctype_digit($split[4]))
-          return $translated_pll . " ".$i." ".$translated_nccci;
+          $ret .= $translated_pll . " ".$i." ".$translated_nccci."<br />";
 
         // Correo
         if($split[5] == "") continue;
         elseif(!filter_var($split[5], FILTER_VALIDATE_EMAIL))
-          return $translated_pll . " ".$i." ".$translated_eci;
+          $ret .= $translated_pll . " ".$i." ".$translated_eci."<br />";
         }
-        return "";
+        return $ret;
     }
 
     private function saveValues($arr){
@@ -675,18 +702,18 @@ class UsuarioController extends Controller
           if($rol->getNombre() == $split[0]){
             $rol_id = $rol->getId();
             break;
-                }
+          }
 
-            $conn->insert('User',
-              array('rol_id'   => $rol_id
+        $conn->insert('Usuario',
+            array('rol_id'   => $rol_id
               ,'nombre'   => $split[1]
               ,'apellido' => $split[2]
               ,'cedula'   => $split[3]
               ,'ncarnet'  => $split[4]
               ,'correo'   => $split[5]
             )
-          );
-        }
+        );
+      }
     }
 
     private function updateValues($arr){
@@ -708,10 +735,10 @@ class UsuarioController extends Controller
           if($rol->getNombre() == $split[0]){
             $rol_id = $rol->getId();
             break;
-                }
+          }
 
-            // Updating values
-            $q = $qb->update('INCES\ComedorBundle\Entity\Usuario', 'u')
+        // Updating values
+        $q = $qb->update('INCES\ComedorBundle\Entity\Usuario', 'u')
               ->set('u.rol', $qb->expr()->literal($rol_id))
               ->set('u.nombre', $qb->expr()->literal($split[1]))
               ->set('u.apellido', $qb->expr()->literal($split[2]))
@@ -720,8 +747,8 @@ class UsuarioController extends Controller
               ->where('u.cedula = ?1')
               ->setParameter(1, $split[3])
               ->getQuery();
-            $p = $q->execute();
-        }
+        $p = $q->execute();
+      }
     }
 
      /*

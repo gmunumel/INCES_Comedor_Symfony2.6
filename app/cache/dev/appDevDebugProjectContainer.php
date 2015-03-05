@@ -151,6 +151,7 @@ class appDevDebugProjectContainer extends Container
             'knp_paginator.twig.extension.pagination' => 'getKnpPaginator_Twig_Extension_PaginationService',
             'knp_snappy.image' => 'getKnpSnappy_ImageService',
             'knp_snappy.pdf' => 'getKnpSnappy_PdfService',
+            'liip_functional_test.query_count.query_counter' => 'getLiipFunctionalTest_QueryCount_QueryCounterService',
             'locale_listener' => 'getLocaleListenerService',
             'logger' => 'getLoggerService',
             'monolog.logger.assetic' => 'getMonolog_Logger_AsseticService',
@@ -575,7 +576,7 @@ class appDevDebugProjectContainer extends Container
         $c = new \Symfony\Bridge\Doctrine\ContainerAwareEventManager($this);
         $c->addEventSubscriber(new \FOS\UserBundle\Doctrine\Orm\UserListener($this));
 
-        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('driver' => 'pdo_mysql', 'host' => 'localhost', 'port' => NULL, 'dbname' => 'symfony', 'user' => 'root', 'password' => 'admin', 'charset' => 'UTF8', 'driverOptions' => array()), $b, $c, array());
+        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('driver' => 'pdo_mysql', 'host' => 'localhost', 'port' => NULL, 'dbname' => 'inces_comedor', 'user' => 'root', 'password' => 'admin', 'charset' => 'UTF8', 'driverOptions' => array()), $b, $c, array());
     }
 
     /**
@@ -1854,6 +1855,19 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'liip_functional_test.query_count.query_counter' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Liip\FunctionalTestBundle\QueryCounter A Liip\FunctionalTestBundle\QueryCounter instance.
+     */
+    protected function getLiipFunctionalTest_QueryCount_QueryCounterService()
+    {
+        return $this->services['liip_functional_test.query_count.query_counter'] = new \Liip\FunctionalTestBundle\QueryCounter(NULL, $this->get('annotation_reader'));
+    }
+
+    /**
      * Gets the 'locale_listener' service.
      *
      * This service is shared.
@@ -2355,7 +2369,9 @@ class appDevDebugProjectContainer extends Container
         $ha = new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($e, $ea, array(), $a);
         $ha->setOptions(array('login_path' => '/admin/login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'));
 
-        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($da, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $this->get('fos_user.user_provider.username')), 'main', $a, $c), 2 => $fa, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $f, $this->get('security.authentication.session_strategy'), $ea, 'main', $ga, $ha, array('check_path' => '/admin/login_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $c, NULL), 4 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '54f519a82d127', $a, $f), 5 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $da, $f)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $ea, 'main', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($e, $ea, '/admin/login', false), NULL, NULL, $a));
+        $ia = new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($e, $ea, '/admin/login', false);
+
+        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($da, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $this->get('fos_user.user_provider.username')), 'main', $a, $c), 2 => $fa, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $f, $this->get('security.authentication.session_strategy'), $ea, 'main', $ga, $ha, array('check_path' => '/admin/login_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $c, NULL), 4 => new \Symfony\Component\Security\Http\Firewall\BasicAuthenticationListener($b, $f, 'main', $ia, $a), 5 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '54f78e329e2f3', $a, $f), 6 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $da, $f)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $ea, 'main', $ia, NULL, NULL, $a));
     }
 
     /**
@@ -3989,7 +4005,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_Authentication_ManagerService()
     {
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_provider.username'), $this->get('security.user_checker'), 'main', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('54f519a82d127')), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_provider.username'), $this->get('security.user_checker'), 'main', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('54f78e329e2f3')), true);
 
         $instance->setEventDispatcher($this->get('debug.event_dispatcher'));
 
@@ -4197,13 +4213,14 @@ class appDevDebugProjectContainer extends Container
                 'SensioDistributionBundle' => 'Sensio\\Bundle\\DistributionBundle\\SensioDistributionBundle',
                 'SensioGeneratorBundle' => 'Sensio\\Bundle\\GeneratorBundle\\SensioGeneratorBundle',
                 'DoctrineFixturesBundle' => 'Doctrine\\Bundle\\FixturesBundle\\DoctrineFixturesBundle',
+                'LiipFunctionalTestBundle' => 'Liip\\FunctionalTestBundle\\LiipFunctionalTestBundle',
             ),
             'kernel.charset' => 'UTF-8',
             'kernel.container_class' => 'appDevDebugProjectContainer',
             'database_driver' => 'pdo_mysql',
             'database_host' => 'localhost',
             'database_port' => NULL,
-            'database_name' => 'symfony',
+            'database_name' => 'inces_comedor',
             'database_user' => 'root',
             'database_password' => 'admin',
             'mailer_transport' => 'smtp',
@@ -4213,6 +4230,7 @@ class appDevDebugProjectContainer extends Container
             'locale' => 'en',
             'secret' => 'ThisTokenIsNotSoSecretChangeIt',
             'results_per_page' => 2,
+            'lunch_per_page' => 10,
             'controller_resolver.class' => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\ControllerResolver',
             'controller_name_converter.class' => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\ControllerNameParser',
             'response_listener.class' => 'Symfony\\Component\\HttpKernel\\EventListener\\ResponseListener',
@@ -4860,6 +4878,16 @@ class appDevDebugProjectContainer extends Container
             'sensio_distribution.webconfigurator.secret_step.class' => 'Sensio\\Bundle\\DistributionBundle\\Configurator\\Step\\SecretStep',
             'sensio_distribution.security_checker.class' => 'SensioLabs\\Security\\SecurityChecker',
             'sensio_distribution.security_checker.command.class' => 'SensioLabs\\Security\\Command\\SecurityCheckerCommand',
+            'liip_functional_test.cache_sqlite_db' => false,
+            'liip_functional_test.html5validation.url' => 'http://validator.nu/',
+            'liip_functional_test.html5validation.ignores' => array(
+
+            ),
+            'liip_functional_test.authentication' => array(
+                'username' => '',
+                'password' => '',
+            ),
+            'liip_functional_test.query_count.max_query_count' => NULL,
             'console.command.ids' => array(
                 0 => 'sensio_distribution.security_checker.command',
             ),

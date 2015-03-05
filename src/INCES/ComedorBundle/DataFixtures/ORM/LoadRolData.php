@@ -14,15 +14,45 @@ class LoadRolData extends AbstractFixture implements OrderedFixtureInterface
     $rol = new Rol();
     $rol -> setNombre('Jubilado');
     $rol -> setMonto(0);
+    $rol -> setHoraComerStart('5');
+    $rol -> setHoraComerStartAMPM('am');
+    $rol -> setHoraComerEnd('5');
+    $rol -> setHoraComerEndAMPM('pm');
 
     $manager->persist($rol);
     $manager->flush();
 
     $this->addReference('rol-user', $rol);
-    }
 
-    public function getOrder()
-    {
-      return 1; // the order in which fixtures will be loaded
-    }
+    $rol = new Rol();
+    $rol -> setNombre('No enter');
+    $rol -> setMonto(0);
+    $rol -> setHoraComerStart('0');
+    $rol -> setHoraComerStartAMPM('am');
+    $rol -> setHoraComerEnd('0');
+    $rol -> setHoraComerEndAMPM('am');
+
+    $manager->persist($rol);
+    $manager->flush();
+
+    $this->addReference('rol-no-enter', $rol);
+
+    $rol = new Rol();
+    $rol -> setNombre('Externo');
+    $rol -> setMonto(0);
+    $rol -> setHoraComerStart('0');
+    $rol -> setHoraComerStartAMPM('am');
+    $rol -> setHoraComerEnd('0');
+    $rol -> setHoraComerEndAMPM('am');
+
+    $manager->persist($rol);
+    $manager->flush();
+
+    $this->addReference('rol-externo', $rol);
+  }
+
+  public function getOrder()
+  {
+    return 1; // the order in which fixtures will be loaded
+  }
 }
