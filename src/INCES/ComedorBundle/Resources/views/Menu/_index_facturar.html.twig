@@ -1,7 +1,7 @@
 <div id="col-browser">
   <div class="side-dock">
     <div class="social-block">
-      {{  render_hinclude(controller('INCESComedorBundle:Usuario:lunch_Today')) }}
+      {% render 'INCESComedorBundle:Usuario:lunchToday' %}
       <br />
       <div class="center">
         <a class="mya" href="{{ app.request.uriForPath('/#!/contabilidad/reporteingresostoday') }}" >

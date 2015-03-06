@@ -3,9 +3,7 @@
 namespace INCES\ComedorBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use INCES\ComedorBundle\Entity\UsuarioMenu;
 use INCES\ComedorBundle\Form\UsuarioMenuType;
 use Symfony\Component\HttpFoundation\Response;
@@ -250,10 +248,10 @@ class UsuarioMenuController extends Controller
     private function _indexPagination($query, $sort = null, $direction = null){
 
       $em = $this->get('doctrine.orm.entity_manager');
-      $emConfig = $em->getConfiguration();
-      $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
-      $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
-      $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
+      //$emConfig = $em->getConfiguration();
+      //$emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+      //$emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
+      //$emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
 
       $dql = $em->createQueryBuilder();
       if (is_null($sort))

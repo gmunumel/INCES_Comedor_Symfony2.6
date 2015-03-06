@@ -3,6 +3,11 @@
 namespace INCES\ComedorBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+/*
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+*/
 
 use INCES\ComedorBundle\Entity\Usuario;
 use INCES\ComedorBundle\Entity\Menu;
@@ -374,7 +379,7 @@ class MenuController extends Controller
      * Deletes a Menu entity.
      *
      */
-    
+
     public function deleteTodayAction($id)
     {
       $form = $this->createDeleteForm($id);
@@ -398,7 +403,7 @@ class MenuController extends Controller
       $route = $request->getBaseUrl();
       return new Response($route.'/#!/menu/today');
     }
-    
+
 
     /*
      * Mostrar el menu del dia
@@ -465,9 +470,9 @@ class MenuController extends Controller
 
       $em = $this->getDoctrine()->getManager();
       $emConfig = $em->getConfiguration();
-      $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
-      $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
-      $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
+      //$emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+      //$emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
+      //$emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
 
       $entity = $em->getRepository('INCESComedorBundle:Usuario')->find($id);
 
@@ -499,7 +504,7 @@ class MenuController extends Controller
 	*/
       $hours = $this->validHours($id);
       $hourStart = $hours[0];
-      $hourEnd = $hours[1]; 
+      $hourEnd = $hours[1];
       $entity = $hours[2];
       $now = new \DateTime('now');
       $hour = $now->format('H');
@@ -775,9 +780,9 @@ class MenuController extends Controller
 
       $em = $this->get('doctrine.orm.entity_manager');
       $emConfig = $em->getConfiguration();
-      $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
-      $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
-      $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
+      //$emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+      //$emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
+      //$emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
 
       // Buscando las personas que ya comieron hoy
       $now = new \DateTime('now');

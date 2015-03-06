@@ -204,17 +204,34 @@ class MenuControllerTest extends WebTestCase
       0,
       $crawler->filter('html:contains("Menu Bill")')->count()
     );
+    //
+    // Good Scenario
+    // There is a result
+    $form = $crawler->selectButton('query-submit')->form(array(
+              'query' => 'Arr'
+    ));
+    $crawler = $this->client->submit($form);
 
-    // Good scenario
-    // User can facturar
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Arroz con")')->count()
+    );
 
+    // Bad Scenario
+    // Not results
+    $form = $crawler->selectButton('query-submit')->form(array(
+              'query' => 'Pan'
+    ));
+    $crawler = $this->client->submit($form);
 
-
-    // Bad scenario
-    // User cannot facturar
-    $link = $crawler->selectLink('img-uncheck')->link();
-    $crawler = $this->client->click($link);
-    print_r($crawler);
+    $this->assertEquals(
+      0,
+      $crawler->filter('html:contains("Pan")')->count()
+    );
+    $this->assertEquals(
+      0,
+      $crawler->filter('html:contains("Arroz con")')->count()
+    );
   }
 
 }

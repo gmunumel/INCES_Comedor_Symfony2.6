@@ -169,5 +169,4 @@ class ContabilidadControllerTest extends WebTestCase
     $this->assertCount(0, $crawler->filter('html:contains("Gabriel")'));
 
   }
-
 }

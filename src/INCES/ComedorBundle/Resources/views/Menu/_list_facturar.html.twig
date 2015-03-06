@@ -1,7 +1,7 @@
 <div id="col-browser">
   <div class="side-dock">
     <div class="social-block">
-      {% render 'INCESComedorBundle:Usuario:lunchToday' %}
+      {{  render_hinclude(controller('INCESComedorBundle:Usuario:lunchToday')) }}
       <br />
       <div class="center">
         <a href="{{ app.request.uriForPath('/#!/usuario/newexterno') }}" ><button type="button" >{{ 'Create External User' }}</button></a>
