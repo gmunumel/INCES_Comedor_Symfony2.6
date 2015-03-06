@@ -3,12 +3,9 @@
 namespace INCES\ComedorBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-/*
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-*/
-
 use INCES\ComedorBundle\Entity\Usuario;
 use INCES\ComedorBundle\Entity\Menu;
 use INCES\ComedorBundle\Entity\UsuarioMenu;
@@ -539,7 +536,9 @@ class MenuController extends Controller
        */
       //if($count > 0){
       //$em = $this->get('doctrine.orm.entity_manager');
-      $dql = $em->createQuery('SELECT um FROM INCES\ComedorBundle\Entity\UsuarioMenu um WHERE um.usuario = :id and YEAR(um.dia) = :year and MONTH(um.dia) = :month and DAY(um.dia) = :day');
+      $dql = $em->createQuery('SELECT um FROM INCES\ComedorBundle\Entity\UsuarioMenu um '.
+                               'WHERE um.usuario = :id and YEAR(um.dia) = :year '.
+                               'and MONTH(um.dia) = :month and DAY(um.dia) = :day');
       $dql->setParameter('id', $id);
       $dql->setParameter('year', $now->format("Y"));
       $dql->setParameter('month', $now->format("m"));
@@ -780,9 +779,9 @@ class MenuController extends Controller
 
       $em = $this->get('doctrine.orm.entity_manager');
       $emConfig = $em->getConfiguration();
-      //$emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
-      //$emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
-      //$emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
+      $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+      $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
+      $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
 
       // Buscando las personas que ya comieron hoy
       $now = new \DateTime('now');

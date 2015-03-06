@@ -4,7 +4,7 @@
     <parameter key="kernel.root_dir">/home/alucard/workspace/Code/INCES_Comedor_Symfony2.6/app</parameter>
     <parameter key="kernel.environment">test</parameter>
     <parameter key="kernel.debug">true</parameter>
-    <parameter key="kernel.name">app</parameter>
+    <parameter key="kernel.name">ap_</parameter>
     <parameter key="kernel.cache_dir">/home/alucard/workspace/Code/INCES_Comedor_Symfony2.6/app/cache/test</parameter>
     <parameter key="kernel.logs_dir">/home/alucard/workspace/Code/INCES_Comedor_Symfony2.6/app/logs</parameter>
     <parameter key="kernel.bundles" type="collection">
@@ -2902,7 +2902,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>54f96feb72aee</argument>
+            <argument>54f9839342b29</argument>
           </service>
         </argument>
       </argument>
@@ -3445,7 +3445,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>54f96feb72aee</argument>
+            <argument>54f9839342b29</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -4159,18 +4159,6 @@
           </call>
           <call method="addCustomDatetimeFunction">
             <argument>day</argument>
-            <argument>DoctrineExtensions\Query\Mysql\Day</argument>
-          </call>
-          <call method="addCustomDatetimeFunction">
-            <argument>YEAR</argument>
-            <argument>DoctrineExtensions\Query\Mysql\Year</argument>
-          </call>
-          <call method="addCustomDatetimeFunction">
-            <argument>MONTH</argument>
-            <argument>DoctrineExtensions\Query\Mysql\Month</argument>
-          </call>
-          <call method="addCustomDatetimeFunction">
-            <argument>DAY</argument>
             <argument>DoctrineExtensions\Query\Mysql\Day</argument>
           </call>
         </service>

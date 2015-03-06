@@ -46,7 +46,7 @@
 
   <br />
   <h3>{{ 'Today\'s Menu' }}</h3>
-  <form class="generic" action="{{ app.request.uriForPath('/menu/facturar/procesar') }}" method="post">
+  <form class="facturar_form generic" action="{{ app.request.uriForPath('/menu/facturar/procesar') }}" method="post">
     <input type="hidden" id="usuario" name="usuario" value="{{entity.id}}" />
     <table class="bordered">
       <thead>
@@ -76,6 +76,8 @@
       {% endfor %}
       </tbody>
     </table>
+    <div id="errors">
+    </div>
 
     <br />
     <br />
@@ -97,3 +99,4 @@
 </div> <!-- /col-text -->
 
 <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
+

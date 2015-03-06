@@ -27,9 +27,9 @@ doctrine:
       default:
         driver:   pdo_sqlite
         path:     %kernel.cache_dir%/test.db
-  orm:
-    dql:
-      datetime_functions:
-        YEAR: DoctrineExtaensions\Query\Mysql\Year
-        MONTH: DoctrineExatensions\Query\Mysql\Month
-        DAY: DoctrineExteansions\Query\Mysql\Day
+#  orm:
+#    dql:
+#      datetime_functions:
+#        YEAR: DoctrineExtensions\Query\Mysql\Year
+#        MONTH: DoctrineExtensions\Query\Mysql\Month
+#        DAY: DoctrineExtensions\Query\Mysql\Day

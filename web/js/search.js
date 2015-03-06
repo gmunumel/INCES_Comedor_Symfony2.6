@@ -87,26 +87,66 @@ $(document).ready(function()
         },
         "Please the dates format is dd/mm/yyyy"
     );
+    $.validator.addMethod(
+        "atLeastOneRadioButton",
+        function(value, element) {
+          return ($('input[type=radio]:checked').size() > 0);
+        },
+        "Please select at least one Menu"
+    );
+    $.validator.addMethod(
+      "uniqueUserName",
+      function(value, element) {
+        var isSuccess = false;
+        if(value.length > 0){
+          $.ajax({
+            type: "POST",
+            async: false,
+            url: "/usuario/searchua",
+            data: {
+              query: value
+            },
+            dataType: "json",
+            success: function(response) {
+              isSuccess = response === true ? true: false;
+              //alert(isSuccess);
+            }
+          });
+          return isSuccess;
+        }
+      },
+      "That username is already taken"
+    );
 
     /* --------- Inicio de las validaciones ------- */
-    $('.menu_form').validate({
+    $('.facturar_form').validate({
         rules: {
-            'inces_comedorbundle_menutype[seco]'     : { required       : true },
-            'inces_comedorbundle_menutype[sopa]'     : { required       : true },
-            'inces_comedorbundle_menutype[salado]'   : { required       : true },
-            'inces_comedorbundle_menutype[jugo]'     : { required       : true },
-            'inces_comedorbundle_menutype[ensalada]' : { required       : true },
-            'inces_comedorbundle_menutype[postre]'   : { required       : true },
-            'inces_comedorbundle_menutype[dia]'      : { venezuelanDate : true }
+            'menus'     : { atLeastOneRadioButton : true }
         },
         messages: {
-            'inces_comedorbundle_menutype[seco]'     : { required       : 'Fill the field \'First Plate\'' },
-            'inces_comedorbundle_menutype[sopa]'     : { required       : 'Fill the field \'Soup\'' },
-            'inces_comedorbundle_menutype[salado]'   : { required       : 'Fill the field \'Second Plate\'' },
-            'inces_comedorbundle_menutype[jugo]'     : { required       : 'Fill the field \'Juice\'' },
-            'inces_comedorbundle_menutype[ensalada]' : { required       : 'Fill the field \'Salad\'' },
-            'inces_comedorbundle_menutype[postre]'   : { required       : 'Fill the field \'Dessert\'' },
-            'inces_comedorbundle_menutype[dia]'      : { venezuelanDate : 'Please fill a date in format dd/mm/yyyy' }
+            'menus'     : { atLeastOneRadioButton : 'Please select one Menu' }
+        },
+        errorLabelContainer: '#errors'
+    });
+
+    $('.menu_form').validate({
+        rules: {
+            'inces_comedorbundle_menutype[seco]'     : { required         : true },
+            'inces_comedorbundle_menutype[sopa]'     : { required         : true },
+            'inces_comedorbundle_menutype[salado]'   : { required         : true },
+            'inces_comedorbundle_menutype[jugo]'     : { required         : true },
+            'inces_comedorbundle_menutype[ensalada]' : { required         : true },
+            'inces_comedorbundle_menutype[postre]'   : { required         : true },
+            'inces_comedorbundle_menutype[dia]'      : { venezuelanDate   : true }
+        },
+        messages: {
+            'inces_comedorbundle_menutype[seco]'     : { required         : 'Fill the field \'First Plate\'' },
+            'inces_comedorbundle_menutype[sopa]'     : { required         : 'Fill the field \'Soup\'' },
+            'inces_comedorbundle_menutype[salado]'   : { required         : 'Fill the field \'Second Plate\'' },
+            'inces_comedorbundle_menutype[jugo]'     : { required         : 'Fill the field \'Juice\'' },
+            'inces_comedorbundle_menutype[ensalada]' : { required         : 'Fill the field \'Salad\'' },
+            'inces_comedorbundle_menutype[postre]'   : { required         : 'Fill the field \'Dessert\'' },
+            'inces_comedorbundle_menutype[dia]'      : { venezuelanDate   : 'Please fill a date in format dd/mm/yyyy' }
         }
     });
     $('.menu_alday_form').validate({
@@ -159,31 +199,6 @@ $(document).ready(function()
             'inces_comedorbundle_usuarioexternotype[cedula]'   : { isANumber          : 'Fill the field \'Id\' with a valid input' }
         }
     });
-
-    $.validator.addMethod(
-      "uniqueUserName",
-      function(value, element) {
-        var isSuccess = false;
-        if(value.length > 0){
-          $.ajax({
-            type: "POST",
-            async: false,
-            url: "/usuario/searchua",
-            data: {
-              query: value
-            },
-            dataType: "json",
-            success: function(response) {
-              isSuccess = response === true ? true: false;
-              //alert(isSuccess);
-            }
-          });
-          return isSuccess;
-        }
-      },
-      "That username is already taken"
-    );
-
     $('.user_admin_form').validate({
         rules: {
             'fos_user_registration_form[username]'              : { required              : true,
@@ -208,7 +223,6 @@ $(document).ready(function()
             'fos_user_registration_form[email]'                 : { validateEmailNoNull   : 'Fill the field \'Email\' with a valid format'}
         }
     });
-
     $('.user_admin_profile_form').validate({
         rules: {
             'fos_user_profile_form[user][username]'        : { required              : true },
@@ -271,7 +285,6 @@ $(document).ready(function()
             'inces_comedorbundle_carga_masivatype[file]'     : { cmFileExtension : 'The file must be in .csv format'}
         }
     });
-
     /* -------- Fin de las validaciones --------- */
 
     /* -------- Propiedades generales para las fechas ------ */
@@ -369,7 +382,9 @@ $(document).ready(function()
             window.location.href = urlFinal;
         }
     });
-    $('[type=submit]:not(.search_keywords, .delete_form_btn, .reporte_form_btn, .carga_masiva_form_btn, .login_form_btn)').on('click', function(e) {
+    $('[type=submit]:not(.search_keywords, '
+      +'.delete_form_btn, .reporte_form_btn, .carga_masiva_form_btn, '
+      +'.login_form_btn)').on('click', function(e) {
         e.preventDefault();
         var form = $(this).closest('form');
         if (form.valid()){
