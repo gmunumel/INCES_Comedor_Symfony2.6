@@ -18,6 +18,7 @@ class LoadUsuarioData extends AbstractFixture implements OrderedFixtureInterface
     $usuario -> setNcarnet(0437332);
     $usuario -> setAI(false);
     $usuario -> setCorreo('gabrielmunumel@gmail.com');
+    $usuario -> setImage('guest_user.png');
     $usuario -> setRol($manager->merge($this->getReference('rol-user')));
 
     $manager->persist($usuario);
@@ -32,6 +33,7 @@ class LoadUsuarioData extends AbstractFixture implements OrderedFixtureInterface
     $usuario -> setNcarnet(0437);
     $usuario -> setAI(false);
     $usuario -> setCorreo('elena@gmail.com');
+    $usuario -> setImage('guest_user.png');
     $usuario -> setRol($manager->merge($this->getReference('rol-no-enter')));
 
     $manager->persist($usuario);
