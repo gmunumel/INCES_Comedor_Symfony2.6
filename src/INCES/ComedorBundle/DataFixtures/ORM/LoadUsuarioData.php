@@ -27,6 +27,21 @@ class LoadUsuarioData extends AbstractFixture implements OrderedFixtureInterface
     $this->addReference('user-menu', $usuario);
 
     $usuario = new Usuario();
+    $usuario -> setNombre('Carlos');
+    $usuario -> setApellido('Manrique');
+    $usuario -> setCedula('173871340');
+    $usuario -> setNcarnet(0437332);
+    $usuario -> setAI(false);
+    $usuario -> setCorreo('carlos@gmail.com');
+    $usuario -> setImage('guest_user.png');
+    $usuario -> setRol($manager->merge($this->getReference('rol-user')));
+
+    $manager->persist($usuario);
+    $manager->flush();
+
+    $this->addReference('user-menu-second', $usuario);
+
+    $usuario = new Usuario();
     $usuario -> setNombre('Elena');
     $usuario -> setApellido('Elena');
     $usuario -> setCedula('1738');
@@ -40,7 +55,8 @@ class LoadUsuarioData extends AbstractFixture implements OrderedFixtureInterface
     $manager->flush();
 
     $this->addReference('user-menu-no-enter', $usuario);
-    }
+
+  }
 
     public function getOrder()
     {

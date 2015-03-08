@@ -7,7 +7,7 @@ Project developed using Symfony2.6, MySQL and Vim, etc
 Update de vendor
  composer update
 
-If you want to reset the seed use:
+If you want to reset the seed use (optional):
    ALTER TABLE <table_name> AUTO_INCREMENT = 1;
 
 Force the remove of the schema
@@ -19,7 +19,7 @@ Force the creation of the schema
 Load basic initial data
    php app/console doctrine:fixtures:load
 
-Create a initial user al login
+Create a initial user al login (optional)
   php app/console fos:user:create root root@example.com admin --super-admin
 
   php app/console fos:user:create user email password --super-admin
@@ -43,9 +43,13 @@ try with
 
   Try al fix datapicker, it looks weird and the menu appears over it
 
-  In localhost:8000/#!/usuario the images aren't displaying well 
+*** Fixed
 
   Check why is passing the MenuFacturar without select a Menu
+
+  In localhost:8000/#!/usuario the images aren't displaying well 
+
+  Edit Rol is not taken the values
   
 *** Test
    The controllers were tested using functional test 

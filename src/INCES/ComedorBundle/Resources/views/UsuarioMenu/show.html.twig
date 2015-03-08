@@ -24,28 +24,29 @@
     </tbody>
   </table>
 
+    {#
   <ul class="record_actions">
     <li>
     <a href="{{ app.request.uriForPath('/#!/usuariomenu') }}">
       {{ 'Back to the list' }}
     </a>
     </li>
-    {#
     <li>
     <a href="{{ app.request.uriForPath('/#!/usuariomenu/') }}{{ entity.id }}/edit">
       {{ 'Edit' }}
     </a>
     </li>
     #}
+      {#
     <form class="generic" action="{{ app.request.uriForPath('/usuariomenu/') }}{{ entity.id }}/delete" method="post">
       {{ form_widget(delete_form) }}
-      {#
       <button class="delete_form_btn" type="submit">{{ 'Delete' }}</button>
-      #}
       <div class="action">
         <input id="login-submit" class="delete_form_btn submit-button" type="submit" value="{{ 'Delete' }}" />
       </div>
     </form>
   </ul>
+      #}
 </div> <!-- /col-text -->
+  <a href="{{ app.request.uriForPath('/#!/usuariomenu') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" />
 <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

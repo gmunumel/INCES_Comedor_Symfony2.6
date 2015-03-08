@@ -14,7 +14,8 @@ class LoadUsuarioMenuData extends AbstractFixture implements OrderedFixtureInter
     $userMenu = new UsuarioMenu();
     $userMenu -> setUsuario($manager->merge($this->getReference('user-menu')));
     $userMenu -> setMenu($manager->merge($this->getReference('menu-user')));
-    $userMenu -> setDia(new \DateTime ('now'));
+    $userMenu -> setDia(new \DateTime('now'));
+    $userMenu -> setHora(new \DateTime('now'));
 
     $manager->persist($userMenu);
     $manager->flush();

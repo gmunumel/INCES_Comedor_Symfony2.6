@@ -128,31 +128,31 @@
             {% endif %}
             {% endfor %}
 
-            <tr>
+            <tr class="opener">
               {% if hour >= hourStart and hour <= hourEnd and not _lncTd %}
-              <td><a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/showfacturar"><img src="{{ asset('img/check.gif') }}" alt="img-check" height="30" width="30" /></a></td>
+              <td>
+                <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/showfacturar">
+                  <img src="{{ asset('img/check.gif') }}" alt="img-check" height="30" width="30" />
+                </a>
+              </td>
               <td>{{ entity.cedula }}</td>
               <td>{{ entity.nombre }}</td>
               <td>{{ entity.apellido }}</td>
               <td>{{ entity.ncarnet }}</td>
               <td>{{ entity.rol }}</td>
-              {% if entity.image == '' %}
-              <td><img src="{{ asset('img/guest_user.png') }}" width="75" height="75" alt="" /></td>
-              {% else %}
               <td><img src="{{ asset('img/uploaded/') }}{{entity.image|replace({'/tmp/':''})}}" width="75" height="75" alt="" /></td>
-              {% endif %}
               {% else %}
-              <td><a class="opener" href="" value="{{ app.request.uriForPath('/menu/') }}{{ entity.id }}/showfacturar"><img src="{{ asset('img/uncheck.jpg') }}" alt="img-uncheck" height="30" width="30" /></a></td>
+              <td>
+                <a href="" value="{{ app.request.uriForPath('/menu/') }}{{ entity.id }}/showfacturar">
+                  <img src="{{ asset('img/uncheck.jpg') }}" alt="img-uncheck" height="30" width="30" />
+                </a>
+              </td>
               <td>{{ entity.cedula }}</td>
               <td>{{ entity.nombre }}</td>
               <td>{{ entity.apellido }}</td>
               <td>{{ entity.ncarnet }}</td>
               <td>{{ entity.rol }}</td>
-              {% if entity.image == '' %}
-              <td><img src="{{ asset('img/guest_user.png') }}" width="75" height="75" alt="" /></td>
-              {% else %}
               <td><img src="{{ asset('img/uploaded/') }}{{entity.image|replace({'/tmp/':''})}}" width="75" height="75" alt="" /></td>
-              {% endif %}
               {% endif %}
             </tr>
             {% endfor %}

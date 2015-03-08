@@ -176,7 +176,7 @@ class MenuController extends Controller
       return $this->render('INCESComedorBundle:Menu:edit.html.twig', array(
         'entity'      => $entity,
         'edit_form'   => $editForm->createView(),
-          'delete_form' => $deleteForm->createView(),
+        'delete_form' => $deleteForm->createView(),
       ));
     }
 
@@ -331,7 +331,7 @@ class MenuController extends Controller
         return $this->render('INCESComedorBundle:Menu:edit_today.html.twig', array(
           'entity'      => $entity,
           'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+          'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -368,7 +368,7 @@ class MenuController extends Controller
         return $this->render('INCESComedorBundle:Menu:edit_today.html.twig', array(
           'entity'      => $entity,
           'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+          'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -409,13 +409,13 @@ class MenuController extends Controller
 
       //$em = $this->get('doctrine.orm.entity_manager');
 
-      $now = new \DateTime;
+      $now = date('Y-m-d');
 
       $em = $this->get('doctrine.orm.entity_manager');
       $dql = $em->createQueryBuilder();
       $dql->add('select', 'a')
         ->add('from', 'INCESComedorBundle:Menu a')
-        ->add('where', "a.dia = '".$now->format("Y-m-d 00:00:00")."'");
+        ->add('where', "a.dia = '".$now."'");
 
       $qry = $em->createQuery($dql);
       $dql = $qry->getResult();
@@ -433,24 +433,19 @@ class MenuController extends Controller
       $request = $this->get('request');
       $conn    = $this->get('database_connection');
 
-      $usuario = $_POST["usuario"];
-      $dia     = new \DateTime('now');
-      $dia     = $dia->format('Y-m-d H:i:s');
+      $usuario = $request->request->get('usuario');
+      $menu = $request->request->get('menus');
+      $now = new \DateTime('now');
+      //$dia     = $dia->format('Y-m-d');
 
-      if(!isset($_POST["menus"])) {
-        $conn->insert('UsuarioMenu',
-          array('usuario_id' => $usuario
-          ,'dia'             => $dia
-          )
-        );
-      }else{
-        $menu    = $_POST["menus"];
-        $conn->insert('UsuarioMenu',
-          array('usuario_id' => $usuario
-          ,'dia'        => $dia
-          ,'menu_id'    => $menu
-          )
-        );
+      if(isset($menu)) {
+      	$conn->insert('UsuarioMenu',
+        	array('usuario_id'  => $usuario,
+            	'dia'         => $now->format('Y-m-d'),
+                'hora'        => $now->format('H:i:s'),
+                'menu_id'     => $menu
+        	)
+      	);
       }
 
       $route = $request->getBaseUrl();
@@ -466,7 +461,7 @@ class MenuController extends Controller
       $request = $this->getRequest();
 
       $em = $this->getDoctrine()->getManager();
-      $emConfig = $em->getConfiguration();
+      //$emConfig = $em->getConfiguration();
       //$emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
       //$emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
       //$emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
@@ -506,9 +501,11 @@ class MenuController extends Controller
       $now = new \DateTime('now');
       $hour = $now->format('H');
 
+      // Error - Not the right hours to eat
+      // The service is closed
       if ($hour < $hourStart || $hour > $hourEnd){
         $content = $this->renderView(
-          'INCESComedorBundle:Menu:error_already_eat.html.twig', array(
+          'INCESComedorBundle:Menu:service_closed.html.twig', array(
             'nombre' => $entity->getNombre(),
             'apellido' => $entity->getApellido(),
             'rol_name' => $entity->getRol()->getNombre(),
@@ -519,9 +516,7 @@ class MenuController extends Controller
         ));
         return new Response($content);
       }
-      //
-      //Verificar si ya ha comido esa persona ese mismo dia
-      $now = new \DateTime('now');
+      
       /*
       $dql = $em->createQuery('SELECT COUNT(um.id) FROM INCES\ComedorBundle\Entity\UsuarioMenu um WHERE um.usuario = :id and YEAR(um.dia) = :year and MONTH(um.dia) = :month and DAY(um.dia) = :day');
       $dql->setParameter('id', $id);
@@ -536,45 +531,47 @@ class MenuController extends Controller
        */
       //if($count > 0){
       //$em = $this->get('doctrine.orm.entity_manager');
+
+      // Person already eat
+      $now = date('Y-m-d');
       $dql = $em->createQuery('SELECT um FROM INCES\ComedorBundle\Entity\UsuarioMenu um '.
-                               'WHERE um.usuario = :id and YEAR(um.dia) = :year '.
-                               'and MONTH(um.dia) = :month and DAY(um.dia) = :day');
+                               'WHERE um.usuario = :id and um.dia = :dia ');
       $dql->setParameter('id', $id);
-      $dql->setParameter('year', $now->format("Y"));
-      $dql->setParameter('month', $now->format("m"));
-      $dql->setParameter('day', $now->format("d"));
+      $dql->setParameter('dia', $now);
+      //$dql->setParameter('month', $now->format("m"));
+      //$dql->setParameter('day', $now->format("d"));
       $_entity   = $dql->getOneOrNullResult();
       if($_entity != null){
         //$_entity   = $_entity[0];
-        $lncHora   = $_entity->getDia()->format("H");
-        $lncMinuto = $_entity->getDia()->format("i");
+        $lncHora   = $_entity->getHora()->format("H");
+        $lncMinuto = $_entity->getHora()->format("i");
         $ampm      = "am";
         if($lncHora > 12){
-	  $lncHora = $lncHora - 12;
-	  $ampm = "pm";
-	}
+	  		$lncHora = $lncHora - 12;
+	  		$ampm = "pm";
+		}
         if($lncHora == 12) $ampm = "pm";
         if($lncHora == 24) $ampm = "am";
-	$path = $request->getBaseUrl().'/#!/usuario/searchalnc';
+		$path = $request->getBaseUrl().'/#!/usuario/searchalnc';
         $content = $this->renderView(
-	   'INCESComedorBundle:Menu:last_eat.html.twig', array(
-	      'nombre' => $entity->getNombre(),
-	      'apellido' => $entity->getApellido(),
-	      'hora' => $lncHora,
-	      'minuto' => $lncMinuto,
-	      'ampm' => $ampm,
-	      'path' => $path
-         ));
+	   		'INCESComedorBundle:Menu:error_already_eat.html.twig', array(
+	    		'nombre' => $entity->getNombre(),
+	      		'apellido' => $entity->getApellido(),
+	      		'hora' => $lncHora,
+	      		'minuto' => $lncMinuto,
+	      		'ampm' => $ampm,
+	      		'path' => $path
+         	));
          return new Response($content);
       }
 
 
       // Buscando menus del dia
-      $now = new \DateTime;
+      $now = date('Y-m-d');
       $menus = $em->createQueryBuilder();
       $menus->add('select', 'm')
         ->add('from', 'INCESComedorBundle:Menu m')
-        ->add('where', "m.dia = '".$now->format("Y-m-d 00:00:00")."'");
+        ->add('where', "m.dia = '".$now."'");
 
       $qry   = $em->createQuery($menus);
       $menus = $qry->getResult();
@@ -661,6 +658,7 @@ class MenuController extends Controller
     /*
      * Debe ser de la forma *\/*\/* - 20/01/2002
      */
+    /*
     private function setDate($val){
       $res = "";
       $params = trim($val);
@@ -684,6 +682,7 @@ class MenuController extends Controller
         $res .= " (YEAR(a.dia) = " . $explote[2] . ") AND";
       return $res;
     }
+    */
 
     /*
      * Ask for a value in each field
@@ -695,7 +694,7 @@ class MenuController extends Controller
       $ret = "";
 
       foreach($explote as $value){
-        $ret = $this->setDate($value);
+        //$ret = $this->setDate($value);
         $res .= $ret;
         if($ret == ""){
           $res .= " (m.seco LIKE '%" . $value . "%'";
@@ -703,7 +702,8 @@ class MenuController extends Controller
           $res .= " OR m.salado LIKE '%" . $value . "%'";
           $res .= " OR m.jugo LIKE '%" . $value . "%'";
           $res .= " OR m.ensalada LIKE '%" . $value . "%'";
-          $res .= " OR m.postre LIKE '%" . $value . "%' ) AND";
+          $res .= " OR m.postre LIKE '%" . $value . "%'";
+          $res .= " OR m.dia = '" . $value . "' ) AND";
          }
       }
       if(strlen($res) > 3)
@@ -761,8 +761,8 @@ class MenuController extends Controller
         $entity = $qry->getResult();
         $entity = $entity[0];
 
-        $now = new \DateTime('now');
-        $hour = $now->format('H');
+        //$now = new \Date('now');
+        //$hour = $now->format('H');
         $hours = $this->comparisonHours($entity->getRol()->getHoraComerStartAMPM(),
 			$entity->getRol()->getHoraComerEndAMPM(),
 			$entity->getRol()->getHoraComerStart(),
@@ -778,21 +778,24 @@ class MenuController extends Controller
     private function lncToday(){
 
       $em = $this->get('doctrine.orm.entity_manager');
-      $emConfig = $em->getConfiguration();
-      $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
-      $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
-      $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
+      //$emConfig = $em->getConfiguration();
+      //$emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+      //$emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
+      //$emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
 
       // Buscando las personas que ya comieron hoy
-      $now = new \DateTime('now');
+      $now = date('Y-m-d');
       $dql = $em->createQueryBuilder();
       $dql->select('um')
         ->from('INCESComedorBundle:UsuarioMenu','um')
-        ->where("YEAR(um.dia) = '".$now->format("Y")."'")
-        ->andWhere("MONTH(um.dia) = '".$now->format("m")."'")
-        ->andWhere("DAY(um.dia) = '".$now->format("d")."'");
+        ->where("um.dia = '".$now."'");
+        //->andWhere("MONTH(um.dia) = '".$now->format("m")."'")
+        //->andWhere("DAY(um.dia) = '".$now->format("d")."'");
       $qry = $em->createQuery($dql);
       $userLncTd = $qry->getResult();
+
+      //$query = $em->createQuery("SELECT um FROM INCESComedorBundle:UsuarioMenu um WHERE um.dia = '2002/02/02'");
+      //$userLncTd = $query->getResult();
 
       return $userLncTd;
     }
@@ -835,7 +838,6 @@ class MenuController extends Controller
      * Lists all Usuario entities.
      */
     private function _indexFacturarPagination($query, $sort = null, $direction = null){
-
       $em = $this->get('doctrine.orm.entity_manager');
       //$dql = $em->createQueryBuilder();
       if (is_null($sort))
@@ -908,7 +910,6 @@ class MenuController extends Controller
    * Adding pagination
    */
   private function _indexPagination($query, $sort = null, $direction = null){
-
     $em = $this->get('doctrine.orm.entity_manager');
     //$dql = $em->createQueryBuilder();
     if (is_null($sort))

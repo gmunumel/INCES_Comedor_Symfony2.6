@@ -49,13 +49,13 @@ class UsuarioMenuControllerTest extends WebTestCase
 
     // Fill in the form and submit it
     $form = $crawler->selectButton('login-submit')->form(array(
-              'inces_comedorbundle_usuariomenutype[usuario]'            => '2',
-              'inces_comedorbundle_usuariomenutype[menu]'               => '1',
-              'inces_comedorbundle_usuariomenutype[dia][date][year]'    =>  date('Y'),
-              'inces_comedorbundle_usuariomenutype[dia][date][month]'   =>  date('m'),
-              'inces_comedorbundle_usuariomenutype[dia][date][day]'     =>  date('d'),
-              'inces_comedorbundle_usuariomenutype[dia][time][hour]'    =>  date('H'),
-              'inces_comedorbundle_usuariomenutype[dia][time][minute]'  =>  date('i')
+              'inces_comedorbundle_usuariomenutype[usuario]'       => '2',
+              'inces_comedorbundle_usuariomenutype[menu]'          => '1',
+              'inces_comedorbundle_usuariomenutype[dia][year]'     =>  date('Y'),
+              'inces_comedorbundle_usuariomenutype[dia][month]'    =>  date('m'),
+              'inces_comedorbundle_usuariomenutype[dia][day]'      =>  date('d'),
+              'inces_comedorbundle_usuariomenutype[hora][hour]'    =>  date('H'),
+              'inces_comedorbundle_usuariomenutype[hora][minute]'  =>  date('i')
     ));
     $crawler = $this->client->submit($form);
 

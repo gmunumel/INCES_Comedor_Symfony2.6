@@ -12,6 +12,7 @@ class UsuarioMenuType extends AbstractType
   {
     $builder
       ->add('dia')
+      ->add('hora')
       ->add('usuario')
       ->add('menu')
       ;

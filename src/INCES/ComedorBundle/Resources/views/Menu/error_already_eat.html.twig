@@ -1,5 +1,5 @@
 <p>
 <span class='ui-icon ui-icon-alert' style='float:left; margin:0 7px 20px 0;'></span>
-{{'The user'}} <b>{{nombre|capitalize}} {{apellido|capitalize}}</b> {{'has the rol'}} <b>{% filter upper %}{{rol_name}}{% endfilter%}</b>. <br /><br />
-{{'The'}} <b>{% filter upper %}{{rol_name}}{% endfilter %}</b> {{'can use the dinning room from'}} <b>{{hora_start}}{{hora_startAMPM}}</b> {{'to'}} <b>{{hora_end}}{{hora_endAMPM}}</b>
+{{'The user'}} <b>{{nombre|capitalize}} {{apellido|capitalize}}</b> {{'already ate at '}} <b>{{hora}}:{{minuto}} {{ampm}}</b> <br /><br />
+<a id='closer' href='{{path}}' alt='{{'last lunch'}}'>{{'See last users to lunch..'}}</a>
 </p>

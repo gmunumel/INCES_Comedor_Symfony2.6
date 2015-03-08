@@ -298,6 +298,7 @@ class UsuarioMenuController extends Controller
     /*
      * Debe ser de la forma *\/*\/* - 20/01/2002
      */
+    /*
     private function setDate($val){
       $res = "";
       $params = trim($val);
@@ -321,6 +322,7 @@ class UsuarioMenuController extends Controller
         $res .= " (YEAR(um.dia) = " . $explote[2] . ") AND";
       return $res;
     }
+    */
 
     private function params($params){
       $params = trim($params);
@@ -328,14 +330,15 @@ class UsuarioMenuController extends Controller
       $res = "";
 
       foreach($explote as $value){
-        $res .= $this->setDate($value);
+        //$res .= $this->setDate($value);
 	if($res == ""){
           $res .= " (u.cedula like '%" . $value . "%'";
           $res .= " or u.nombre like '%" . $value . "%'";
 	  $res .= " or u.apellido like '%" . $value . "%'";
           $res .= " or m.seco like '%" . $value . "%'";
           $res .= " or m.sopa like '%" . $value . "%'";
-          $res .= " or m.postre like '%" . $value . "%') AND";
+          $res .= " or m.postre like '%" . $value . "%'";
+          $res .= " or um.dia = '" . $value . "' ) AND";
         }
       }
       if(strlen($res) > 3)

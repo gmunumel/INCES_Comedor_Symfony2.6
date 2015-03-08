@@ -55,9 +55,14 @@ class Menu
   private $postre;
 
   /**
-   * @ORM\Column(type="datetime")
+   * @ORM\Column(type="date")
    */
   private $dia;
+
+  /**
+   * @ORM\Column(type="time")
+   */
+  private $hora;
 
   /**
    * @ORM\OneToMany(targetEntity="UsuarioMenu", mappedBy="menu")
@@ -218,6 +223,26 @@ class Menu
   public function getDia()
   {
     return $this->dia;
+  }
+
+  /**
+   * Set hora
+   *
+   * @param time $hora
+   */
+  public function setHora($hora)
+  {
+    $this->hora = $hora;
+  }
+
+  /**
+   * Get hora
+   *
+   * @return hora
+   */
+  public function getHora()
+  {
+    return $this->hora;
   }
 
   /**

@@ -2875,7 +2875,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>54f78e329e2f3</argument>
+            <argument>54fb0ca022777</argument>
           </service>
         </argument>
       </argument>
@@ -3418,7 +3418,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>54f78e329e2f3</argument>
+            <argument>54fb0ca022777</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -4120,18 +4120,6 @@
           </call>
           <call method="setEntityListenerResolver">
             <argument type="service" id="doctrine.orm.default_entity_listener_resolver"/>
-          </call>
-          <call method="addCustomDatetimeFunction">
-            <argument>year</argument>
-            <argument>DoctrineExtensions\Query\Mysql\Year</argument>
-          </call>
-          <call method="addCustomDatetimeFunction">
-            <argument>month</argument>
-            <argument>DoctrineExtensions\Query\Mysql\Month</argument>
-          </call>
-          <call method="addCustomDatetimeFunction">
-            <argument>day</argument>
-            <argument>DoctrineExtensions\Query\Mysql\Day</argument>
           </call>
         </service>
       </argument>

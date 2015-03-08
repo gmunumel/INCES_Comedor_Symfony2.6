@@ -15,6 +15,7 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
     $menu -> setSeco('Arroz con pollo');
     $menu -> setSopa('Caldo de pollo');
     $menu -> setDia(new \DateTime('now'));
+    $menu -> setHora(new \DateTime('now'));
 
     $manager->persist($menu);
     $manager->flush();

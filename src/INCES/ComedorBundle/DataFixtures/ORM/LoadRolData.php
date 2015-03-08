@@ -14,9 +14,9 @@ class LoadRolData extends AbstractFixture implements OrderedFixtureInterface
     $rol = new Rol();
     $rol -> setNombre('Jubilado');
     $rol -> setMonto(0);
-    $rol -> setHoraComerStart('5');
+    $rol -> setHoraComerStart('0');
     $rol -> setHoraComerStartAMPM('am');
-    $rol -> setHoraComerEnd('5');
+    $rol -> setHoraComerEnd('12');
     $rol -> setHoraComerEndAMPM('pm');
 
     $manager->persist($rol);

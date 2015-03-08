@@ -30,6 +30,6 @@ doctrine:
 #  orm:
 #    dql:
 #      datetime_functions:
-#        YEAR: DoctrineExtensions\Query\Mysql\Year
-#        MONTH: DoctrineExtensions\Query\Mysql\Month
-#        DAY: DoctrineExtensions\Query\Mysql\Day
+#        YEAR: INCES\ComedorBundle\DQL\Year
+#        MONTH: INCES\ComedorBundle\DQL\Month
+#        DAY: INCES\ComedorBundle\DQL\Day

@@ -1,5 +1,5 @@
 
-<div id="my-col-text">
+<div id="col-text">
 
   <h1>{{ 'Add User' }} Menu</h1>
 
@@ -14,6 +14,10 @@
       <label for="dia">{{ 'Day' }}</label>
       {{ form_widget(form.dia,  { 'attr': {'class': 'text'}}) }}
     </div>
+    <div id="usuario-menu-hora-block" class="field">
+      <label for="hora">{{ 'Hour' }}</label>
+      {{ form_widget(form.hora,  { 'attr': {'class': 'text'}}) }}
+    </div>
     <div id="usuario-menu-usuario-block" class="field">
       <label for="usuario">{{ 'User' }}</label>
       {{ form_widget(form.usuario,  { 'attr': {'class': 'text'}}) }}
@@ -26,13 +30,24 @@
       <input id="login-submit" class="submit-button" type="submit" value="{{ 'Add' }}" />
     </div>
   </form>
-
-  <ul class="record_actions">
-    <li>
-    <a href="{{ app.request.uriForPath('/#!/usuariomenu') }}">
-      {{ 'Back to the list' }}
-    </a>
-    </li>
-  </ul>
 </div> <!-- /col-text -->
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<center>
+  <a href="{{ app.request.uriForPath('/#!/usuariomenu') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" />
+  </a>
+</center>
 <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

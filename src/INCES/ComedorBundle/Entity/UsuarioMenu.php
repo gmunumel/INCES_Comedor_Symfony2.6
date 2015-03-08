@@ -18,9 +18,14 @@ class UsuarioMenu
   private $id;
 
   /**
-   * @ORM\Column(type="datetime")
+   * @ORM\Column(type="date")
    */
   private $dia;
+
+  /**
+   * @ORM\Column(type="time")
+   */
+  private $hora;
 
   /**
    * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="usuario_menus")
@@ -66,6 +71,26 @@ class UsuarioMenu
     public function getDia()
     {
       return $this->dia;
+    }
+
+    /**
+     * Set hora
+     *
+     * @param time $hora
+     */
+    public function setHora($hora)
+    {
+      $this->hora = $hora;
+    }
+
+    /**
+     * Get hora
+     *
+     * @return time
+     */
+    public function getHora()
+    {
+      return $this->hora;
     }
 
     /**

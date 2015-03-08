@@ -174,7 +174,7 @@ $(document).ready(function()
             'inces_comedorbundle_usuariotype[cedula]'   : { isANumber          : true },
             'inces_comedorbundle_usuariotype[ncarnet]'  : { isANumber          : true },
             'inces_comedorbundle_usuariotype[correo]'   : { validateEmail      : true },
-	    'inces_comedorbundle_usuariotype[rol]'      : { required           : true },
+	    'inces_comedorbundle_usuariotype[rol]'      : { required                 : true },
             'inces_comedorbundle_usuariotype[image]'    : { userImageExtension : true }
         },
         messages: {
@@ -553,20 +553,27 @@ $(document).ready(function()
             }
         }
     });
+
     $( ".opener" ).on('click', function(event) {
-        var url = $(this).attr("value");
-        $.ajax({
-            url: url,
-            success: function(msg) {
-                //alert(msg);
-                $( "#dialog" ).html( msg );
-                $( "#dialog" ).dialog( "open" );
-            }
-        });
-        event.preventDefault();
-        event.stopPropagation();
+        var url = $(this).find('a').attr("value");
+        if(typeof url != 'undefined') {
+          $.ajax({
+              url: url,
+              success: function(msg) {
+                  //alert(msg);
+                  $( "#dialog" ).html( msg );
+                  $( "#dialog" ).dialog( "open" );
+              }
+          });
+          event.preventDefault();
+          event.stopPropagation();
+        }else {
+          window.location = $(this).find('a').attr('href');
+        }
         //$( "#dialog" ).dialog( "open" );
         //return false;
+    }).hover( function() {
+      $(this).toggleClass('hover');
     });
     /*
     var _url = $('div.pagination a').attr('href');
@@ -606,7 +613,7 @@ $(document).ready(function()
     //$(".menu_alday_form #inces_comedorbundle_menutype_dia").prop("readonly", true);
     $(".menu_today_form #inces_comedorbundle_menutodaytype_dia").attr('readonly','readonly');
 
-    $('tbody tr').not('.tsearch').click( function() {
+    $('tbody tr').not('.tsearch, .opener').click( function() {
         window.location = $(this).find('a').attr('href');
     }).hover( function() {
         $(this).toggleClass('hover');

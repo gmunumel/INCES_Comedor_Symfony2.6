@@ -44,10 +44,16 @@ class ContabilidadController extends Controller
 
       // First Case: fechas no vacio y rol vacio
       if($from != "" and $to != "" and $rol == "" )
-        $dql = $this->doSelect($from->modify('-1 day')->format('Y-m-d'), $to->modify('+1 day')->format('Y-m-d'), "", "");
+        $dql = $this->doSelect(
+                      $from->modify('-1 day')->format('Y-m-d'), 
+                      $to->modify('+1 day')->format('Y-m-d'), 
+                      "", "");
       // Second Case: fechas no vacio y rol no vacio
       else
-        $dql = $this->doSelect($from->modify('-1 day')->format('Y-m-d'), $to->modify('+1 day')->format('Y-m-d'), $rol->getId(), "");
+        $dql = $this->doSelect(
+                      $from->modify('-1 day')->format('Y-m-d'), 
+                      $to->modify('+1 day')->format('Y-m-d'), 
+                      $rol->getId(), "");
 
       $qry = $em->createQuery($dql);
       $pagination = $qry->getResult();
@@ -204,10 +210,16 @@ class ContabilidadController extends Controller
     $dql = $em->createQueryBuilder();
     // First Case: fechas no vacio y rol vacio
     if($from != "" and $to != "" and $rol == "" )
-      $dql = $this->doSelect($from->modify('-1 day')->format('Y-m-d'), $to->modify('+1 day')->format('Y-m-d'), "", "");
+      $dql = $this->doSelect(
+                     $from->modify('-1 day')->format('Y-m-d'), 
+                     $to->modify('+1 day')->format('Y-m-d'), "", 
+                     "");
     // Second Case: fechas no vacio y rol no vacio
     else
-      $dql = $this->doSelect($from->modify('-1 day')->format('Y-m-d'), $to->modify('+1 day')->format('Y-m-d'), $rol, "");
+      $dql = $this->doSelect(
+                     $from->modify('-1 day')->format('Y-m-d'), 
+                     $to->modify('+1 day')->format('Y-m-d'), 
+                     $rol, "");
     $qry = $em->createQuery($dql);
     $pagination = $qry->getResult();
 

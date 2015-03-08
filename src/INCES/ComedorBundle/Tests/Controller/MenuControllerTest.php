@@ -4,6 +4,7 @@ namespace INCES\ComedorBundle\Tests\Controller;
 
 //use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class MenuControllerTest extends WebTestCase
 {
@@ -193,12 +194,15 @@ class MenuControllerTest extends WebTestCase
       0,
       $crawler->filter('html:contains("Today\'s Menus")')->count()
     );
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Arroz")')->count()
+    );
   }
 
   public function testSearchAjaxFacturar()
   {
     $crawler = $this->client->request('GET', '/menu/facturar');
-    print_r($crawler);
 
     $this->assertGreaterThan(
       0,
@@ -208,30 +212,105 @@ class MenuControllerTest extends WebTestCase
     // Good Scenario
     // There is a result
     $form = $crawler->selectButton('query-submit')->form(array(
-              'query' => 'Arr'
+              'query' => 'abr'
     ));
     $crawler = $this->client->submit($form);
 
     $this->assertGreaterThan(
       0,
-      $crawler->filter('html:contains("Arroz con")')->count()
+      $crawler->filter('html:contains("Gabriel")')->count()
     );
 
     // Bad Scenario
     // Not results
     $form = $crawler->selectButton('query-submit')->form(array(
-              'query' => 'Pan'
+              'query' => 'askjdka'
     ));
     $crawler = $this->client->submit($form);
 
     $this->assertEquals(
       0,
-      $crawler->filter('html:contains("Pan")')->count()
+      $crawler->filter('html:contains("Gabriel")')->count()
     );
     $this->assertEquals(
       0,
-      $crawler->filter('html:contains("Arroz con")')->count()
+      $crawler->filter('html:contains("Elena")')->count()
     );
   }
 
+  public function testShowFacturar()
+  {
+    $crawler = $this->client->request('GET', '/menu/1/showfacturar');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("The user Gabriel Mu")')->count()
+    );
+
+    $crawler = $this->client->request('GET', '/menu/3/showfacturar');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("The user Elena Elena has the rol NO ENTER.")')->count()
+    );
+
+    $crawler = $this->client->request('GET', '/menu/2/showfacturar');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Show User Bill")')->count()
+    );
+
+    // Bad Scenario
+    // Not selected a menu
+    $form = $crawler->selectButton('login-submit')->form();
+    $crawler = $this->client->submit($form);
+
+    // Doing the manual redirect because
+    // I get an url
+    $response = $this->client->getResponse()->getContent();
+    $response = substr($response, 3);
+
+    $crawler = $this->client->request( 'GET', $response);
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Carlos")')->count()
+    );
+
+    // It's possible to going to 'showfacturar'
+    $crawler = $this->client->request('GET', '/menu/2/showfacturar');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Show User Bill")')->count()
+    );
+
+
+    // Good Scenario
+    // Selected a menu
+
+    $form = $crawler->selectButton('login-submit')->form(array(
+                  'menus' => '1'
+    ));
+    $crawler = $this->client->submit($form);
+
+    // Doing the manual redirect because
+    // I get an url
+    $response = $this->client->getResponse()->getContent();
+    $response = substr($response, 3);
+
+    $crawler = $this->client->request( 'GET', $response);
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Carlos")')->count()
+    );
+
+    // It's possible to going to 'showfacturar'
+    $crawler = $this->client->request('GET', '/menu/2/showfacturar');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("The user Carlos Manrique already ate at")')->count()
+    );
+  }
 }
