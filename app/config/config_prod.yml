@@ -94,6 +94,7 @@ knp_snappy:
         options:    []
 
 monolog:
-    handlers:
-        nested:
-              path: "php://stderr"
+  handlers:
+    nested:
+      type: stream
+      path: "php://stderr"
