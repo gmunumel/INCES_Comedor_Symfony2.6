@@ -27,9 +27,3 @@ doctrine:
       default:
         driver:   pdo_sqlite
         path:     %kernel.cache_dir%/test.db
-#  orm:
-#    dql:
-#      datetime_functions:
-#        YEAR: INCES\ComedorBundle\DQL\Year
-#        MONTH: INCES\ComedorBundle\DQL\Month
-#        DAY: INCES\ComedorBundle\DQL\Day
