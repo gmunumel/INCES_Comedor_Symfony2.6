@@ -79,9 +79,6 @@
         {% if pagination|length == 0 %}
         <p>{{ 'There are not results' }}</p>
         {% endif %}
-        {#
-        <div id="usuarios">
-          #}
           {% for entity in pagination %}
           <tr>
             <td>{{ entity.cedula }}</td>
@@ -100,31 +97,8 @@
             </td>
           </tr>
           {% endfor %}
-          {#
-        </div>
-        #}
         </tbody>
       </table>
-      {#
-      <ul>
-        <li>
-        <a href="{{ path('menu_new') }}">
-          Create a new entry
-        </a>
-        -->
-        <br />
-        <div class="navigation">
-          {{ pagination.render()|raw }}
-        </div>
-        <br />
-        {% if is_granted("ROLE_USER") %}
-        <a href="{{ app.request.uriForPath('/#!/menu/new') }}">
-          Create a new entry
-        </a>
-        {% endif %}
-        </li>
-      </ul>
-      #}
       {% if pagination|length != 0 %}
       <div class="navigation">
         {{knp_pagination_render(pagination)|replace({'usuario': '#!/usuario'})|raw}}

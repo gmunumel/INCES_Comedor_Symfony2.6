@@ -106,9 +106,6 @@
           <td>{{ entity.postre }}</td>
           <td>{% if entity.dia %}{{ entity.dia|date('d/m/Y') }}{% endif%}</td>
           <td>
-            {#
-            <a href="{{ path('menu_show', { 'id': entity.id }) }}">show</a>
-            #}
             <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/show"><img src="{{ asset('img/show.png') }}" height="30" width="30" /></a>
             {% if is_granted("ROLE_USER") %}
             <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edit"><img src="{{ asset('img/edit.ico') }}" value="" height="30" width="30" /></a>
@@ -118,26 +115,6 @@
         {% endfor %}
         </tbody>
       </table>
-      {#
-      <ul>
-        <li>
-        <a href="{{ path('menu_new') }}">
-          Create a new entry
-        </a>
-        -->
-        <br />
-        <div class="navigation">
-          {{ knp_pagination_render(pagination)|raw }}
-        </div>
-        <br />
-        {% if is_granted("ROLE_USER") %}
-        <a href="{{ app.request.uriForPath('/#!/menu/new') }}">
-          Create a new entry
-        </a>
-        {% endif %}
-        </li>
-      </ul>
-      #}
       {% if pagination|length != 0 %}
       <div class="navigation">
         {{knp_pagination_render(pagination)|replace({'menu': '#!/menu'})|raw}}

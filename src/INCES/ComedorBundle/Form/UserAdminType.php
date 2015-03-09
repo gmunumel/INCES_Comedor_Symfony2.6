@@ -17,33 +17,33 @@ class UserAdminType extends AbstractType
     $translated_user = $this->get('translaalr')->trans('User');
     $builder
       ->add('username', 'text', array(
-        'required'   => false
-      )
-    )
-    ->add('nombre', 'text', array(
-      'required'   => false
-    )
-  )
-  ->add('apellido', 'text', array(
-    'required'   => false
-  )
-)
-->add('cedula', 'text', array(
-  'required'   => false
-)
-            )
-            ->add('ncarnet', 'text', array(
-              'required'   => false
-            )
-          )
-          //->add('a_i')
-          ->add('email', 'text', array(
             'required'   => false
-          )
+           )
         )
-        ->add('roles', 'collection', array(
-          'type'       => 'choice',
-          'options'    => array(
+      ->add('nombre', 'text', array(
+            'required'   => false
+           )
+        )
+      ->add('apellido', 'text', array(
+            'required'   => false
+           )
+        )
+      ->add('cedula', 'text', array(
+            'required'   => false
+           )
+        )
+      ->add('ncarnet', 'text', array(
+            'required'   => false
+           )
+        )
+        //->add('a_i')
+      ->add('email', 'text', array(
+            'required'   => false
+           )
+        )
+      ->add('roles', 'collection', array(
+            'type'       => 'choice',
+            'options'    => array(
             'choices'=> array(
               'ROLE_ADMIN'    => $translated_admin,
               'ROLE_GERENTE'  => $translated_manager,

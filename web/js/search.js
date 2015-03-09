@@ -3,7 +3,6 @@ $(document).ready(function()
     $.validator.addMethod(
         "isEqual",
         function(value, element) {
-            // put your own logic here, this is just a (crappy) example
             var pass1 = $('#fos_user_registration_form_plainPassword_first').val();
             var pass2 = $('#fos_user_registration_form_plainPassword_second').val();
             if(pass1 == "" || pass2 == "")
@@ -16,7 +15,6 @@ $(document).ready(function()
     $.validator.addMethod(
         "validateEmail",
         function(value, element) {
-            // put your own logic here, this is just a (crappy) example
             if(value == '') return true;
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\ ".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA -Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(value);
@@ -26,7 +24,6 @@ $(document).ready(function()
     $.validator.addMethod(
         "validateEmailNoNull",
         function(value, element) {
-            // put your own logic here, this is just a (crappy) example
             if(value == '') return false;
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\ ".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA -Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(value);
@@ -36,7 +33,6 @@ $(document).ready(function()
     $.validator.addMethod(
         "isANumber",
         function(value, element) {
-            // put your own logic here, this is just a (crappy) example
             return (value - 0) == value && value.length > 0;
         },
         "Please input a valid number"
@@ -44,7 +40,6 @@ $(document).ready(function()
     $.validator.addMethod(
         "venezuelanDate",
         function(value, element) {
-            // put your own logic here, this is just a (crappy) example
             return value.match(/^\d\d?\/\d\d?\/\d\d\d\d$/);
         },
         "Please the dates format is dd/mm/yyyy"
@@ -52,8 +47,6 @@ $(document).ready(function()
     $.validator.addMethod(
         "userImageExtension",
         function(value, element) {
-            // put your own logic here, this is just a (crappy) example
-            //return value.match(/^\d\d?\/\d\d?\/\d\d$/);
             if(value == '') return true;
             var val = value.split('.').pop();
             if(val != "jpg" && val != "gif" && val != "png")
@@ -65,8 +58,6 @@ $(document).ready(function()
     $.validator.addMethod(
         "cmFileExtension",
         function(value, element) {
-            // put your own logic here, this is just a (crappy) example
-            //return value.match(/^\d\d?\/\d\d?\/\d\d$/);
             if(value == '') return false;
             var val = value.split('.').pop();
             //alert(val);
@@ -77,8 +68,6 @@ $(document).ready(function()
     $.validator.addMethod(
         "dateRange",
         function(value, element) {
-            // put your own logic here, this is just a (crappy) example
-            //var valid = value.match(/^\d\d?\/\d\d?\/\d\d$/);
             var from = $('#inces_comedorbundle_contabilidadtype_from').val();
             var to   = $('#inces_comedorbundle_contabilidadtype_to').val();
             if((from == "" && to != "") || (from != "" && to == ""))
@@ -109,7 +98,6 @@ $(document).ready(function()
             dataType: "json",
             success: function(response) {
               isSuccess = response === true ? true: false;
-              //alert(isSuccess);
             }
           });
           return isSuccess;
@@ -322,8 +310,6 @@ $(document).ready(function()
     }
     $('.reporte_usuarios_link').on('click', function(e) {
         e.preventDefault();
-        //$('.pprint').val("print");
-        //alert("print");
         var form = $(this).closest('form');
 
         if (form.valid()){
@@ -346,15 +332,12 @@ $(document).ready(function()
                 urlFinal = urlFinal + '/' + to;
             }
 
-            //alert(urlFinal);
             $("#lightbox, #lightbox-loader").fadeOut(300);
             window.location.href = urlFinal;
         }
     });
     $('.reporte_ingresos_link').on('click', function(e) {
         e.preventDefault();
-        //$('.pprint').val("print");
-        //alert("print");
         var form = $(this).closest('form');
 
         if (form.valid()){
@@ -377,7 +360,6 @@ $(document).ready(function()
             if(rol != "")
                 urlFinal = urlFinal + '/' + rol;
 
-            //alert(urlFinal);
             $("#lightbox, #lightbox-loader").fadeOut(300);
             window.location.href = urlFinal;
         }
@@ -390,10 +372,7 @@ $(document).ready(function()
         if (form.valid()){
             $("#lightbox, #lightbox-loader").fadeIn(300);
             $("form:first").ajaxForm({
-                //target: '#content',
                 success: function(msg) {
-                    //$('#content').click(msg);
-                    //$(window).attr("location",msg);
                     $("#lightbox, #lightbox-loader").fadeOut(300);
                     window.location.href = msg;
                 }
@@ -403,24 +382,18 @@ $(document).ready(function()
 
     $('.login_form_btn').on('click', function(e) {
         e.preventDefault();
-        //var url = $(this).attr("action");
         var url = $('.route').val();
         var form = $(this).closest('form');
         if (form.valid()){
             $("#lightbox, #lightbox-loader").fadeIn(300);
             $("form").ajaxForm({
-                //target: '#results',
                 success: function(msg) {
-                    //alert(msg);
                     $("#lightbox, #lightbox-loader").fadeOut(300);
                     if(msg.indexOf("ERROR") != -1)
                         $( "#results" ).html( msg );
                     else{
                         window.location.href = url;
                     }
-                    //$('#content').click(msg);
-                    //$(window).attr("location",msg);
-                    //window.location.href = msg;
                 }
             }).submit();
         }
@@ -428,9 +401,6 @@ $(document).ready(function()
 
     $('.reporte_form_btn').on('click', function(e) {
         e.preventDefault();
-        //alert("hola");
-        //$('.pprint').val("");
-        //var url = $('.reporte_form_btn').parents('form').attr('action');
         var form = $(this).closest('form');
         if (form.valid()){
             $("#lightbox, #lightbox-loader").fadeIn(300);
@@ -438,9 +408,6 @@ $(document).ready(function()
                 target: '#results',
                 success: function(msg) {
                     $("#lightbox, #lightbox-loader").fadeOut(300);
-                    //$('#content').click(msg);
-                    //$(window).attr("location",msg);
-                    //window.location.href = msg;
                 }
             }).submit();
         }
@@ -448,8 +415,6 @@ $(document).ready(function()
 
     $('.carga_masiva_form_btn').on('click', function(e) {
         e.preventDefault();
-        //alert("hola");
-        //var ur = $(this).parents('form').attr('action');
         var form = $(this).closest('form');
         if (form.valid()){
             $("#lightbox, #lightbox-loader").fadeIn(300);
@@ -457,9 +422,6 @@ $(document).ready(function()
                 target: '#messages',
                 success: function(msg) {
                     $("#lightbox, #lightbox-loader").fadeOut(300);
-                    //$('#content').click(msg);
-                    //$(window).attr("location",msg);
-                    //window.location.href = msg;
                 }
             }).submit();
         }
@@ -467,13 +429,9 @@ $(document).ready(function()
 
     $('.delete_form_btn').on('click', function(e) {
         e.preventDefault();
-        //var url = $(this).attr("action");
         $("#lightbox, #lightbox-loader").fadeIn(300);
         $("form").ajaxForm({
-            //target: '#content',
             success: function(msg) {
-                //$('#content').click(msg);
-                //$(window).attr("location",msg);
                 $("#lightbox, #lightbox-loader").fadeOut(300);
                 window.location.href = msg;
             }
@@ -495,18 +453,13 @@ $(document).ready(function()
         if (val.length >= 3 || val == '*') {
             delay(function(){
                 if (val.length >= 3 || val == '*') {
-                    //alert(val);
-                    //$('#loader').show();
                     $("#lightbox, #lightbox-loader").fadeIn(300);
 
                     $('#content').load(
                         $('#search_keywords').parents('form').attr('action') + "?page=1&query=" + encodeURI(val),
-                        //$('#search_keywords').parents('form').attr('action'),
                         { query: val },
                         function() {
-                            //$('#loader').hide();
                             $("#lightbox, #lightbox-loader").fadeOut(300);
-                            //window.location.href = $('#search_keywords').parents('form').attr('action') + "?page=1&query=" + val;
                         }
                     );
                 }
@@ -541,7 +494,6 @@ $(document).ready(function()
         height:250,
         width:500,
         modal: true,
-        //title: 'Notificaciones',
         open: function(){
             jQuery('#closer').bind('click',function(){
                 jQuery('#dialog').dialog('close');
@@ -560,7 +512,6 @@ $(document).ready(function()
           $.ajax({
               url: url,
               success: function(msg) {
-                  //alert(msg);
                   $( "#dialog" ).html( msg );
                   $( "#dialog" ).dialog( "open" );
               }
@@ -570,32 +521,9 @@ $(document).ready(function()
         }else {
           window.location = $(this).find('a').attr('href');
         }
-        //$( "#dialog" ).dialog( "open" );
-        //return false;
     }).hover( function() {
       $(this).toggleClass('hover');
     });
-    /*
-    var _url = $('div.pagination a').attr('href');
-    var _query = $('#search_keywords').val();
-    if(_url.indexOf("query") == -1 && _query != "")
-        $('div.pagination a').attr('href', _url + '&query=' + _query);
-        */
-
-    /*
-    $('div.pagination a').click(function(event) {
-        //alert("hola");
-        //event.preventDefault();
-        var query = $('#search_keywords').val();
-        var url = $('div.pagination a').attr('href');
-        if(url.indexOf("query") == -1 && query != ""){
-            //event.preventDefault();
-            event.preventDefault();
-            url = url + '&query=' + query;
-            window.location.href = url;
-        }
-    });
-    */
 
     $('#search_keywords').bind("keypress", function (e) {
        if (e.keyCode == 13) return false;
@@ -610,7 +538,6 @@ $(document).ready(function()
     })
 
     // Desabilitando input de fecha today
-    //$(".menu_alday_form #inces_comedorbundle_menutype_dia").prop("readonly", true);
     $(".menu_today_form #inces_comedorbundle_menutodaytype_dia").attr('readonly','readonly');
 
     $('tbody tr').not('.tsearch, .opener').click( function() {

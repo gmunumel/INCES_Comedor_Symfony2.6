@@ -248,41 +248,18 @@ class UsuarioMenuController extends Controller
     private function _indexPagination($query, $sort = null, $direction = null){
 
       $em = $this->get('doctrine.orm.entity_manager');
-      //$emConfig = $em->getConfiguration();
-      //$emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
-      //$emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
-      //$emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
 
       $dql = $em->createQueryBuilder();
       if (is_null($sort))
         if(!$query || $query == '*')
-          /*
-          $dql->add('select', 'um')
-          ->add('from', 'INCESComedorBundle:UsuarioMenu um');
-          */
           $dql = $this->doSelectUsuarioMenu("", "", "");
         else
-          /*
-          $dql->select('um')
-          ->from('INCESComedorBundle:UsuarioMenu', 'um')
-          ->where($query);
-          */
           $dql = $this->doSelectUsuarioMenu("", $query, "");
 
       /* TODO arreglar para filtrar por usuario y menu */
       elseif ($direction == 'asc')
-        /*
-        $dql->add('select', 'um')
-        ->add('from', 'INCESComedorBundle:UsuarioMenu um')
-        ->add('orderBy', $sort.' ASC');
-        */
         $dql = $this->doSelectUsuarioMenu($sort, "", 'ASC');
       else
-        /*
-        $dql->add('select', 'um')
-        ->add('from', 'INCESComedorBundle:UsuarioMenu um')
-        ->add('orderBy', $sort.' DESC');
-        */
         $dql = $this->doSelectUsuarioMenu($sort, "", 'DESC');
 
       $qry = $em->createQuery($dql);
@@ -295,42 +272,12 @@ class UsuarioMenuController extends Controller
       return $pagination;
     }
 
-    /*
-     * Debe ser de la forma *\/*\/* - 20/01/2002
-     */
-    /*
-    private function setDate($val){
-      $res = "";
-      $params = trim($val);
-      $explote = explode("/", $params);
-
-      if(count($explote) != 3) return $res;
-      if(!is_numeric($explote[0]))
-        if($explote[0] != "*")
-          return $res;
-      if(!is_numeric($explote[1]))
-        if($explote[1] != "*")
-          return $res;
-      if(!is_numeric($explote[2]))
-        if($explote[2] != "*")
-          return $res;
-      if($explote[0] != '*')
-        $res .= " (DAY(um.dia) = " . $explote[0] . ") AND";
-      if($explote[1] != '*')
-        $res .= " (MONTH(um.dia) = " . $explote[1] . ") AND";
-      if($explote[2] != '*')
-        $res .= " (YEAR(um.dia) = " . $explote[2] . ") AND";
-      return $res;
-    }
-    */
-
     private function params($params){
       $params = trim($params);
       $explote = explode(" ", $params);
       $res = "";
 
       foreach($explote as $value){
-        //$res .= $this->setDate($value);
 	if($res == ""){
           $res .= " (u.cedula like '%" . $value . "%'";
           $res .= " or u.nombre like '%" . $value . "%'";

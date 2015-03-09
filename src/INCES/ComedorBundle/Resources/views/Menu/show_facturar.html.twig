@@ -5,12 +5,6 @@
 
   <table class="bordered">
     <tbody>
-    {#
-    <tr>
-      <th>Id</th>
-      <td>{{ entity.id }}</td>
-    </tr>
-    #}
     <tr class="tsearch">
       <th>{{ 'Name' }}</th>
       <td>{{ entity.nombre }}</td>
@@ -27,20 +21,10 @@
       <th>{{ 'Card Number' }}</th>
       <td>{{ entity.ncarnet }}</td>
     </tr>
-    {#
-    <tr>
-      <th>A_i</th>
-      <td>{{ entity.ai }}</td>
-    </tr>
-    #}
     <tr class="tsearch">
       <th>{{ 'Email' }}</th>
       <td>{{ entity.correo }}</td>
     </tr>
-    {#<tr class="tsearch">
-      <th>Imagen</th>
-      <td>{{ entity.image }}</td>
-    </tr>#}
     </tbody>
   </table>
 
@@ -84,19 +68,9 @@
     <div class="action right">
       <input id="login-submit" class="submit-button" type="submit" value="{{ 'Bill' }}" />
     </div>
-    {#
-    <button type="submit">Facturar</button>
-    #}
   </form>
-  {#
-  <a href="{{ app.request.uriForPath('/#!/menu/facturar/procesar') }}">
-    Facturar
-  </a>
-  #}
   <a href="{{ app.request.uriForPath('/#!/menu/facturar') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" />
   </a>
 </ul>
 </div> <!-- /col-text -->
-
 <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
-

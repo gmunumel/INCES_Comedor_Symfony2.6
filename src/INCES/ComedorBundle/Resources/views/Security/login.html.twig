@@ -1,7 +1,3 @@
-{#
-{% extends "FOSUserBundle::layout.html.twig" %}
-#}
-
 {% block fos_user_content %}
 
 <div id="results">
@@ -14,33 +10,21 @@
     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     <input class="route" type="hidden" value="{{route}}"/>
 
-    {#
-    <label for="username">{{ 'security.login.username'({}, 'FOSUserBundle') }}</label>
-    #}
     <div id="login-username-block" class="field">
       <label for="username">User Name</label>
       <input type="text" class="text" id="username" name="_username" value="{{ last_username }}" />
     </div>
 
-    {#
-    <label for="password">{{ 'security.login.password'({}, 'FOSUserBundle') }}</label>
-    #}
     <div id="login-password-block" class="field">
       <label for="password">Password</label>
       <input type="password" class="text" id="password" name="_password" />
     </div>
 
-    {#
-    <label for="remember_me">{{ 'security.login.remember_me'({}, 'FOSUserBundle') }}</label>
-    #}
     <div id="login-checkbox-block" class="inline">
       <label for="remember_me">¿Remember me?</label>
       <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
     </div>
 
-    {#
-    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'({}, 'FOSUserBundle') }}" />
-    #}
     <div class="action">
       <input id="login-submit" class="submit-button login_form_btn" type="submit" value="Login" />
     </div>

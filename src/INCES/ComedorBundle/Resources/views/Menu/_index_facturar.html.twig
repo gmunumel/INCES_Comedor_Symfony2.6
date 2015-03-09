@@ -97,9 +97,6 @@
         {% if pagination|length == 0 %}
         <p>{{ 'There are not results' }}</p>
         {% endif %}
-        {#
-        <div id="usuarios">
-          #}
           <div id="dialog" title="Cannot proceed">
             <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">
             </div>
@@ -156,31 +153,8 @@
               {% endif %}
             </tr>
             {% endfor %}
-            {#
-          </div>
-          #}
           </tbody>
         </table>
-        {#
-        <ul>
-          <li>
-          <a href="{{ path('menu_new') }}">
-            Create a new entry
-          </a>
-          -->
-          <br />
-          <div class="navigation">
-            {{ pagination.render()|raw }}
-          </div>
-          <br />
-          {% if is_granted("ROLE_USER") %}
-          <a href="{{ app.request.uriForPath('/#!/menu/new') }}">
-            Create a new entry
-          </a>
-          {% endif %}
-          </li>
-        </ul>
-        #}
         {% if pagination|length != 0 %}
         <div class="navigation">
           {{knp_pagination_render(pagination)|replace({'menu': '#!/menu', 'searchafact': 'facturar'})|raw}}

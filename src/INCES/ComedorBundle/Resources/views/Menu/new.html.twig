@@ -5,9 +5,6 @@
 
   <h1>{{ 'Add Menu' }}</h1>
   <form class="menu_form generic" action="{{ app.request.uriForPath('/menu/create') }}" method="post" {{ form_enctype(form) }}>
-    {#
-    {{ form_widget(edit_form) }}
-    #}
     {{ form_row(form._token) }}
 
     <div id="menu-seco-block" class="field">

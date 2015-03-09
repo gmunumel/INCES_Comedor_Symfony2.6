@@ -30,30 +30,15 @@
       <th>{{ 'Card Number' }}</th>
       <td>{{ entity.ncarnet }}</td>
     </tr>
-    {#
-    <tr>
-      <th>A_i</th>
-      <td>{{ entity.ai }}</td>
-    </tr>
-    #}
     <tr class="fix-tsearch">
       <th>{{ 'Email' }}</th>
       <td>{{ entity.correo }}</td>
     </tr>
-    {#
-    <tr>
-      <th>{{ 'Image' }}</th>
-      <td>{{ entity.image }}</td>
-    </tr>
-    #}
     </tbody>
   </table>
 
   <a class="mybutton" href="{{ app.request.uriForPath('/#!/usuario/') }}{{ entity.id }}/edit">{{ 'Edit' }}</a>
   <ul class="record_actions">
-    {#
-    <a class="mybutton" href="{{ app.request.uriForPath('/#!/usuario/') }}{{ entity.id }}/edit">{{ 'Edit' }}</a>
-    #}
     <form class="generic" action="{{ app.request.uriForPath('/usuario/') }}{{ entity.id }}/delete" method="post">
       {{ form_widget(delete_form) }}
       <div class="action">

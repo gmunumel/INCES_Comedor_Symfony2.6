@@ -105,9 +105,6 @@
           <td>{{ entity.ensalada }}</td>
           <td>{{ entity.postre }}</td>
           <td>{% if entity.dia %}{{ entity.dia|date('d/m/Y') }}{% endif%}</td>
-          {#
-          <td>{% if entity.dia %}{{ entity.dia|slice(0,2) }}/{{ entity.dia|slice(2,2) }}/{{ entity.dia|slice(4,4) }}{% endif%}</td>
-          #}
           <td>
             <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/show"><img src="{{ asset('img/show.png') }}" height="30" width="30" /></a>
             {% if is_granted("ROLE_USER") %}

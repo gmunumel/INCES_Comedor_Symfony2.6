@@ -5,12 +5,6 @@
 
   <h1>{{ 'Add' }} Rol</h1>
   <form class="rol_form generic" action="{{ app.request.uriForPath('/rol/create') }}" method="post" {{ form_enctype(form) }}>
-    {#
-    {{ form_widget(form) }}
-    <p>
-    <button type="submit">Agregar</button>
-    </p>
-    #}
     {{ form_row(form._token) }}
 
     <div id="rol-nombre-block" class="field">

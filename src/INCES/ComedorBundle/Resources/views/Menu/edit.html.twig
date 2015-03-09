@@ -2,16 +2,10 @@
 </div>
 
 <div id="col-text">
-  {#
-  <div id="my2-col-text">
-    #}
 
     <h1>{{ 'Update Menu' }}</h1>
 
     <form class="menu_form generic" action="{{ app.request.uriForPath('/menu/') }}{{ entity.id }}/update" method="post" {{ form_enctype(edit_form) }}>
-      {#
-      {{ form_widget(edit_form) }}
-      #}
       {{ form_row(edit_form._token) }}
 
       <div id="menu-seco-block" class="field">

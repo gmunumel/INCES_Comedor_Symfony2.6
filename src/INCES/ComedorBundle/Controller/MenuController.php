@@ -461,11 +461,6 @@ class MenuController extends Controller
       $request = $this->getRequest();
 
       $em = $this->getDoctrine()->getManager();
-      //$emConfig = $em->getConfiguration();
-      //$emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
-      //$emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
-      //$emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
-
       $entity = $em->getRepository('INCESComedorBundle:Usuario')->find($id);
 
       if (!$entity) {
@@ -474,26 +469,6 @@ class MenuController extends Controller
       }
       $deleteForm = $this->createDeleteForm($id);
 
-        //Verificar si se encuentra dentro del horario
-	/*
-	$em = $this->get('doctrine.orm.entity_manager');
-	$dql = $em->createQueryBuilder();
-        $dql->select('u, r')
-          ->from('INCESComedorBundle:Usuario', 'u')
-          ->join('u.rol', 'r')
-          ->where('u.id = '. $id);
-        $qry    = $em->createQuery($dql);
-        $entity = $qry->getResult();
-        $entity = $entity[0];
-
-        $now = new \DateTime('now');
-        $hour = $now->format('H');
-        $hours = $this->comparisonHours($entity->getRol()->getHoraComerStartAMPM(),
-			$entity->getRol()->getHoraComerEndAMPM(),
-			$entity->getRol()->getHoraComerStart(),
-			$entity->getRol()->getHoraComerEnd());
-
-	*/
       $hours = $this->validHours($id);
       $hourStart = $hours[0];
       $hourEnd = $hours[1];
@@ -516,21 +491,6 @@ class MenuController extends Controller
         ));
         return new Response($content);
       }
-      
-      /*
-      $dql = $em->createQuery('SELECT COUNT(um.id) FROM INCES\ComedorBundle\Entity\UsuarioMenu um WHERE um.usuario = :id and YEAR(um.dia) = :year and MONTH(um.dia) = :month and DAY(um.dia) = :day');
-      $dql->setParameter('id', $id);
-      $dql->setParameter('year', $now->format("Y"));
-      $dql->setParameter('month', $now->format("m"));
-      $dql->setParameter('day', $now->format("d"));
-      $count = $dql->getSingleScalarResult();
-      */
-
-      /* TODO Optimizar estos 2 querys
-       *  Arreglar URL
-       */
-      //if($count > 0){
-      //$em = $this->get('doctrine.orm.entity_manager');
 
       // Person already eat
       $now = date('Y-m-d');
@@ -656,35 +616,6 @@ class MenuController extends Controller
     }
 
     /*
-     * Debe ser de la forma *\/*\/* - 20/01/2002
-     */
-    /*
-    private function setDate($val){
-      $res = "";
-      $params = trim($val);
-      $explote = explode("/", $params);
-
-      if(count($explote) != 3) return $res;
-      if(!is_numeric($explote[0]))
-        if($explote[0] != "*")
-          return $res;
-      if(!is_numeric($explote[1]))
-        if($explote[1] != "*")
-          return $res;
-      if(!is_numeric($explote[2]))
-        if($explote[2] != "*")
-          return $res;
-      if($explote[0] != '*')
-        $res .= " (DAY(a.dia) = " . $explote[0] . ") AND";
-      if($explote[1] != '*')
-        $res .= " (MONTH(a.dia) = " . $explote[1] . ") AND";
-      if($explote[2] != '*')
-        $res .= " (YEAR(a.dia) = " . $explote[2] . ") AND";
-      return $res;
-    }
-    */
-
-    /*
      * Ask for a value in each field
      */
     private function params($params){
@@ -735,14 +666,6 @@ class MenuController extends Controller
         if ($hourEndAMPM == "pm") {
 	  $hours[1] = $hourEnd + 12;
         }
-        /*
-	elseif ($hourStartAMPM == "pm" and $hourEndAMPM == "am"){
-          $hours[0] = $hourStart + 12;
-          $hours[1] = $hourEnd;
-        }elseif ($hourStartAMPM == "am" and $hourEndAMPM == "pm"){
-          $hours[0] = $hourStart;
-          $hours[1] = $hourEnd + 12;
-         */
 	return $hours;
     }
 
@@ -761,8 +684,6 @@ class MenuController extends Controller
         $entity = $qry->getResult();
         $entity = $entity[0];
 
-        //$now = new \Date('now');
-        //$hour = $now->format('H');
         $hours = $this->comparisonHours($entity->getRol()->getHoraComerStartAMPM(),
 			$entity->getRol()->getHoraComerEndAMPM(),
 			$entity->getRol()->getHoraComerStart(),
@@ -778,10 +699,6 @@ class MenuController extends Controller
     private function lncToday(){
 
       $em = $this->get('doctrine.orm.entity_manager');
-      //$emConfig = $em->getConfiguration();
-      //$emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
-      //$emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
-      //$emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
 
       // Buscando las personas que ya comieron hoy
       $now = date('Y-m-d');
@@ -789,13 +706,8 @@ class MenuController extends Controller
       $dql->select('um')
         ->from('INCESComedorBundle:UsuarioMenu','um')
         ->where("um.dia = '".$now."'");
-        //->andWhere("MONTH(um.dia) = '".$now->format("m")."'")
-        //->andWhere("DAY(um.dia) = '".$now->format("d")."'");
       $qry = $em->createQuery($dql);
       $userLncTd = $qry->getResult();
-
-      //$query = $em->createQuery("SELECT um FROM INCESComedorBundle:UsuarioMenu um WHERE um.dia = '2002/02/02'");
-      //$userLncTd = $query->getResult();
 
       return $userLncTd;
     }
@@ -839,61 +751,21 @@ class MenuController extends Controller
      */
     private function _indexFacturarPagination($query, $sort = null, $direction = null){
       $em = $this->get('doctrine.orm.entity_manager');
-      //$dql = $em->createQueryBuilder();
       if (is_null($sort))
         if(!$query || $query == '*')
-          /*
-          $dql->select('u')
-          ->from('INCESComedorBundle:Usuario', 'u')
-          ->join('u.rol', 'r');
- 	  */
 	  $dql = $this->doSelectUser("", "", "");
         else
-              /*
-              $dql->add('select', 'u')
-              ->add('from', 'INCESComedorBundle:Usuario u')
-              ->join('u.rol', 'r')
-              ->where($query);
-              */
-              $dql = $this->doSelectUser("", $query, "");
+          $dql = $this->doSelectUser("", $query, "");
 
         elseif ($direction == 'asc')
           if($sort != 'rol')
-            /*
-	    $dql->select('u')
-            ->from('INCESComedorBundle:Usuario', 'u')
-            ->join('u.rol', 'r')
-            ->where('r.id = u.rol')
-            ->orderBy($sort, 'ASC');
-            */
             $dql = $this->doSelectUser($sort, "", 'ASC');
           else
-            /*
-            $dql->select('u')
-            ->from('INCESComedorBundle:Usuario', 'u')
-            ->join('u.rol', 'r')
-            ->where('r.id = u.rol')
-            ->orderBy('r.nombre', 'ASC');
-            */
             $dql = $this->doSelectUser('r.nombre', "", 'ASC');
         else
           if($sort != 'rol')
-            /*
-            $dql->select('u')
-            ->from('INCESComedorBundle:Usuario', 'u')
-            ->join('u.rol', 'r')
-            ->where('r.id = u.rol')
-            ->orderBy($sort, 'DESC');
-            */
 	    $dql = $this->doSelectUser($sort, "", 'DESC');
           else
-	    /*
-            $dql->select('u')
-            ->from('INCESComedorBundle:Usuario', 'u')
-            ->join('u.rol', 'r')
-            ->where('r.id = u.rol')
-            ->orderBy('r.nombre', 'DESC');
-            */
 	    $dql = $this->doSelectUser('r.nombre', "", 'DESC');
 
         $qry = $em->createQuery($dql);
@@ -911,34 +783,14 @@ class MenuController extends Controller
    */
   private function _indexPagination($query, $sort = null, $direction = null){
     $em = $this->get('doctrine.orm.entity_manager');
-    //$dql = $em->createQueryBuilder();
     if (is_null($sort))
       if(!$query || $query == '*')
-        /*
-        $dql->add('select', 'm')
-        ->add('from', 'INCESComedorBundle:Menu m');
-        */
         $dql = $this->doSelectMenu("", "", "");
       else
-        /*
-        $dql->add('select', 'm')
-        ->add('from', 'INCESComedorBundle:Menu m')
-        ->where($query);
-        */
         $dql = $this->doSelectMenu("", $query, "");
     elseif ($direction == 'asc')
-      /*
-      $dql->add('select', 'm')
-      ->add('from', 'INCESComedorBundle:Menu m')
-      ->add('orderBy', $sort.' ASC');
-      */
       $dql = $this->doSelectMenu($sort, "", 'ASC');
     else
-      /*
-      $dql->add('select', 'a')
-      ->add('from', 'INCESComedorBundle:Menu a')
-      ->add('orderBy', $sort.' DESC');
-      */
       $dql = $this->doSelectMenu($sort, "", 'DESC');
 
     $qry = $em->createQuery($dql);

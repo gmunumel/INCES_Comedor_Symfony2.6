@@ -4,12 +4,6 @@
   <h1>{{ 'Add User' }} Menu</h1>
 
   <form class="usuariomenu_form generic" action="{{ app.request.uriForPath('/usuariomenu/create') }}" method="post" {{ form_enctype(form) }}>
-    {#
-    {{ form_widget(form) }}
-    <p>
-    <button type="submit">{{ 'Crear' }}</button>
-    </p>
-    #}
     <div id="usuario-menu-dia-block" class="field">
       <label for="dia">{{ 'Day' }}</label>
       {{ form_widget(form.dia,  { 'attr': {'class': 'text'}}) }}

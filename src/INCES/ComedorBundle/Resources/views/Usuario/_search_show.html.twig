@@ -4,7 +4,7 @@
   <table>
     <tr class="tsearch">
       <td>
-        <h1>{{ 'User' }}</h1>
+        <h1>{{ 'Search Users by Id' }}</h1>
       </td>
       <td>
         <div id="filter">
@@ -25,9 +25,6 @@
             <th>{{ 'Last Name' }}</th>
             <th>{{ 'Id' }}</th>
             <th>{{ 'Card Number' }}</th>
-            {#
-            <th>A_i</th>
-            #}
             <th>{{ 'Email' }}</th>
             <th>{{ 'Image' }}</th>
           </tr>
@@ -39,9 +36,6 @@
           <td>{{ usuariomenu.0.usuario.apellido }}</td>
           <td>{{ usuariomenu.0.usuario.cedula }}</td>
           <td>{{ usuariomenu.0.usuario.ncarnet }}</td>
-          {#
-          <td>{{ entity.ai }}</td>
-          #}
           <td>{{ usuariomenu.0.usuario.correo }}</td>
           <td>{{ usuariomenu.0.usuario.image }}</td>
           {% endif %}

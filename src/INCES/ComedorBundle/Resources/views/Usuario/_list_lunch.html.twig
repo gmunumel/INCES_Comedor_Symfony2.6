@@ -4,7 +4,7 @@
   <table>
     <tr class="tsearch">
       <td>
-        <h1>{{ 'List of Users that ate today' }}</h1>
+        <h1>{{ 'List of Users ate today' }}</h1>
       </td>
       <td>
         <div id="filter">
@@ -21,9 +21,9 @@
         <thead>
           <tr>
             <th>
-              {{ knp_pagination_sortable(pagination, 'Day', 'u.dia')|replace({'usuario': '#!/usuario', 'searchafact': 'facturar'})|raw }}
+              {{ knp_pagination_sortable(pagination, 'Day', 'um.dia')|replace({'usuario': '#!/usuario', 'searchafact': 'facturar'})|raw }}
               <div>
-                {% if pagination.isSorted('u.dia') %}
+                {% if pagination.isSorted('um.dia') %}
                 <img src="{{ asset('img/arrow_small_down.gif') }}" alt="Descendent" />
                 {% else %}
                 <img src="{{ asset('img/arrow_small_up.gif') }}" alt="Ascendent" />
@@ -67,9 +67,6 @@
         {% if pagination|length == 0 %}
         <p>{{ 'There are not results' }}</p>
         {% endif %}
-        {#
-        <div id="usuarios">
-          #}
           <div id="dialog" title="Cannot proceed">
             <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span></p>
           </div>
@@ -84,49 +81,10 @@
             {% else %}
             <td>{{entity.menu}}</td>
             {% endif %}
-            {#
-            <td>
-              <ul>
-                <li>
-                <a href="{{ path('menu_show', { 'id': entity.id }) }}">show</a>
-
-                <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/show">{{ 'Show' }}</a>
-                </li>
-                {% if is_granted("ROLE_USER") %}
-                <li>
-                <a href="{{ app.request.uriForPath('/#!/menu/') }}{{ entity.id }}/edit">{{ 'Edit' }}</a>
-                </li>
-                {% endif %}
-              </ul>
-            </td>
-            #}
           </tr>
           {% endfor %}
-          {#
-        </div>
-        #}
         </tbody>
       </table>
-      {#
-      <ul>
-        <li>
-        <a href="{{ path('menu_new') }}">
-          {{ 'New' }}
-        </a>
-        -->
-        <br />
-        <div class="navigation">
-          {{ pagination.render()|raw }}
-        </div>
-        <br />
-        {% if is_granted("ROLE_USER") %}
-        <a href="{{ app.request.uriForPath('/#!/menu/new') }}">
-          {{ 'New' }}
-        </a>
-        {% endif %}
-        </li>
-      </ul>
-      #}
       {% if pagination|length != 0 %}
       <div class="navigation">
         {{knp_pagination_render(pagination)|replace({'usuario': '#!/usuario', 'searchafact': 'facturar'})|raw}}

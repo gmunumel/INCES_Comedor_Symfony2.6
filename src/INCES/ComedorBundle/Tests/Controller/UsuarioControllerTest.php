@@ -222,4 +222,119 @@ class UsuarioControllerTest extends WebTestCase
       $response
     );
   }
+
+  public function testSearchAjax()
+  {
+    $crawler = $this->client->request('GET', '/usuario');
+    $crawler = $this->client->followRedirect();
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("List of Users")')->count()
+    );
+    //
+    // Good Scenario
+    // There is a result
+    $form = $crawler->selectButton('query-submit')->form(array(
+              'query' => 'abr'
+    ));
+    $crawler = $this->client->submit($form);
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Gabriel")')->count()
+    );
+
+    // Bad Scenario
+    // Not results
+    $form = $crawler->selectButton('query-submit')->form(array(
+              'query' => 'askjdka'
+    ));
+    $crawler = $this->client->submit($form);
+
+    $this->assertEquals(
+      0,
+      $crawler->filter('html:contains("Gabriel")')->count()
+    );
+    $this->assertEquals(
+      0,
+      $crawler->filter('html:contains("Elena")')->count()
+    );
+  }
+
+  public function testSearch()
+  {
+    $crawler = $this->client->request('GET', '/usuario/search');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Search Users by Id")')->count()
+    );
+    //
+    // Good Scenario
+    // There is a result
+    $form = $crawler->selectButton('query-submit')->form(array(
+              'query' => '17387134'
+    ));
+    $crawler = $this->client->submit($form);
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Gabriel")')->count()
+    );
+
+    // Bad Scenario
+    // Not results
+    $form = $crawler->selectButton('query-submit')->form(array(
+              'query' => '1734'
+    ));
+    $crawler = $this->client->submit($form);
+
+    $this->assertEquals(
+      0,
+      $crawler->filter('html:contains("Gabriel")')->count()
+    );
+    $this->assertEquals(
+      0,
+      $crawler->filter('html:contains("Elena")')->count()
+    );
+  }
+
+  public function testSearchAjaxToday()
+  {
+    $crawler = $this->client->request('GET', '/usuario/searchalnc');
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("List of Users ate today")')->count()
+    );
+    //
+    // Good Scenario
+    // There is a result
+    $form = $crawler->selectButton('query-submit')->form(array(
+              'query' => 'abr'
+    ));
+    $crawler = $this->client->submit($form);
+
+    $this->assertGreaterThan(
+      0,
+      $crawler->filter('html:contains("Gabriel")')->count()
+    );
+
+    // Bad Scenario
+    // Not results
+    $form = $crawler->selectButton('query-submit')->form(array(
+      'query' => 'asdasd'
+    ));
+    $crawler = $this->client->submit($form);
+
+    $this->assertEquals(
+      0,
+      $crawler->filter('html:contains("Gabriel")')->count()
+    );
+    $this->assertEquals(
+      0,
+      $crawler->filter('html:contains("Elena")')->count()
+    );
+  }
 }

@@ -6,15 +6,6 @@
 
   <h1>{{ 'Create External User' }}</h1>
   <form class="usuario_externo_form generic" action="{{ app.request.uriForPath('/usuario/createexterno') }}" method="post" {{ form_enctype(form) }}>
-    {#
-    {{ form_widget(form) }}
-    Upload image <input type="file" name="phoalimg" id="photoimg" />
-    #}
-    {#
-    <p>
-    <button type="submit">{{ 'Add' }}</button>
-    </p>
-    #}
     {{ form_row(form._token) }}
 
     <div id="usuario-externo-nombre-block" class="field">
@@ -29,20 +20,6 @@
       <label for="cedula">{{ 'Id' }}</label>
       {{ form_widget(form.cedula,  { 'attr': {'class': 'text'}}) }}
     </div>
-    {#
-    <div id="usuario-ncarnet-block" class="field">
-      <label for="ncarnet">{{ 'Card Number' }}</label>
-      {{ form_widget(form.ncarnet,  { 'attr': {'class': 'text'}}) }}
-    </div>
-    <div id="usuario-correo-block" class="field">
-      <label for="correo">{{ 'Email' }}</label>
-      {{ form_widget(form.correo,  { 'attr': {'class': 'text'}}) }}
-    </div>
-    <div id="usuario-image-block" class="field">
-      <label for="image">{{ 'Image' }}</label>
-      {{ form_widget(form.image,  { 'attr': {'class': 'text'}}) }}
-    </div>
-    #}
     <div id="usuario-roles-block" class="field">
       <label for="rol">Rol</label>
       {{ form_widget(form.rol,  { 'attr': {'class': 'text'}}) }}

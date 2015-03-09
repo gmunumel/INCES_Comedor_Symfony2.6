@@ -5,12 +5,6 @@
 
   <table class="bordered">
     <tbody >
-    {#
-    <tr>
-      <th>Id</th>
-      <td>{{ entity.id }}</td>
-    </tr>
-    #}
     <tr class="tsearch">
       <th>{{ 'First Plate' }}</th>
       <td>{{ entity.seco }}</td>
@@ -48,14 +42,6 @@
   </a>
   <br />
   <a href="{{ app.request.uriForPath('/#!/menu') }}"><img src="{{ asset('img/back.ico') }}" height="40" width="40" /></a>
-  {#
-  <li>
-  <form action="{{ app.request.uriForPath('/menu/') }}{{ entity.id }}/delete" method="post">
-    {{ form_widget(delete_form) }}
-    <button type="submit">{{ 'Delete' }}</button>
-  </form>
-  </li>
-  #}
 
 </div> <!-- /col-text -->
 <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>

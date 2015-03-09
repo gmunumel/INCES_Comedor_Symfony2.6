@@ -4,9 +4,6 @@
   <h1>{{ 'Today\'s Menu Update' }}</h1>
 
   <form class="menu_today_form generic" action="{{ app.request.uriForPath('/menu/') }}{{ entity.id }}/updatetoday" method="post" {{ form_enctype(edit_form) }}>
-    {#
-    {{ form_widget(edit_form) }}
-    #}
     {{ form_row(edit_form._token) }}
 
     <div id="menu-seco-block" class="field">
@@ -76,8 +73,4 @@
   <a href="{{ app.request.uriForPath('/#!/menu/today') }}"><img src="{{ asset('img/back.ico') }}" height="50" width="50" />
   </a>
 </center>
-
-
 <script type="text/javascript" src="{{ asset('js/search.js') }}"></script>
-
-

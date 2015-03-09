@@ -80,10 +80,6 @@
         {% if pagination|length == 0 %}
         <p>{{ 'There are not results' }}</p>
         {% endif %}
-        {#
-        <div id="usuarios">
-          {{pagination}}
-          #}
           {% for entity in pagination %}
           <tr>
             <td>{{ entity.cedula }}</td>
@@ -94,18 +90,12 @@
             <td>{{ entity.correo }}</td>
             <td><img src="{{ asset('img/uploaded/') }}{{entity.image|replace({'/tmp/':''})}}" width="40" height="40" alt="" /></td>
             <td>
-              {#
-              <a href="{{ app.request.uriForPath('/#!/usuario/') }}{{ entity.id }}/show">Mostrar</a>
-              #}
               {% if is_granted("ROLE_ADMIN")  %}
               <a href="{{ app.request.uriForPath('/#!/usuario/') }}{{ entity.id }}/edit"><img src="{{ asset('img/edit.ico') }}" class="searchbox_submit" value=""  /></a>
               {% endif %}
             </td>
           </tr>
           {% endfor %}
-          {#
-        </div>
-        #}
         </tbody>
       </table>
       {% if is_granted("ROLE_USER") %}
@@ -113,33 +103,6 @@
         <button class="mybutton" >{{ 'New' }}</button>
       </a>
       {% endif %}
-      {#
-      <ul>
-
-        <li>
-
-        <a href="{{ path('menu_new') }}">
-          {{ 'New' }}
-        </a>
-        -->
-        <br />
-
-        <div class="navigation">
-          {{ pagination.render()|raw }}
-        </div>
-
-
-        <br />
-        {% if is_granted("ROLE_USER") %}
-        <a href="{{ app.request.uriForPath('/#!/menu/new') }}">
-          {{ 'New' }}
-        </a>
-        {% endif %}
-
-        </li>
-
-      </ul>
-      #}
       {% if pagination|length != 0 %}
       <div class="navigation">
         {{knp_pagination_render(pagination)|replace({'usuario': '#!/usuario'})|raw}}
