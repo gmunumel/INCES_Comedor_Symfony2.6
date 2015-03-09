@@ -4,34 +4,8 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "793f701b102e78b3c1a384c5a5d5dcc7",
+    "hash": "7cfe67dc64637cbc72deacf4c40cde3f",
     "packages": [
-        {
-            "name": "beberlei/DoctrineExtensions",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/beberlei/DoctrineExtensions.git",
-                "reference": "5e4ec9c3ec3434151e1c73144b4ab87ae30aefbc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/5e4ec9c3ec3434151e1c73144b4ab87ae30aefbc",
-                "reference": "5e4ec9c3ec3434151e1c73144b4ab87ae30aefbc",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/orm": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "DoctrineExtensions": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "time": "2013-12-20 22:02:19"
-        },
         {
             "name": "doctrine/annotations",
             "version": "v1.2.3",
@@ -2541,8 +2515,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "friendsofsymfony/user-bundle": 20,
-        "knplabs/knp-snappy-bundle": 20,
-        "beberlei/doctrineextensions": 20
+        "knplabs/knp-snappy-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
