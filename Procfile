@@ -1,1 +1,1 @@
-web: bin/heroku-php-apache2 web/ -I hhvm_custom.ini
+web: bin/heroku-php-apache2 web/ -i custom_php.ini
