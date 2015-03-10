@@ -56,3 +56,7 @@ try with
 
    Run all tests for the entire Bundle
 $  phpunit -c app src/Acme/DemoBundle/
+
+*** To Deploy in Heroku
+   Mysql, Symfony in Heroku 
+    https://coderwall.com/p/qpitzq/deploing-symfony-project-using-mysql-to-heroku
