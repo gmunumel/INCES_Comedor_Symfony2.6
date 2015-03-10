@@ -642,7 +642,7 @@
     <parameter key="knp_paginator.page_range">5</parameter>
     <parameter key="knp_snappy.pdf.internal_generator.class">Knp\Snappy\Pdf</parameter>
     <parameter key="knp_snappy.pdf.class">Knp\Bundle\SnappyBundle\Snappy\LoggableGenerator</parameter>
-    <parameter key="knp_snappy.pdf.binary">/usr/local/bin/wkhtmltopdf</parameter>
+    <parameter key="knp_snappy.pdf.binary">/home/alucard/workspace/Code/INCES_Comedor_Symfony2.6/app/../web/wkhtmltopdf</parameter>
     <parameter key="knp_snappy.pdf.options" type="collection"/>
     <parameter key="knp_snappy.pdf.env" type="collection"/>
     <parameter key="knp_snappy.image.internal_generator.class">Knp\Snappy\Image</parameter>
@@ -2900,7 +2900,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>54fe3d6cee9ac</argument>
+            <argument>54fe54aaacffc</argument>
           </service>
         </argument>
       </argument>
@@ -3443,7 +3443,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>54fe3d6cee9ac</argument>
+            <argument>54fe54aaacffc</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -4454,7 +4454,7 @@
       <tag name="monolog.logger" channel="snappy"/>
       <argument type="service">
         <service class="Knp\Snappy\Pdf" public="false">
-          <argument>/usr/local/bin/wkhtmltopdf</argument>
+          <argument>/home/alucard/workspace/Code/INCES_Comedor_Symfony2.6/app/../web/wkhtmltopdf</argument>
           <argument type="collection"/>
           <argument type="collection"/>
         </service>

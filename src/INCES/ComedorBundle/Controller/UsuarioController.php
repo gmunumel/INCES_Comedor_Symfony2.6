@@ -77,7 +77,7 @@ class UsuarioController extends Controller
         $em->persist($entity);
         $em->flush();
 
-        $dir = dirname(__FILE__).'/../../../../web/img/uploaded/';
+        $dir = $this->get('kernel')->getRootDir() . '/../web/img/uploaded/';
 
         if(!is_null($form->getData()->getImage()))
           // there is an image by user
@@ -124,7 +124,7 @@ class UsuarioController extends Controller
         $em->persist($entity);
         $em->flush();
 
-        $dir = dirname(__FILE__).'/../../../../web/img/uploaded/';
+        $dir = $this->get('kernel')->getRootDir() . '/../web/img/uploaded/';
 
         if(!is_null($form->getData()->getImage()))
           $form->getData()->getImage()->move($dir);
@@ -190,7 +190,7 @@ class UsuarioController extends Controller
           $em->persist($entity);
           $em->flush();
 
-          $dir = dirname(__FILE__).'/../../../../web/img/uploaded/';
+          $dir = $this->get('kernel')->getRootDir() . '/../web/img/uploaded/';
 
           if(!is_null($editForm->getData()->getImage()))
             $editForm->getData()->getImage()->move($dir);
@@ -413,7 +413,7 @@ class UsuarioController extends Controller
 
       if ($request->getMethod() == 'POST') {
         $cm_form->bind($request);
-        $dir = dirname(__FILE__).'/../../../../web/uploads/';
+        $dir = $this->get('kernel')->getRootDir() . '/../web/uploads/';
 
 	      $result = $this->loadSaveFile($cm_form, $dir);
         $errores = $result[0];
@@ -445,7 +445,7 @@ class UsuarioController extends Controller
 
       if ($request->getMethod() == 'POST') {
         $cm_form->bind($request);
-        $dir = dirname(__FILE__).'/../../../../web/uploads/';
+        $dir = $this->get('kernel')->getRootDir() . '/../web/uploads/';
 
         $result = $this->loadSaveFile($cm_form, $dir, true);
         $errores = $result[0];
@@ -470,7 +470,7 @@ class UsuarioController extends Controller
     }
 
     private function loadSaveFile($form, $dir, $flag = false){
-	  // Colocando en el archivo en la carpeta web/uploads/
+	// Colocando en el archivo en la carpeta web/uploads/
         try {
           if (!file_exists($form['file']->getData())) {
             $errores = 'File doesn\'t exist';
