@@ -20,6 +20,9 @@ use Symfony\Component\HttpFoundation\Request;
 class UsuarioController extends Controller
 {
 
+   const RESULTS_PER_PAGE = 2;
+   const LUNCH_PER_PAGE   = 10;
+
   /**
    * Finds and displays a Usuario entity.
    *
@@ -394,8 +397,8 @@ class UsuarioController extends Controller
       $pagination = $paginator->paginate(
         $qry,
         $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('LUNCH_PER_PAGE')//limit per page
-          );
+            UsuarioController::LUNCH_PER_PAGE //limit per page
+        );
 
       return $this->render('INCESComedorBundle:Usuario:_lunch_today.html.twig', array(
         'pagination'   => $pagination
@@ -751,8 +754,8 @@ class UsuarioController extends Controller
       $pagination = $paginator->paginate(
         $qry,
         $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
-          );
+            UsuarioController::RESULTS_PER_PAGE //limit per page
+        );
       return $pagination;
     }
 
@@ -777,8 +780,8 @@ class UsuarioController extends Controller
       $pagination = $paginator->paginate(
         $qry,
         $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
-          );
+            UsuarioController::RESULTS_PER_PAGE //limit per page
+        );
       return $pagination;
     }
 

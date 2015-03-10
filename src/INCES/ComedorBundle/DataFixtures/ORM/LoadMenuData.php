@@ -11,11 +11,13 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
 {
   public function load(ObjectManager $manager)
   {
+    $now = new \DateTime('now');
+
     $menu = new Menu();
     $menu -> setSeco('Arroz con pollo');
     $menu -> setSopa('Caldo de pollo');
-    $menu -> setDia(new \DateTime('now'));
-    $menu -> setHora(new \DateTime('now'));
+    $menu -> setDia($now);
+    $menu -> setHora($now);
 
     $manager->persist($menu);
     $manager->flush();

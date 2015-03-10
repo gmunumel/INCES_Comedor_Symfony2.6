@@ -11,19 +11,21 @@ class LoadUsuarioMenuData extends AbstractFixture implements OrderedFixtureInter
 {
   public function load(ObjectManager $manager)
   {
+    $now = new \DateTime('now');
+
     $userMenu = new UsuarioMenu();
     $userMenu -> setUsuario($manager->merge($this->getReference('user-menu')));
     $userMenu -> setMenu($manager->merge($this->getReference('menu-user')));
-    $userMenu -> setDia(new \DateTime('now'));
-    $userMenu -> setHora(new \DateTime('now'));
+    $userMenu -> setDia($now);
+    $userMenu -> setHora($now);
 
     $manager->persist($userMenu);
     $manager->flush();
   }
 
-    public function getOrder()
-    {
-      return 4; // the order in which fixtures will be loaded
-    }
+  public function getOrder()
+  {
+    return 4; // the order in which fixtures will be loaded
+  }
 }
 

@@ -22,6 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
 class MenuController extends Controller
 {
 
+    const RESULTS_PER_PAGE = 2;
+
     /*
      * Search Action dos
      */
@@ -82,8 +84,8 @@ class MenuController extends Controller
       $pagination = $paginator->paginate(
         $qry,
         $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
-          );
+            MenuController::RESULTS_PER_PAGE //limit per page
+        );
       return $this->render('INCESComedorBundle:Menu:index.html.twig', array(
         'pagination' => $pagination
         ,'query' => $query
@@ -407,15 +409,13 @@ class MenuController extends Controller
      */
     public function todayAction(){
 
-      //$em = $this->get('doctrine.orm.entity_manager');
-
       $now = date('Y-m-d');
 
       $em = $this->get('doctrine.orm.entity_manager');
       $dql = $em->createQueryBuilder();
-      $dql->add('select', 'a')
-        ->add('from', 'INCESComedorBundle:Menu a')
-        ->add('where', "a.dia = '".$now."'");
+      $dql->add('select', 'm')
+        ->add('from', 'INCESComedorBundle:Menu m')
+        ->add('where', "m.dia = '".$now."'");
 
       $qry = $em->createQuery($dql);
       $dql = $qry->getResult();
@@ -773,7 +773,7 @@ class MenuController extends Controller
         $pagination = $paginator->paginate(
           $qry,
           $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
+            MenuController::RESULTS_PER_PAGE //limit per page
           );
         return $pagination;
     }
@@ -798,8 +798,8 @@ class MenuController extends Controller
     $pagination = $paginator->paginate(
       $qry,
       $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
-          );
+      		MenuController::RESULTS_PER_PAGE //limit per page
+      );
     return $pagination;
     }
 

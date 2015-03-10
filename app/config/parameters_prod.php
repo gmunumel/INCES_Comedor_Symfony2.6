@@ -13,6 +13,4 @@ $container->setParameter('mailer_transport', null);
 $container->setParameter('mailer_host', null);
 $container->setParameter('mailer_user', null);
 $container->setParameter('mailer_password', null);
-$container->setParameter('RESULTS_PER_PAGE', 2);
-$container->setParameter('LUNCH_PER_PAGE', 10);
 

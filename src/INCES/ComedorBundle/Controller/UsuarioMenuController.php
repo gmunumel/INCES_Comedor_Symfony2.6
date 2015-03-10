@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 class UsuarioMenuController extends Controller
 {
 
+  const RESULTS_PER_PAGE = 2;
+
   /**
    * Finds and displays a UsuarioMenu entity.
    *
@@ -267,8 +269,8 @@ class UsuarioMenuController extends Controller
       $pagination = $paginator->paginate(
         $qry,
         $this->get('request')->query->get('page', 1),//page number
-            $this->container->getParameter('RESULTS_PER_PAGE')//limit per page
-          );
+            UsuarioMenuController::RESULTS_PER_PAGE //limit per page
+        );
       return $pagination;
     }
 

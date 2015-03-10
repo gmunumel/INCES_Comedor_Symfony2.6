@@ -11,6 +11,4 @@ parameters:
     mailer_user: null
     mailer_password: null
     locale: en
-    secret: ThisTokenIsNotSoSecretChangeIt
-    RESULTS_PER_PAGE: 2
-    LUNCH_PER_PAGE: 10
+    secret: dwkKASK!ASKJK!@#KJAKSDJJkkak
