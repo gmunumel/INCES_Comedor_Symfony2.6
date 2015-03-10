@@ -90,7 +90,7 @@ knp_paginator:
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     /usr/local/bin/wkhtmltopdf
+        binary:     %kernel.root_dir%/../web/wkhtmltopdf
         options:    []
 
 monolog:

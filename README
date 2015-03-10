@@ -24,10 +24,6 @@ Create a initial user al login (optional)
 
   php app/console fos:user:create user email password --super-admin
 
-Add al app/config/parameters.yml
-  RESULTS_PER_PAGE: <number>
-  LUNCH_PER_PAGE: <number>
-
 Follow this guide al install well the wkhtmlalpdf
  wget http://wkhtmlalpdf.googlecode.com/files/wkhtmlalpdf-0.9.9-static-i386.tar.bz2
  tar xvjf wkhtmlalpdf-0.9.9-static-i386.tar.bz2
