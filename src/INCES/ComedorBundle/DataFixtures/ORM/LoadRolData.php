@@ -12,7 +12,7 @@ class LoadRolData extends AbstractFixture implements OrderedFixtureInterface
   public function load(ObjectManager $manager)
   {
     $rol = new Rol();
-    $rol -> setNombre('Jubilado');
+    $rol -> setNombre('Retired');
     $rol -> setMonto(0);
     $rol -> setHoraComerStart('0');
     $rol -> setHoraComerStartAMPM('am');
@@ -38,7 +38,7 @@ class LoadRolData extends AbstractFixture implements OrderedFixtureInterface
     $this->addReference('rol-no-enter', $rol);
 
     $rol = new Rol();
-    $rol -> setNombre('Externo');
+    $rol -> setNombre('External');
     $rol -> setMonto(0);
     $rol -> setHoraComerStart('0');
     $rol -> setHoraComerStartAMPM('am');

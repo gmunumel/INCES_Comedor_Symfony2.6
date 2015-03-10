@@ -37,7 +37,7 @@ class RolControllerTest extends WebTestCase
 
     $this->assertGreaterThan(
       0,
-      $crawler->filter('html:contains("Jubilado")')->count()
+      $crawler->filter('html:contains("Retired")')->count()
     );
   }
 
@@ -47,7 +47,7 @@ class RolControllerTest extends WebTestCase
 
     $this->assertGreaterThan(
       0,
-      $crawler->filter('html:contains("Jubilado")')->count()
+      $crawler->filter('html:contains("Retired")')->count()
     );
   }
 

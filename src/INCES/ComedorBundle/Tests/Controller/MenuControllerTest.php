@@ -196,7 +196,7 @@ class MenuControllerTest extends WebTestCase
     );
     $this->assertGreaterThan(
       0,
-      $crawler->filter('html:contains("Arroz")')->count()
+      $crawler->filter('html:contains("Rice")')->count()
     );
   }
 
