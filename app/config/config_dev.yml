@@ -87,6 +87,6 @@ knp_paginator:
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     %kernel.root_dir%/../web/wkhtmltopdf
+        binary:     %kernel.root_dir%/../web/wkhtmltopdf-x86
         options:    []
 
